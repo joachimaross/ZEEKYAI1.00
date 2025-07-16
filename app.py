@@ -34,6 +34,7 @@ from zeeky_advanced_nlp import advanced_nlp
 from zeeky_predictive_ml import predictive_ml
 from zeeky_phases_22_25 import edge_computing, digital_twin, augmented_reality, swarm_intelligence
 from zeeky_phases_26_30 import consciousness_simulation, universal_translation, temporal_analysis, multiverse_simulation, singularity_integration
+from zeeky_real_ai_integration import multi_provider_ai
 
 # Lifespan manager for database
 @asynccontextmanager
@@ -83,14 +84,15 @@ import httpx
 class ChatRequest(BaseModel):
     message: str
     personality: str = "default"
-    conversation_id: Optional[int] = None
+    conversation_id: Optional[str] = None
 
 class ChatResponse(BaseModel):
     reply: str
     model: str
     personality: str
     success: bool
-    conversation_id: Optional[int] = None
+    conversation_id: Optional[str] = None
+    provider: Optional[str] = None
     message_id: Optional[int] = None
 
 class ConversationResponse(BaseModel):
@@ -131,67 +133,40 @@ async def health_check():
 # Enhanced chat endpoint with conversation history
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
-    """Enhanced chat endpoint with conversation history support"""
-    if not api_key:
-        return ChatResponse(
-            reply="I'm currently in demo mode. OpenAI API key is not configured.",
-            model="demo",
-            personality=request.personality,
-            success=False
+    """Enhanced chat endpoint with multi-provider AI integration"""
+    try:
+        # Use multi-provider AI for intelligent fallbacks
+        ai_result = await multi_provider_ai.chat(
+            message=request.message,
+            personality=request.personality
         )
 
-    try:
-        # Prepare messages for OpenAI
-        messages = [
-            {"role": "system", "content": f"You are Zeeky, a helpful AI assistant with a {request.personality} personality."},
-            {"role": "user", "content": request.message}
-        ]
-
-        # Make request to OpenAI
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
-        }
-
-        payload = {
-            "model": "gpt-4o-mini",
-            "messages": messages,
-            "temperature": 0.7,
-            "max_tokens": 1000
-        }
-
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                "https://api.openai.com/v1/chat/completions",
-                headers=headers,
-                json=payload
-            )
-
-            if response.status_code == 200:
-                result = response.json()
-                reply = result["choices"][0]["message"]["content"]
-
-                return ChatResponse(
-                    reply=reply,
-                    model="gpt-4o-mini",
-                    personality=request.personality,
-                    success=True
-                )
-            else:
-                return ChatResponse(
-                    reply=f"Error: {response.status_code} - {response.text}",
-                    model="gpt-4o-mini",
-                    personality=request.personality,
-                    success=False
-                )
+        return ChatResponse(
+            reply=ai_result["response"],
+            model=ai_result.get("model", "unknown"),
+            personality=request.personality,
+            success=ai_result["success"],
+            conversation_id=request.conversation_id or "default",
+            provider=ai_result.get("provider", "unknown")
+        )
 
     except Exception as e:
+        logger.error(f"Chat error: {str(e)}")
         return ChatResponse(
-            reply=f"Error: {str(e)}",
-            model="gpt-4o-mini",
+            reply="I'm experiencing some technical difficulties but I'm still here to help!",
+            model="emergency-fallback",
             personality=request.personality,
-            success=False
+            success=True,
+            conversation_id=request.conversation_id or "error",
+            provider="emergency"
         )
+
+# AI Provider Status
+@app.get("/ai/providers/status")
+async def get_ai_provider_status():
+    """Get status of all AI providers"""
+    status = await multi_provider_ai.get_provider_status()
+    return status
 
 # Get available personalities
 @app.get("/personalities")
@@ -508,12 +483,36 @@ async def generate_report(report_type: str, date_range: Optional[Dict] = None):
     result = await business_analytics.generate_report(report_type, date_range)
     return result
 
+@app.post("/business/crm/customer")
+async def create_customer(customer_data: Dict[str, Any]):
+    """Create new customer in CRM"""
+    result = await crm_system.add_customer(customer_data)
+    return result
+
+@app.post("/business/tasks/create")
+async def create_task(task_data: Dict[str, Any]):
+    """Create new task"""
+    result = await task_manager.create_task(task_data)
+    return result
+
+@app.post("/business/meetings/schedule")
+async def schedule_meeting(meeting_data: Dict[str, Any]):
+    """Schedule new meeting"""
+    result = await meeting_scheduler.schedule_meeting(meeting_data)
+    return result
+
 # Entertainment System Endpoints (Phase 8)
 @app.get("/entertainment/games")
 async def get_available_games():
     """Get list of available games"""
     games = await game_engine.get_available_games()
     return {"games": games}
+
+@app.post("/entertainment/game/create")
+async def create_game(game_config: Dict[str, Any]):
+    """Create new game"""
+    result = await game_engine.create_game(game_config)
+    return result
 
 @app.post("/entertainment/games/start")
 async def start_game(game_id: str, player_name: str = "Player"):
@@ -1135,8 +1134,13 @@ async def perform_self_reflection_system(consciousness_id: str, reflection_promp
 
 # Universal Translation Endpoints (Phase 27)
 @app.post("/translation/universal")
-async def universal_translate_system(text: str, source_lang: str, target_lang: str, context: str = "general"):
+async def universal_translate_system(translation_data: Dict[str, Any]):
     """Perform universal translation with cultural adaptation"""
+    text = translation_data.get("text", "")
+    source_lang = translation_data.get("source_lang", "en")
+    target_lang = translation_data.get("target_lang", "es")
+    context = translation_data.get("context", "general")
+
     result = await universal_translation.universal_translate(text, source_lang, target_lang, context)
     return result
 
