@@ -63,7 +63,7 @@ AVATAR_CONFIG = {
 def get_openai_config() -> Dict[str, Any]:
     """Get OpenAI configuration"""
     return {
-        "api_key": OPENAI_API_KEY,
+        "api_key": os.getenv("OPENAI_API_KEY", OPENAI_API_KEY),
         "model": OPENAI_MODEL,
         "max_tokens": OPENAI_MAX_TOKENS,
         "temperature": OPENAI_TEMPERATURE

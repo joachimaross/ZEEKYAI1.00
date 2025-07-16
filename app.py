@@ -45,7 +45,7 @@ async def lifespan(app: FastAPI):
     await close_database()
 
 # Check for OpenAI API key
-api_key = os.getenv("OPENAI_API_KEY", "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")
+api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     logging.warning("OpenAI API key not found. Set OPENAI_API_KEY environment variable.")
 else:
