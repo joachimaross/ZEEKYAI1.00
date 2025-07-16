@@ -13,7 +13,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/zeeky
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
       - ENVIRONMENT=production
     volumes:
