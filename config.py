@@ -7,7 +7,7 @@ import os
 from typing import Dict, Any
 
 # OpenAI Configuration
-OPENAI_API_KEY = "sk-proj-your-openai-key-here"  # Replace with your actual OpenAI API key
+OPENAI_API_KEY = "your-openai-key-here"  # Replace with your actual OpenAI API key
 OPENAI_MODEL = "gpt-4"
 OPENAI_MAX_TOKENS = 4000
 OPENAI_TEMPERATURE = 0.7

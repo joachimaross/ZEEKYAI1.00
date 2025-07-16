@@ -25,6 +25,14 @@ from zeeky_security_system import encryption_manager, privacy_manager, security_
 from zeeky_advanced_integrations import cloud_integrations, third_party_apis, webhook_manager
 from zeeky_advanced_reasoning import logical_reasoning, mathematical_reasoning
 from zeeky_quantum_neural import quantum_processor, neural_networks
+
+# Import new critical systems
+from zeeky_website_builder import website_builder
+from zeeky_marketplace import marketplace_system
+from zeeky_code_assistant import advanced_code_assistant
+from zeeky_image_generator import image_generation_system
+from zeeky_user_auth import auth_system
+from zeeky_payment_system import payment_processor
 from zeeky_autonomous_robotics import robot_controller, autonomous_navigation
 from zeeky_blockchain_crypto import blockchain, smart_contracts, nft_manager
 from zeeky_metaverse_vr import metaverse_engine
@@ -920,7 +928,7 @@ async def get_system_status():
     zeeky_config = get_zeeky_config()
 
     return {
-        "status": "SINGULARITY ACHIEVED",
+        "status": "SINGULARITY ACHIEVED + ENTERPRISE READY",
         "version": zeeky_config["version"],
         "phases_active": [
             "Core AI", "RAG System", "Voice Integration", "Smart Home",
@@ -930,7 +938,9 @@ async def get_system_status():
             "Blockchain & Crypto", "Metaverse & VR", "Cybersecurity", "Quantum Communication",
             "Realistic Avatar", "Advanced NLP", "Predictive ML", "Edge Computing",
             "Digital Twin", "Augmented Reality", "Swarm Intelligence", "Consciousness Simulation",
-            "Universal Translation", "Temporal Analysis", "Multiverse Simulation", "Singularity Integration"
+            "Universal Translation", "Temporal Analysis", "Multiverse Simulation", "Singularity Integration",
+            "Website Builder", "Marketplace", "Advanced Code Assistant", "Image Generation",
+            "User Authentication", "Payment Processing"
         ],
         "total_phases": 30,
         "total_features": 6000,
@@ -1225,4 +1235,191 @@ async def get_news():
         "count": 4,
         "last_updated": datetime.now().isoformat()
     }
+
+# ================================
+# 🌐 WEBSITE BUILDER ENDPOINTS
+# ================================
+
+@app.post("/website-builder/create")
+async def create_website_ai(requirements: Dict[str, Any]):
+    """Create website using AI"""
+    result = await website_builder.create_website_ai(requirements)
+    return result
+
+@app.get("/website-builder/templates")
+async def get_website_templates():
+    """Get available website templates"""
+    return {"templates": website_builder.templates}
+
+@app.post("/website-builder/domain/check")
+async def check_domain_availability(domain: str):
+    """Check domain availability"""
+    result = await website_builder.domain_manager.check_domain_availability(domain)
+    return result
+
+# ================================
+# 💼 MARKETPLACE ENDPOINTS
+# ================================
+
+@app.post("/marketplace/service/create")
+async def create_service_listing(seller_id: str, service_data: Dict[str, Any]):
+    """Create service listing"""
+    result = await marketplace_system.create_service_listing(seller_id, service_data)
+    return result
+
+@app.get("/marketplace/search")
+async def search_marketplace_services(query: str = "", filters: Dict[str, Any] = None):
+    """Search marketplace services"""
+    result = await marketplace_system.search_services(query, filters or {})
+    return result
+
+@app.post("/marketplace/order/create")
+async def create_marketplace_order(buyer_id: str, service_id: str, package_id: str, requirements: Dict[str, Any]):
+    """Create marketplace order"""
+    result = await marketplace_system.create_order(buyer_id, service_id, package_id, requirements)
+    return result
+
+@app.get("/marketplace/seller/{seller_id}/dashboard")
+async def get_seller_dashboard(seller_id: str):
+    """Get seller dashboard"""
+    result = await marketplace_system.get_seller_dashboard(seller_id)
+    return result
+
+# ================================
+# 💻 CODE ASSISTANT ENDPOINTS
+# ================================
+
+@app.post("/code-assistant/complete")
+async def complete_code(code_context: str, cursor_position: int, language: str):
+    """Get code completion suggestions"""
+    result = await advanced_code_assistant.complete_code(code_context, cursor_position, language)
+    return result
+
+@app.post("/code-assistant/explain")
+async def explain_code(code: str, language: str):
+    """Explain code functionality"""
+    result = await advanced_code_assistant.explain_code(code, language)
+    return result
+
+@app.post("/code-assistant/detect-bugs")
+async def detect_code_bugs(code: str, language: str):
+    """Detect bugs in code"""
+    result = await advanced_code_assistant.detect_bugs(code, language)
+    return result
+
+@app.post("/code-assistant/optimize")
+async def optimize_code(code: str, language: str):
+    """Get code optimization suggestions"""
+    result = await advanced_code_assistant.optimize_code(code, language)
+    return result
+
+@app.post("/code-assistant/generate-tests")
+async def generate_code_tests(code: str, language: str):
+    """Generate unit tests for code"""
+    result = await advanced_code_assistant.generate_tests(code, language)
+    return result
+
+# ================================
+# 🎨 IMAGE GENERATION ENDPOINTS
+# ================================
+
+@app.post("/image-generator/generate")
+async def generate_image(prompt: str, style: str = "photorealistic", model: str = "dalle3", options: Dict[str, Any] = None):
+    """Generate image from text prompt"""
+    result = await image_generation_system.generate_image(prompt, style, model, options or {})
+    return result
+
+@app.post("/image-generator/edit")
+async def edit_image(image_id: str, edit_type: str, parameters: Dict[str, Any]):
+    """Edit existing image"""
+    result = await image_generation_system.edit_image(image_id, edit_type, parameters)
+    return result
+
+@app.post("/image-generator/remove-background")
+async def remove_image_background(image_id: str):
+    """Remove background from image"""
+    result = await image_generation_system.remove_background(image_id)
+    return result
+
+@app.post("/image-generator/upscale")
+async def upscale_image(image_id: str, scale_factor: int = 2):
+    """Upscale image resolution"""
+    result = await image_generation_system.upscale_image(image_id, scale_factor)
+    return result
+
+@app.get("/image-generator/styles")
+async def get_image_styles():
+    """Get available image styles"""
+    return {"styles": image_generation_system.styles}
+
+# ================================
+# 🔐 AUTHENTICATION ENDPOINTS
+# ================================
+
+@app.post("/auth/register")
+async def register_user(email: str, password: str, username: str, profile_data: Dict[str, Any] = None):
+    """Register new user"""
+    result = await auth_system.register_user(email, password, username, profile_data)
+    return result
+
+@app.post("/auth/login")
+async def login_user(email: str, password: str):
+    """Login user"""
+    result = await auth_system.login_user(email, password)
+    return result
+
+@app.post("/auth/oauth/{provider}")
+async def oauth_login(provider: str, oauth_code: str):
+    """OAuth login"""
+    result = await auth_system.oauth_login(provider, oauth_code)
+    return result
+
+@app.post("/auth/verify-token")
+async def verify_auth_token(token: str):
+    """Verify JWT token"""
+    result = await auth_system.verify_token(token)
+    return result
+
+@app.post("/auth/logout")
+async def logout_user(session_id: str):
+    """Logout user"""
+    result = await auth_system.logout_user(session_id)
+    return result
+
+# ================================
+# 💳 PAYMENT ENDPOINTS
+# ================================
+
+@app.post("/payments/subscription/create")
+async def create_subscription(user_id: str, plan_id: str, payment_method_id: str):
+    """Create subscription"""
+    result = await payment_processor.create_subscription(user_id, plan_id, payment_method_id)
+    return result
+
+@app.post("/payments/method/add")
+async def add_payment_method(user_id: str, payment_data: Dict[str, Any]):
+    """Add payment method"""
+    result = await payment_processor.add_payment_method(user_id, payment_data)
+    return result
+
+@app.get("/payments/plans")
+async def get_subscription_plans():
+    """Get available subscription plans"""
+    return {"plans": payment_processor.plans}
+
+@app.get("/payments/user/{user_id}/billing")
+async def get_user_billing(user_id: str):
+    """Get user billing information"""
+    result = await payment_processor.get_user_billing_info(user_id)
+    return result
+
+@app.post("/payments/subscription/{subscription_id}/cancel")
+async def cancel_subscription(subscription_id: str, user_id: str, immediate: bool = False):
+    """Cancel subscription"""
+    result = await payment_processor.cancel_subscription(subscription_id, user_id, immediate)
+    return result
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
