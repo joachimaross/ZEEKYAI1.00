@@ -19,12 +19,21 @@
 
 ## 👨‍💼 **FOUNDER & CEO**
 
-**Joac'Chima Ross**
+**Joachima Ross**
 *Founder, Creator & Chief Executive Officer*
 📍 Chicago, Illinois, USA
+📧 zeekyai@hotmail.com | 📱 (773) 457-9882
 🌐 [LinkedIn](https://linkedin.com/in/joachimaross) | [Twitter](https://twitter.com/joachimaross) | [GitHub](https://github.com/joachimaross)
+🏢 **Company Founded**: July 2025
+🌍 **Headquarters**: Chicago, Illinois, USA
 
 > *"Building the future of AI-powered productivity and creativity, one innovation at a time."*
+
+### **📞 Contact Information**
+- **📧 Email**: zeekyai@hotmail.com
+- **📱 Phone**: (773) 457-9882
+- **🌐 Website**: [Zeeky AI Platform](https://github.com/joachimaross/ZEEKYAI1.00)
+- **💼 Business Inquiries**: Available for partnerships and enterprise solutions
 
 ---
 
@@ -375,10 +384,12 @@ python app.py
 - **Email**: hello@zeeky.ai
 
 ### **👨‍💼 Founder Contact**
-- **Joac'Chima Ross**
-- **Email**: joachima@zeeky.ai
+- **Joachima Ross** - *Founder & CEO*
+- **Email**: zeekyai@hotmail.com
+- **Phone**: (773) 457-9882
 - **LinkedIn**: [linkedin.com/in/joachimaross](https://linkedin.com/in/joachimaross)
 - **Twitter**: [@joachimaross](https://twitter.com/joachimaross)
+- **Company Founded**: July 2025
 
 ### **🆘 Support Channels**
 - **Help Center**: [help.zeeky.ai](https://help.zeeky.ai)

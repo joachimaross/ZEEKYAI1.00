@@ -255,7 +255,8 @@ git push origin feature/next-level-innovation
 
 - **Issues**: [GitHub Issues](https://github.com/joachimaross/ZEEKYAI1.00/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/joachimaross/ZEEKYAI1.00/discussions)
-- **Email**: jacameno@outlook.com
+- **Email**: zeekyai@hotmail.com
+- **Phone**: (773) 457-9882
 - **Documentation**: Complete guides included
 
 ---
@@ -298,4 +299,7 @@ git push origin feature/next-level-innovation
 **🤝 Contribute to make it even more revolutionary!**
 
 **Built with ❤️ by Joachima Ross**
+*Founder & CEO - Zeeky AI (Founded July 2025)*
 *Leading the AI Revolution - One Innovation at a Time*
+
+📧 **Contact**: zeekyai@hotmail.com | 📱 **(773) 457-9882**
