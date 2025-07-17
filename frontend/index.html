@@ -1205,7 +1205,13 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Core Infrastructure Scripts -->
+    <script src="config/environment.js"></script>
+    <script src="scripts/error-handler.js"></script>
+    <script src="scripts/loading-manager.js"></script>
+    <script src="scripts/api-client.js"></script>
+
+    <!-- Extension Scripts -->
     <script src="scripts/extensions/voice-handler.js"></script>
     <script src="scripts/extensions/file-handler.js"></script>
     <script src="scripts/extensions/analytics.js"></script>
@@ -1217,7 +1223,24 @@
     <script src="scripts/extensions/code-laboratory.js"></script>
     <script src="scripts/extensions/vision-ai.js"></script>
     <script src="scripts/extensions/workflow-automation.js"></script>
+
+    <!-- Main Application Scripts -->
     <script src="scripts/main.js"></script>
     <script src="scripts/admin.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
