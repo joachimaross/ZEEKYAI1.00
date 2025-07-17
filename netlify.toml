@@ -3,51 +3,54 @@
   publish = "frontend"
   command = ""
 
-# Redirect rules for clean URLs
+# Main redirect - serve index.html for root
 [[redirects]]
   from = "/"
-  to = "/master-dashboard.html"
+  to = "/index.html"
   status = 200
 
+# SPA routing - all routes serve index.html
 [[redirects]]
   from = "/chat"
-  to = "/chat.html"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
   from = "/avatar"
-  to = "/zeeky_avatar_interface.html"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
-  from = "/onboarding"
-  to = "/onboarding-flow.html"
+  from = "/dashboard"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/features"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
   from = "/analytics"
-  to = "/beta-analytics-dashboard.html"
+  to = "/index.html"
   status = 200
 
 [[redirects]]
-  from = "/launch"
-  to = "/public-launch-center.html"
+  from = "/settings"
+  to = "/index.html"
   status = 200
 
+# API proxy (if you have a backend deployed elsewhere)
 [[redirects]]
-  from = "/growth"
-  to = "/growth-optimization-center.html"
+  from = "/api/*"
+  to = "https://your-backend-api.herokuapp.com/api/:splat"
   status = 200
+  force = true
 
-[[redirects]]
-  from = "/beta"
-  to = "/beta-launch-dashboard.html"
-  status = 200
-
-# Handle SPA routing
+# Handle all other routes for SPA
 [[redirects]]
   from = "/*"
-  to = "/master-dashboard.html"
+  to = "/index.html"
   status = 200
 
 # Security headers
