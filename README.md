@@ -319,6 +319,43 @@ python app.py
 - **AWS Credentials**: For file storage
 - **Google OAuth**: For authentication
 
+---
+
+## 🌐 **DEPLOYMENT**
+
+### **🚀 Deploy to Vercel (Recommended)**
+
+Zeeky AI is optimized for Vercel deployment with zero configuration:
+
+1. **Fork this repository** to your GitHub account
+
+2. **Connect to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Import your forked repository
+   - Use these settings:
+     - **Framework Preset**: `Other`
+     - **Root Directory**: `./`
+     - **Build Command**: `npm run vercel-build`
+     - **Output Directory**: `frontend`
+     - **Install Command**: `npm install`
+
+3. **Set Environment Variables** in Vercel dashboard:
+   ```
+   NODE_ENV=production
+   OPENAI_API_KEY=your-openai-key
+   ```
+
+4. **Deploy**: Click "Deploy" and your site will be live!
+
+📖 **Detailed Guide**: See [VERCEL_DEPLOYMENT_GUIDE.md](VERCEL_DEPLOYMENT_GUIDE.md)
+
+### **🌍 Other Deployment Options**
+
+- **Netlify**: See [NETLIFY_DEPLOYMENT.md](NETLIFY_DEPLOYMENT.md)
+- **Railway**: Automatic deployment from GitHub
+- **Heroku**: Traditional cloud platform
+- **Self-hosted**: Docker container available
+
 ### **📱 Mobile Apps**
 - **iOS**: Available on App Store (coming soon)
 - **Android**: Available on Google Play (coming soon)
