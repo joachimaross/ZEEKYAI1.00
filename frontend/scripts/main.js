@@ -101,6 +101,19 @@ class ZeekyAI {
         analyticsBtn?.addEventListener('click', () => this.openModal('analytics-modal'));
         analyticsClose?.addEventListener('click', () => this.closeModal('analytics-modal'));
 
+        // Next-level extension modals
+        const collaborationClose = document.getElementById('collaboration-close');
+        const personalityClose = document.getElementById('personality-close');
+        const codeLabClose = document.getElementById('code-lab-close');
+        const visionClose = document.getElementById('vision-close');
+        const workflowClose = document.getElementById('workflow-close');
+
+        collaborationClose?.addEventListener('click', () => this.closeModal('collaboration-modal'));
+        personalityClose?.addEventListener('click', () => this.closeModal('personality-modal'));
+        codeLabClose?.addEventListener('click', () => this.closeModal('code-lab-modal'));
+        visionClose?.addEventListener('click', () => this.closeModal('vision-modal'));
+        workflowClose?.addEventListener('click', () => this.closeModal('workflow-modal'));
+
         // Feedback modal
         const feedbackBtn = document.getElementById('feedback-btn');
         const feedbackClose = document.getElementById('feedback-close');
@@ -353,13 +366,15 @@ class ZeekyAI {
             };
         }
 
-        // AI models integration
-        if (window.aiModelsManager) {
-            // Use AI models for responses
+        // AI models integration with personalities
+        if (window.aiModelsManager && window.aiPersonalitiesManager) {
+            // Use AI models for responses with personality enhancement
             this.originalSimulateApiResponse = this.simulateApiResponse;
             this.simulateApiResponse = async (message) => {
                 try {
-                    const response = await window.aiModelsManager.generateResponse(message);
+                    // Enhance message with current personality
+                    const enhancedMessage = window.aiPersonalitiesManager.enhanceMessageWithPersonality(message);
+                    const response = await window.aiModelsManager.generateResponse(enhancedMessage);
                     return response.text;
                 } catch (error) {
                     console.error('AI model error:', error);
@@ -367,6 +382,114 @@ class ZeekyAI {
                 }
             };
         }
+
+        // Collaboration integration
+        if (window.collaborationManager) {
+            // Broadcast messages in collaboration rooms
+            this.originalAddUserMessage = this.addUserMessage;
+            this.addUserMessage = (message) => {
+                this.originalAddUserMessage(message);
+                if (window.collaborationManager.isInRoom()) {
+                    window.collaborationManager.broadcastMessage(message);
+                }
+            };
+
+            // Show typing indicators
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput) {
+                let typingTimeout;
+                chatInput.addEventListener('input', () => {
+                    if (window.collaborationManager.isInRoom()) {
+                        window.collaborationManager.broadcastTypingStatus(true);
+                        clearTimeout(typingTimeout);
+                        typingTimeout = setTimeout(() => {
+                            window.collaborationManager.broadcastTypingStatus(false);
+                        }, 1000);
+                    }
+                });
+            }
+        }
+
+        // Workflow automation integration
+        if (window.workflowAutomation) {
+            // Trigger workflows on file uploads
+            if (window.fileHandler) {
+                const originalProcessFile = window.fileHandler.processFile;
+                window.fileHandler.processFile = async (file) => {
+                    const result = await originalProcessFile.call(window.fileHandler, file);
+
+                    // Trigger file upload workflows
+                    const activeWorkflows = window.workflowAutomation.getActiveWorkflows();
+                    activeWorkflows.forEach(workflow => {
+                        if (workflow.trigger.type === 'file') {
+                            window.workflowAutomation.triggerWorkflow(workflow.id, {
+                                file: file,
+                                result: result
+                            });
+                        }
+                    });
+
+                    return result;
+                };
+            }
+        }
+
+        // Vision AI integration
+        if (window.visionAI) {
+            // Auto-analyze uploaded images
+            if (window.fileHandler) {
+                const originalProcessFile = window.fileHandler.processFile;
+                window.fileHandler.processFile = async (file) => {
+                    const result = await originalProcessFile.call(window.fileHandler, file);
+
+                    // Auto-analyze images
+                    if (file.type.startsWith('image/')) {
+                        setTimeout(() => {
+                            window.visionAI.analyzeImage(file);
+                        }, 1000);
+                    }
+
+                    return result;
+                };
+            }
+        }
+
+        // Code laboratory integration
+        if (window.codeLaboratory) {
+            // Auto-analyze code in messages
+            this.originalAddUserMessage = this.addUserMessage;
+            this.addUserMessage = (message) => {
+                this.originalAddUserMessage(message);
+
+                // Detect code blocks and offer to run them
+                const codeBlocks = message.match(/```(\w+)?\n([\s\S]*?)```/g);
+                if (codeBlocks && codeBlocks.length > 0) {
+                    this.showCodeExecutionOffer(codeBlocks);
+                }
+            };
+        }
+    }
+
+    showCodeExecutionOffer(codeBlocks) {
+        const notification = window.ZeekyUtils.showNotification(
+            `Detected ${codeBlocks.length} code block(s). Would you like to run them in Code Lab?`,
+            'info',
+            5000
+        );
+
+        // Add action button to notification
+        const actionBtn = document.createElement('button');
+        actionBtn.textContent = 'Open Code Lab';
+        actionBtn.className = 'btn-primary';
+        actionBtn.style.marginTop = '8px';
+        actionBtn.onclick = () => {
+            if (window.codeLaboratory) {
+                window.codeLaboratory.openCodeLab();
+            }
+            notification.remove();
+        };
+
+        notification.querySelector('.notification-message').appendChild(actionBtn);
     }
 
     extractTextFromMessage(message) {

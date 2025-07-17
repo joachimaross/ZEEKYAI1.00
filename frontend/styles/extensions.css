@@ -581,28 +581,709 @@ input[type="range"]::-moz-range-thumb {
     border: none;
 }
 
+/* Collaboration Styles */
+.collaboration-modal .modal-content {
+    max-width: 900px;
+}
+
+.collaboration-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.collab-tab {
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.collab-tab:hover {
+    color: var(--text-primary);
+}
+
+.collab-tab.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.collab-panel {
+    display: none;
+}
+
+.collab-panel.active {
+    display: block;
+}
+
+.room-creation {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.room-creation .form-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.room-creation input {
+    flex: 1;
+    padding: 10px 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+}
+
+.rooms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.room-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.room-card:hover {
+    background: var(--bg-tertiary);
+}
+
+.room-info h4 {
+    margin: 0 0 4px 0;
+    color: var(--text-primary);
+}
+
+.room-info p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.participant-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.participant-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    text-align: center;
+}
+
+.participant-avatar {
+    width: 48px;
+    height: 48px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    color: white;
+    font-size: 20px;
+}
+
+/* AI Personalities Styles */
+.personality-modal .modal-content {
+    max-width: 800px;
+}
+
+.current-personality {
+    margin-bottom: 32px;
+}
+
+.personality-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.personality-card:hover {
+    background: var(--bg-tertiary);
+}
+
+.personality-card.active {
+    border-color: var(--accent-color);
+    background: var(--bg-tertiary);
+}
+
+.personality-avatar {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
+
+.personality-info h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.personality-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.category-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.category-tab {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.category-tab:hover {
+    background: var(--bg-tertiary);
+}
+
+.category-tab.active {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.personalities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Code Laboratory Styles */
+.code-lab-modal .modal-content {
+    max-width: 1200px;
+    height: 80vh;
+}
+
+.code-lab-toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.code-lab-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    height: calc(100% - 80px);
+    padding: 16px;
+}
+
+.code-editor-container,
+.code-output-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.code-editor-container h4,
+.code-output-container h4 {
+    margin: 0 0 12px 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#code-editor {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--text-primary);
+    resize: none;
+    outline: none;
+}
+
+.code-output {
+    flex: 1;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--text-primary);
+    overflow-y: auto;
+}
+
+.output-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+}
+
+.output-placeholder i {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+/* Vision & Image Generation Styles */
+.vision-modal .modal-content {
+    max-width: 1000px;
+    height: 80vh;
+}
+
+.vision-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.vision-tab {
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.vision-tab:hover {
+    color: var(--text-primary);
+}
+
+.vision-tab.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.vision-panel {
+    display: none;
+}
+
+.vision-panel.active {
+    display: block;
+}
+
+.image-generation {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.generation-settings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.setting-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.setting-row label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.setting-row select {
+    padding: 8px 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+}
+
+.generated-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.generated-image {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.generated-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.generated-image:hover .image-actions {
+    opacity: 1;
+}
+
+.image-action-btn {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.image-upload-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 24px;
+}
+
+.image-upload-zone:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-secondary);
+}
+
+.image-upload-zone i {
+    font-size: 48px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.analysis-results {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    min-height: 200px;
+}
+
+.editor-canvas-container {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+    min-height: 300px;
+}
+
+.editor-tools {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+/* Workflow Automation Styles */
+.workflow-modal .modal-content {
+    max-width: 1200px;
+    height: 80vh;
+}
+
+.workflow-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.workflow-tab {
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.workflow-tab:hover {
+    color: var(--text-primary);
+}
+
+.workflow-tab.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.workflow-panel {
+    display: none;
+}
+
+.workflow-panel.active {
+    display: block;
+}
+
+.workflow-builder {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 16px;
+    height: 500px;
+}
+
+.workflow-canvas {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: auto;
+}
+
+.canvas-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+}
+
+.canvas-placeholder i {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.workflow-components {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.component-category {
+    margin-bottom: 20px;
+}
+
+.component-category h5 {
+    margin: 0 0 12px 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.component {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: var(--transition);
+    font-size: 13px;
+}
+
+.component:hover {
+    background: var(--bg-tertiary);
+}
+
+.component:active {
+    cursor: grabbing;
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.template-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+}
+
+.template-card h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-primary);
+}
+
+.template-card p {
+    margin: 0 0 16px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.workflows-list,
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.workflow-item,
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.workflow-info h4,
+.history-info h4 {
+    margin: 0 0 4px 0;
+    color: var(--text-primary);
+}
+
+.workflow-info p,
+.history-info p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.workflow-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.workflow-status.active {
+    background: var(--success-color);
+    color: white;
+}
+
+.workflow-status.paused {
+    background: var(--warning-color);
+    color: white;
+}
+
+.workflow-status.error {
+    background: var(--danger-color);
+    color: white;
+}
+
 /* Responsive Extensions */
 @media (max-width: 768px) {
     .command-palette {
         width: 95%;
         top: 15%;
     }
-    
+
     .metrics-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .shortcuts-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .notification-container {
         left: 10px;
         right: 10px;
         max-width: none;
     }
-    
-    .analytics-modal .modal-content {
+
+    .analytics-modal .modal-content,
+    .collaboration-modal .modal-content,
+    .personality-modal .modal-content,
+    .code-lab-modal .modal-content {
         max-width: 95%;
+    }
+
+    .code-lab-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .personalities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .participant-cards {
+        grid-template-columns: 1fr;
     }
 }
