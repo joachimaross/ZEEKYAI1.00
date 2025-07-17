@@ -44,15 +44,32 @@
         <aside class="modern-sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <div class="logo-icon">Z</div>
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                     <span>Zeeky AI</span>
                 </div>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
             </div>
-            
+
             <button class="new-chat-btn" id="new-chat-btn">
                 <i class="fas fa-plus"></i>
-                New Chat
+                <span>New Chat</span>
             </button>
+
+            <!-- Chat History Section -->
+            <div class="chat-history-section">
+                <div class="section-title">Recent Chats</div>
+                <div class="chat-history" id="chat-history">
+                    <!-- Chat history items will be populated here -->
+                </div>
+            </div>
             
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -68,6 +85,9 @@
                             <i class="fas fa-theater-masks"></i>
                         </div>
                         AI Personalities
+                        <div class="personality-indicator" id="personality-indicator">
+                            <span class="current-personality">Default</span>
+                        </div>
                     </div>
                     <div class="nav-item" id="code-lab-nav">
                         <div class="nav-item-icon">
@@ -149,42 +169,105 @@
 
             <!-- Chat Container -->
             <div class="chat-container">
-                <!-- Chat Messages -->
-                <div class="chat-messages" id="chat-messages">
-                    <!-- Welcome Message -->
-                    <div class="message bot">
-                        <div class="message-avatar">
-                            <i class="fas fa-robot"></i>
+                <!-- Welcome Screen (shown when no messages) -->
+                <div class="welcome-screen" id="welcome-screen">
+                    <div class="welcome-content">
+                        <div class="welcome-logo">
+                            <div class="logo-icon large">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h1>Welcome to Zeeky AI</h1>
+                            <p>Your revolutionary AI assistant with advanced capabilities</p>
                         </div>
-                        <div class="message-content">
-                            <div class="message-bubble">
-                                <p>👋 Welcome to Zeeky AI! I'm your revolutionary AI assistant with advanced capabilities.</p>
-                                <p>I can help you with:</p>
-                                <ul>
-                                    <li>🤝 Real-time collaboration with your team</li>
-                                    <li>🎭 15+ unique AI personalities</li>
-                                    <li>🧪 Live code execution in multiple languages</li>
-                                    <li>👁️ Advanced image generation and analysis</li>
-                                    <li>🔄 Workflow automation</li>
-                                </ul>
-                                <p>What would you like to explore today?</p>
+
+                        <!-- Quick Action Cards -->
+                        <div class="quick-actions">
+                            <div class="action-card" data-action="collaboration">
+                                <div class="action-icon">🤝</div>
+                                <h3>Team Collaboration</h3>
+                                <p>Work together in real-time</p>
+                            </div>
+                            <div class="action-card" data-action="code">
+                                <div class="action-icon">🧪</div>
+                                <h3>Code Laboratory</h3>
+                                <p>Execute code in multiple languages</p>
+                            </div>
+                            <div class="action-card" data-action="vision">
+                                <div class="action-icon">👁️</div>
+                                <h3>Vision AI</h3>
+                                <p>Analyze and generate images</p>
+                            </div>
+                            <div class="action-card" data-action="personalities">
+                                <div class="action-icon">🎭</div>
+                                <h3>AI Personalities</h3>
+                                <p>15+ unique AI assistants</p>
+                            </div>
+                        </div>
+
+                        <!-- Suggested Prompts -->
+                        <div class="suggested-prompts">
+                            <div class="prompt-chip" data-prompt="Help me write a professional email">
+                                Help me write a professional email
+                            </div>
+                            <div class="prompt-chip" data-prompt="Explain quantum computing in simple terms">
+                                Explain quantum computing in simple terms
+                            </div>
+                            <div class="prompt-chip" data-prompt="Create a Python script for data analysis">
+                                Create a Python script for data analysis
+                            </div>
+                            <div class="prompt-chip" data-prompt="Design a modern website layout">
+                                Design a modern website layout
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chat-messages" style="display: none;">
+                    <!-- Messages will be populated here -->
+                </div>
+
                 <!-- Chat Input -->
                 <div class="chat-input-container">
+                    <!-- Model Selection -->
+                    <div class="model-selector" id="model-selector">
+                        <div class="model-info">
+                            <span class="model-name">Zeeky AI Pro</span>
+                            <span class="model-status">●</span>
+                        </div>
+                        <button class="model-dropdown-btn" id="model-dropdown-btn">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+
                     <div class="chat-input-wrapper">
-                        <textarea 
-                            class="chat-input" 
-                            id="chat-input" 
+                        <div class="input-actions">
+                            <button class="input-action-btn" id="attach-btn" title="Attach file">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button class="input-action-btn" id="voice-btn" title="Voice input">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                        <textarea
+                            class="chat-input"
+                            id="chat-input"
                             placeholder="Message Zeeky AI..."
                             rows="1"
                         ></textarea>
                         <button class="send-btn" id="send-btn" disabled>
                             <i class="fas fa-paper-plane"></i>
                         </button>
+                    </div>
+
+                    <!-- Usage Indicator -->
+                    <div class="usage-indicator" id="usage-indicator">
+                        <div class="usage-text">Free plan • 15 messages remaining today</div>
+                        <button class="upgrade-btn">Upgrade</button>
                     </div>
                 </div>
             </div>
@@ -200,6 +283,23 @@
     </div>
 
     <!-- All existing modals will be included here -->
+    <!-- Personality Selection Modal -->
+    <div class="modal" id="personality-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Choose AI Personality</h2>
+                <button class="modal-close" id="personality-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="personality-grid" id="personality-grid">
+                    <!-- Personalities will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Voice Modal -->
     <div class="modal" id="voice-modal">
         <div class="modal-content">

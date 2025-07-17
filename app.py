@@ -17,6 +17,7 @@ from db.database import init_database, close_database
 
 # Import Zeeky services
 from config import get_openai_config, get_zeeky_config
+from zeeky_enhanced_ai import enhanced_zeeky
 from zeeky_rag_system import rag_system
 from zeeky_business_system import crm_system, task_manager, meeting_scheduler, email_automation, business_analytics
 from zeeky_entertainment_system import game_engine, story_generator, music_recommendations
@@ -139,59 +140,114 @@ async def health_check():
 # Enhanced chat endpoint with conversation history
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
-    """Enhanced chat endpoint with conversation history support"""
-    if not api_key:
+    """Enhanced chat endpoint with conversation history support and enhanced AI"""
+
+    try:
+        # Use the enhanced Zeeky AI system
+        response = await enhanced_zeeky.chat(
+            message=request.message,
+            user_id=getattr(request, 'user_id', 'default'),
+            chat_id=getattr(request, 'chat_id', 'default'),
+            personality=request.personality
+        )
+
         return ChatResponse(
-            reply="I'm currently in demo mode. OpenAI API key is not configured.",
-            model="demo",
+            reply=response["response"],
+            model="zeeky-enhanced-ai",
+            personality=request.personality,
+            success=response["success"]
+        )
+
+    except Exception as e:
+        logger.error(f"Enhanced chat endpoint error: {e}")
+        return ChatResponse(
+            reply=f"I encountered an error while processing your request. Please try again. Error: {str(e)}",
+            model="zeeky-enhanced-ai",
             personality=request.personality,
             success=False
         )
 
+# Add API endpoint for frontend
+@app.post("/api/chat")
+async def api_chat_endpoint(request: ChatRequest):
+    """API chat endpoint for frontend integration"""
+
     try:
-        # Prepare messages for OpenAI
-        messages = [
-            {"role": "system", "content": f"You are Zeeky, a helpful AI assistant with a {request.personality} personality."},
-            {"role": "user", "content": request.message}
-        ]
+        # Use the enhanced Zeeky AI system
+        response = await enhanced_zeeky.chat(
+            message=request.message,
+            user_id=getattr(request, 'user_id', 'default'),
+            chat_id=getattr(request, 'chat_id', 'default'),
+            personality=request.personality
+        )
 
-        # Make request to OpenAI
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
+        return {
+            "success": response["success"],
+            "response": response["response"],
+            "personality": request.personality,
+            "provider": response.get("provider", "enhanced_simulation"),
+            "model": "zeeky-enhanced-ai"
         }
 
-        payload = {
-            "model": "gpt-4o-mini",
-            "messages": messages,
-            "temperature": 0.7,
-            "max_tokens": 1000
+    except Exception as e:
+        logger.error(f"API chat endpoint error: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "response": f"I encountered an error while processing your request. Please try again. Error: {str(e)}"
         }
 
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                "https://api.openai.com/v1/chat/completions",
-                headers=headers,
-                json=payload
-            )
+# Personality management endpoints
+@app.post("/api/personality/switch")
+async def switch_personality(request: dict):
+    """Switch personality for a conversation"""
+    try:
+        user_id = request.get('user_id', 'default')
+        chat_id = request.get('chat_id', 'default')
+        new_personality = request.get('personality', 'default')
 
-            if response.status_code == 200:
-                result = response.json()
-                reply = result["choices"][0]["message"]["content"]
+        result = enhanced_zeeky.switch_personality(user_id, chat_id, new_personality)
+        return result
 
-                return ChatResponse(
-                    reply=reply,
-                    model="gpt-4o-mini",
-                    personality=request.personality,
-                    success=True
-                )
-            else:
-                return ChatResponse(
-                    reply=f"Error: {response.status_code} - {response.text}",
-                    model="gpt-4o-mini",
-                    personality=request.personality,
-                    success=False
-                )
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+@app.get("/api/personality/list")
+async def list_personalities():
+    """Get list of available personalities"""
+    from zeeky_enhanced_ai import ZeekyPersonality
+
+    personalities = {}
+    for key, config in ZeekyPersonality.PERSONALITIES.items():
+        personalities[key] = {
+            "name": config["name"],
+            "description": config["description"],
+            "traits": config["traits"],
+            "style": config["speaking_style"]
+        }
+
+    return {
+        "success": True,
+        "personalities": personalities
+    }
+
+@app.get("/api/conversation/stats")
+async def get_conversation_stats(user_id: str = "default", chat_id: str = "default"):
+    """Get conversation statistics"""
+    try:
+        stats = enhanced_zeeky.get_conversation_stats(user_id, chat_id)
+        return {
+            "success": True,
+            "stats": stats
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
 
     except Exception as e:
         return ChatResponse(

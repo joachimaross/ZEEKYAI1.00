@@ -7,10 +7,15 @@ import os
 from typing import Dict, Any
 
 # OpenAI Configuration
-OPENAI_API_KEY = "your-openai-key-here"  # Replace with your actual OpenAI API key
-OPENAI_MODEL = "gpt-4"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-openai-key-here")  # Get from environment or use placeholder
+OPENAI_MODEL = "gpt-4o-mini"  # Updated to latest model
 OPENAI_MAX_TOKENS = 4000
-OPENAI_TEMPERATURE = 0.7
+OPENAI_TEMPERATURE = 0.8  # Slightly higher for more creative responses
+
+# Alternative AI Providers (fallbacks)
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+COHERE_API_KEY = os.getenv("COHERE_API_KEY", "")
 
 # Zeeky AI Configuration
 ZEEKY_VERSION = "2.0.0"
