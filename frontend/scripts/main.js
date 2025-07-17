@@ -139,6 +139,35 @@ class ZeekyAI {
         const adminBtn = document.getElementById('admin-btn');
         const adminClose = document.getElementById('admin-close');
 
+        // Action cards event listeners
+        document.querySelectorAll('.action-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const action = card.dataset.action;
+                switch(action) {
+                    case 'collaboration':
+                        // Handled by CollaborationManager
+                        if (window.collaborationManager) {
+                            window.collaborationManager.openCollaborationModal();
+                        }
+                        break;
+                    case 'personalities':
+                        // Handled by AIPersonalitiesManager
+                        if (window.aiPersonalitiesManager) {
+                            window.aiPersonalitiesManager.openPersonalityModal();
+                        }
+                        break;
+                    case 'code':
+                        this.openModal('code-lab-modal');
+                        break;
+                    case 'vision':
+                        this.openModal('vision-modal');
+                        break;
+                    default:
+                        console.log('Action not implemented:', action);
+                }
+            });
+        });
+
         adminBtn?.addEventListener('click', () => this.openModal('admin-modal'));
         adminClose?.addEventListener('click', () => this.closeModal('admin-modal'));
 

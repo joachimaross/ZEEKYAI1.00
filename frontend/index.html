@@ -295,18 +295,64 @@
     </div>
 
     <!-- All existing modals will be included here -->
-    <!-- Personality Selection Modal -->
+    <!-- Enhanced Personality Selection Modal -->
     <div class="modal" id="personality-modal">
-        <div class="modal-content">
+        <div class="modal-content personality-modal">
             <div class="modal-header">
-                <h2>Choose AI Personality</h2>
+                <h2><i class="fas fa-theater-masks"></i> AI Personalities</h2>
+                <p class="modal-subtitle">Choose from 50+ specialized AI personalities</p>
                 <button class="modal-close" id="personality-close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="personality-grid" id="personality-grid">
-                    <!-- Personalities will be loaded here -->
+                <!-- Current Personality Display -->
+                <div class="current-personality-section">
+                    <h3>Current Personality</h3>
+                    <div class="current-personality-card" id="current-personality-display">
+                        <div class="personality-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="personality-info">
+                            <h4>Default Zeeky</h4>
+                            <p>Universal AI assistant with 3000+ features</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="personality-categories">
+                    <button class="category-tab active" data-category="general">
+                        <i class="fas fa-star"></i> General
+                    </button>
+                    <button class="category-tab" data-category="creative">
+                        <i class="fas fa-palette"></i> Creative
+                    </button>
+                    <button class="category-tab" data-category="technical">
+                        <i class="fas fa-code"></i> Technical
+                    </button>
+                    <button class="category-tab" data-category="wellness">
+                        <i class="fas fa-heart"></i> Wellness
+                    </button>
+                    <button class="category-tab" data-category="professional">
+                        <i class="fas fa-briefcase"></i> Professional
+                    </button>
+                    <button class="category-tab" data-category="entertainment">
+                        <i class="fas fa-gamepad"></i> Entertainment
+                    </button>
+                </div>
+
+                <!-- Personalities Grid -->
+                <div class="personalities-grid" id="personalities-grid">
+                    <!-- Personalities will be loaded here dynamically -->
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="personality-search">
+                    <input type="text" id="personality-search" placeholder="Search personalities..." />
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -332,6 +378,78 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer with Contact Information -->
+    <footer class="zeeky-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span>Zeeky AI</span>
+                </div>
+                <p class="footer-tagline">The Ultimate Universal AI Platform</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact Information</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:zeekyai@hotmail.com">zeekyai@hotmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+17734579882">(773) 457-9882</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Chicago, Illinois, USA</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Founder & CEO</h4>
+                <div class="founder-info">
+                    <p><strong>Joachima Ross</strong></p>
+                    <p>Creator & Chief Executive Officer</p>
+                    <div class="social-links">
+                        <a href="https://linkedin.com/in/joachimaross" target="_blank" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://twitter.com/joachimaross" target="_blank" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://github.com/joachimaross" target="_blank" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Features</h4>
+                <ul class="feature-list">
+                    <li>3000+ AI Features</li>
+                    <li>50+ AI Personalities</li>
+                    <li>Real-time Collaboration</li>
+                    <li>Code Execution</li>
+                    <li>Vision AI</li>
+                    <li>Team Workspaces</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Zeeky AI. All rights reserved. | Founded July 2025 | Chicago, Illinois, USA</p>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="config/environment.js"></script>

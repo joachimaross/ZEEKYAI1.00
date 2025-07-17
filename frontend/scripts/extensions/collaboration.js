@@ -22,6 +22,14 @@ class CollaborationManager {
     }
 
     setupEventListeners() {
+        // Collaboration navigation
+        const collaborationNav = document.getElementById('collaboration-nav');
+        collaborationNav?.addEventListener('click', () => this.openCollaborationModal());
+
+        // Collaboration action card
+        const collaborationActionCard = document.querySelector('[data-action="collaboration"]');
+        collaborationActionCard?.addEventListener('click', () => this.openCollaborationModal());
+
         // Collaboration modal
         const collaborationBtn = document.getElementById('collaboration-btn');
         collaborationBtn?.addEventListener('click', () => this.openCollaborationModal());
@@ -34,10 +42,22 @@ class CollaborationManager {
         const copyShareBtn = document.getElementById('copy-share-link');
         copyShareBtn?.addEventListener('click', () => this.copyShareLink());
 
+        // Microsoft Office integration
+        const officeIntegrationBtn = document.getElementById('office-integration');
+        officeIntegrationBtn?.addEventListener('click', () => this.initializeOfficeIntegration());
+
+        // Team workspace
+        const teamWorkspaceBtn = document.getElementById('team-workspace');
+        teamWorkspaceBtn?.addEventListener('click', () => this.openTeamWorkspace());
+
         // Collaboration tabs
         document.querySelectorAll('.collab-tab').forEach(tab => {
             tab.addEventListener('click', () => this.switchCollabTab(tab.dataset.tab));
         });
+
+        // Modal close
+        const collaborationClose = document.getElementById('collaboration-close');
+        collaborationClose?.addEventListener('click', () => this.closeCollaborationModal());
     }
 
     setupWebRTC() {
@@ -60,7 +80,218 @@ class CollaborationManager {
             modal.classList.add('active');
             this.updateRoomsList();
             this.updateParticipantsList();
+
+            // Track modal open
+            if (window.analyticsManager) {
+                window.analyticsManager.trackUserAction('collaboration_modal_opened');
+            }
         }
+    }
+
+    closeCollaborationModal() {
+        const modal = document.getElementById('collaboration-modal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+    }
+
+    // Microsoft Office Integration
+    async initializeOfficeIntegration() {
+        try {
+            this.showNotification('Initializing Microsoft Office integration...', 'info');
+
+            // Check if Office.js is available
+            if (typeof Office !== 'undefined') {
+                await this.setupOfficeAddIn();
+            } else {
+                // Fallback: Open Office Online integration
+                await this.openOfficeOnlineIntegration();
+            }
+
+            this.showNotification('Office integration ready!', 'success');
+        } catch (error) {
+            console.error('Office integration error:', error);
+            this.showNotification('Office integration failed. Using web-based collaboration.', 'warning');
+            this.openTeamWorkspace();
+        }
+    }
+
+    async setupOfficeAddIn() {
+        // Office Add-in integration for Word, Excel, PowerPoint
+        if (typeof Office !== 'undefined') {
+            Office.onReady((info) => {
+                if (info.host === Office.HostType.Word) {
+                    this.setupWordIntegration();
+                } else if (info.host === Office.HostType.Excel) {
+                    this.setupExcelIntegration();
+                } else if (info.host === Office.HostType.PowerPoint) {
+                    this.setupPowerPointIntegration();
+                }
+            });
+        }
+    }
+
+    async openOfficeOnlineIntegration() {
+        // Open Office Online with collaboration features
+        const officeUrl = 'https://office.com';
+        const collaborationParams = {
+            source: 'zeeky-ai',
+            collaboration: 'enabled',
+            ai_assistant: 'true'
+        };
+
+        const params = new URLSearchParams(collaborationParams);
+        const fullUrl = `${officeUrl}?${params.toString()}`;
+
+        window.open(fullUrl, '_blank', 'width=1200,height=800');
+    }
+
+    // Team Workspace
+    openTeamWorkspace() {
+        // Create or open team workspace interface
+        this.createTeamWorkspaceInterface();
+        this.switchCollabTab('workspace');
+    }
+
+    createTeamWorkspaceInterface() {
+        const workspacePanel = document.getElementById('workspace-panel');
+        if (!workspacePanel) return;
+
+        workspacePanel.innerHTML = `
+            <div class="team-workspace">
+                <div class="workspace-header">
+                    <h3><i class="fas fa-users"></i> Team Workspace</h3>
+                    <div class="workspace-tools">
+                        <button class="tool-btn" id="add-document">
+                            <i class="fas fa-file-plus"></i> New Document
+                        </button>
+                        <button class="tool-btn" id="add-spreadsheet">
+                            <i class="fas fa-table"></i> New Spreadsheet
+                        </button>
+                        <button class="tool-btn" id="add-presentation">
+                            <i class="fas fa-presentation"></i> New Presentation
+                        </button>
+                        <button class="tool-btn" id="office-integration">
+                            <i class="fab fa-microsoft"></i> Office Integration
+                        </button>
+                    </div>
+                </div>
+
+                <div class="workspace-content">
+                    <div class="workspace-sidebar">
+                        <div class="team-members">
+                            <h4>Team Members</h4>
+                            <div class="members-list" id="team-members-list">
+                                <!-- Team members will be populated here -->
+                            </div>
+                        </div>
+
+                        <div class="shared-documents">
+                            <h4>Shared Documents</h4>
+                            <div class="documents-list" id="shared-documents-list">
+                                <!-- Shared documents will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="workspace-main">
+                        <div class="ai-collaboration-panel">
+                            <h4><i class="fas fa-robot"></i> AI Team Assistant</h4>
+                            <div class="ai-suggestions" id="ai-suggestions">
+                                <div class="suggestion-card">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <p>Ask Zeeky AI to help with document review, content generation, or team coordination.</p>
+                                </div>
+                            </div>
+                            <div class="ai-chat-input">
+                                <input type="text" placeholder="Ask AI to help your team..." id="team-ai-input">
+                                <button class="send-btn" id="team-ai-send">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="collaboration-features">
+                            <h4>Collaboration Features</h4>
+                            <div class="feature-grid">
+                                <div class="feature-card" data-feature="real-time-editing">
+                                    <i class="fas fa-edit"></i>
+                                    <h5>Real-time Editing</h5>
+                                    <p>Collaborate on documents simultaneously</p>
+                                </div>
+                                <div class="feature-card" data-feature="version-control">
+                                    <i class="fas fa-code-branch"></i>
+                                    <h5>Version Control</h5>
+                                    <p>Track changes and manage versions</p>
+                                </div>
+                                <div class="feature-card" data-feature="ai-assistance">
+                                    <i class="fas fa-robot"></i>
+                                    <h5>AI Assistance</h5>
+                                    <p>Get AI help with content and tasks</p>
+                                </div>
+                                <div class="feature-card" data-feature="team-chat">
+                                    <i class="fas fa-comments"></i>
+                                    <h5>Team Chat</h5>
+                                    <p>Communicate with team members</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        this.setupWorkspaceEventListeners();
+        this.loadTeamMembers();
+        this.loadSharedDocuments();
+    }
+
+    setupWorkspaceEventListeners() {
+        // Office integration button
+        const officeIntegrationBtn = document.getElementById('office-integration');
+        officeIntegrationBtn?.addEventListener('click', () => this.initializeOfficeIntegration());
+
+        // Team AI input
+        const teamAiInput = document.getElementById('team-ai-input');
+        const teamAiSend = document.getElementById('team-ai-send');
+
+        teamAiSend?.addEventListener('click', () => this.handleTeamAiQuery());
+        teamAiInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleTeamAiQuery();
+            }
+        });
+
+        // Document creation buttons
+        document.getElementById('add-document')?.addEventListener('click', () => this.createDocument('document'));
+        document.getElementById('add-spreadsheet')?.addEventListener('click', () => this.createDocument('spreadsheet'));
+        document.getElementById('add-presentation')?.addEventListener('click', () => this.createDocument('presentation'));
+    }
+
+    async handleTeamAiQuery() {
+        const input = document.getElementById('team-ai-input');
+        const query = input.value.trim();
+
+        if (!query) return;
+
+        // Add query to AI suggestions
+        const suggestionsContainer = document.getElementById('ai-suggestions');
+        const queryElement = document.createElement('div');
+        queryElement.className = 'ai-query';
+        queryElement.innerHTML = `
+            <div class="query-text"><strong>Team:</strong> ${query}</div>
+            <div class="ai-response">Processing team request...</div>
+        `;
+        suggestionsContainer.appendChild(queryElement);
+
+        // Clear input
+        input.value = '';
+
+        // Simulate AI response (integrate with main AI system)
+        setTimeout(() => {
+            const responseElement = queryElement.querySelector('.ai-response');
+            responseElement.innerHTML = `<strong>Zeeky AI:</strong> I'll help your team with "${query}". Let me coordinate the necessary resources and provide suggestions.`;
+        }, 1000);
     }
 
     switchCollabTab(tabName) {
