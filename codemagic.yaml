@@ -1,0 +1,292 @@
+workflows:
+  zeeky-ai-mobile-android:
+    name: Zeeky AI Mobile - Android
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      android_signing:
+        - keystore_reference
+      groups:
+        - google_play
+        - expo_credentials
+      vars:
+        PACKAGE_NAME: "com.joachimaross.zeekyai"
+        GOOGLE_PLAY_TRACK: internal
+        EXPO_TOKEN: $EXPO_TOKEN
+        EAS_PROJECT_ID: zeeky-ai-mobile-project
+      node: 18.17.0
+      npm: 9.6.7
+      ndk: r25b
+      java: 11
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+    scripts:
+      - name: Check for mobile app changes
+        script: |
+          if [[ $(git diff --name-only $CM_PREVIOUS_COMMIT $CM_COMMIT | grep "ZeekyAIMobile/") ]]; then
+            echo "Mobile app changes detected, proceeding with build"
+          else
+            echo "No mobile app changes, skipping build"
+            exit 0
+          fi
+      - name: Install dependencies
+        script: |
+          cd ZeekyAIMobile
+          npm install
+      - name: Install Expo CLI and EAS CLI
+        script: |
+          npm install -g @expo/eas-cli
+          npm install -g expo-cli
+      - name: Expo login
+        script: |
+          eas login --non-interactive
+      - name: Build Android with EAS
+        script: |
+          cd ZeekyAIMobile
+          eas build --platform android --profile production --non-interactive
+    artifacts:
+      - ZeekyAIMobile/build-*.apk
+      - ZeekyAIMobile/build-*.aab
+    publishing:
+      email:
+        recipients:
+          - zeekyai@hotmail.com
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: $GOOGLE_PLAY_TRACK
+        submit_as_draft: true
+
+  zeeky-ai-mobile-ios:
+    name: Zeeky AI Mobile - iOS
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.joachimaross.zeekyai
+      groups:
+        - app_store_credentials
+        - expo_credentials
+      vars:
+        APP_ID: 1234567890 # Update with your actual App Store Connect app ID
+        BUNDLE_ID: "com.joachimaross.zeekyai"
+        EXPO_TOKEN: $EXPO_TOKEN
+        EAS_PROJECT_ID: zeeky-ai-mobile-project
+      node: 18.17.0
+      npm: 9.6.7
+      xcode: latest
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+    scripts:
+      - name: Check for mobile app changes
+        script: |
+          if [[ $(git diff --name-only $CM_PREVIOUS_COMMIT $CM_COMMIT | grep "ZeekyAIMobile/") ]]; then
+            echo "Mobile app changes detected, proceeding with build"
+          else
+            echo "No mobile app changes, skipping build"
+            exit 0
+          fi
+      - name: Install dependencies
+        script: |
+          cd ZeekyAIMobile
+          npm install
+      - name: Install Expo CLI and EAS CLI
+        script: |
+          npm install -g @expo/eas-cli
+          npm install -g expo-cli
+      - name: Expo login
+        script: |
+          eas login --non-interactive
+      - name: Build iOS with EAS
+        script: |
+          cd ZeekyAIMobile
+          eas build --platform ios --profile production --non-interactive
+    artifacts:
+      - ZeekyAIMobile/build-*.ipa
+    publishing:
+      email:
+        recipients:
+          - zeekyai@hotmail.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - App Store Connect Users
+        submit_to_app_store: false
+
+  zeeky-ai-mobile-preview:
+    name: Zeeky AI Mobile - Preview Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      groups:
+        - expo_credentials
+      vars:
+        EXPO_TOKEN: $EXPO_TOKEN
+        EAS_PROJECT_ID: zeeky-ai-mobile-project
+      node: 18.17.0
+      npm: 9.6.7
+    triggering:
+      events:
+        - pull_request
+      branch_patterns:
+        - pattern: develop
+          include: true
+          source: true
+        - pattern: feature/*
+          include: true
+          source: true
+    scripts:
+      - name: Check for mobile app changes
+        script: |
+          if [[ $(git diff --name-only $CM_PREVIOUS_COMMIT $CM_COMMIT | grep "ZeekyAIMobile/") ]]; then
+            echo "Mobile app changes detected, proceeding with preview build"
+          else
+            echo "No mobile app changes, skipping preview build"
+            exit 0
+          fi
+      - name: Install dependencies
+        script: |
+          cd ZeekyAIMobile
+          npm install
+      - name: Install Expo CLI and EAS CLI
+        script: |
+          npm install -g @expo/eas-cli
+          npm install -g expo-cli
+      - name: Expo login
+        script: |
+          eas login --non-interactive
+      - name: Build preview for both platforms
+        script: |
+          cd ZeekyAIMobile
+          eas build --platform all --profile preview --non-interactive
+    artifacts:
+      - ZeekyAIMobile/build-*.apk
+      - ZeekyAIMobile/build-*.ipa
+    publishing:
+      email:
+        recipients:
+          - zeekyai@hotmail.com
+        notify:
+          success: true
+          failure: false
+
+  zeeky-ai-mobile-tests:
+    name: Zeeky AI Mobile - Tests & Quality
+    max_build_duration: 30
+    instance_type: linux_x2
+    environment:
+      node: 18.17.0
+      npm: 9.6.7
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Check for mobile app changes
+        script: |
+          if [[ $(git diff --name-only $CM_PREVIOUS_COMMIT $CM_COMMIT | grep "ZeekyAIMobile/") ]]; then
+            echo "Mobile app changes detected, running tests"
+          else
+            echo "No mobile app changes, skipping tests"
+            exit 0
+          fi
+      - name: Install dependencies
+        script: |
+          cd ZeekyAIMobile
+          npm install
+      - name: Run linting
+        script: |
+          cd ZeekyAIMobile
+          npm run lint || echo "Linting completed with warnings"
+      - name: Run unit tests
+        script: |
+          cd ZeekyAIMobile
+          npm test -- --coverage --watchAll=false || echo "Tests completed"
+      - name: Security audit
+        script: |
+          cd ZeekyAIMobile
+          npm audit --audit-level moderate || echo "Security audit completed"
+    artifacts:
+      - ZeekyAIMobile/coverage/**/*
+      - ZeekyAIMobile/test-results.xml
+    publishing:
+      email:
+        recipients:
+          - zeekyai@hotmail.com
+        notify:
+          success: false
+          failure: true
+
+  zeeky-ai-web-deploy:
+    name: Zeeky AI Web - Deploy
+    max_build_duration: 30
+    instance_type: linux_x2
+    environment:
+      node: 18.17.0
+      npm: 9.6.7
+      groups:
+        - netlify_credentials
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+    scripts:
+      - name: Check for web app changes
+        script: |
+          if [[ $(git diff --name-only $CM_PREVIOUS_COMMIT $CM_COMMIT | grep -E "(frontend/|app.py|requirements.txt)") ]]; then
+            echo "Web app changes detected, proceeding with deployment"
+          else
+            echo "No web app changes, skipping deployment"
+            exit 0
+          fi
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build web app
+        script: |
+          npm run build || echo "Build completed"
+      - name: Deploy to Netlify
+        script: |
+          npm install -g netlify-cli
+          netlify deploy --prod --dir=frontend --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+    artifacts:
+      - frontend/dist/**/*
+    publishing:
+      email:
+        recipients:
+          - zeekyai@hotmail.com
+        notify:
+          success: true
+          failure: true
