@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "Zeeky AI",
+    "slug": "zeeky-ai-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a73e8"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.joachimaross.zeekyai",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Zeeky AI needs camera access for image analysis and generation features.",
+        "NSMicrophoneUsageDescription": "Zeeky AI needs microphone access for voice commands and speech recognition.",
+        "NSPhotoLibraryUsageDescription": "Zeeky AI needs photo library access to analyze and process your images.",
+        "NSSpeechRecognitionUsageDescription": "Zeeky AI uses speech recognition to understand your voice commands."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a73e8"
+      },
+      "package": "com.joachimaross.zeekyai",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ],
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-camera",
+      "expo-av",
+      "expo-speech",
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Zeeky AI needs access to your photos for image analysis features.",
+          "cameraPermission": "Zeeky AI needs camera access for image capture and analysis."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "zeeky-ai-mobile-project"
+      }
+    }
+  }
+}
