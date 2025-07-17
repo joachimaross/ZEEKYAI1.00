@@ -181,10 +181,22 @@ body {
 .logo {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-3);
     font-weight: 600;
     font-size: 18px;
     color: var(--text-primary);
+}
+
+.logo-image {
+    height: 40px;
+    width: auto;
+    max-width: 100%;
+}
+
+.main-logo {
+    height: 40px;
+    width: auto;
 }
 
 .logo-icon {
