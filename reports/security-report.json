@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-07-17T06:44:54.944Z",
+  "securityScore": 80,
+  "maxScore": 100,
+  "grade": "A",
+  "vulnerabilities": [
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in environment.js",
+      "timestamp": "2025-07-17T06:44:54.942Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in error-handler.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in ai-personalities.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in code-laboratory.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: eval usage in code-laboratory.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in file-handler.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in keyboard-shortcuts.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in vision-ai.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in voice-handler.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in workflow-automation.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    },
+    {
+      "severity": "medium",
+      "description": "Potential XSS risk: innerHTML usage in main.js",
+      "timestamp": "2025-07-17T06:44:54.943Z"
+    }
+  ],
+  "recommendations": [
+    "Sanitize user inputs and avoid innerHTML with user data"
+  ],
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "medium": 11,
+    "low": 0
+  }
+}
