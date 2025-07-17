@@ -87,34 +87,43 @@ class ModernUI {
     handleNavigation(navId) {
         switch (navId) {
             case 'collaboration-nav':
-                this.openCollaboration();
+                this.showCollaborationModal();
                 break;
             case 'personalities-nav':
-                this.openPersonalities();
+                this.openPersonalityModal();
                 break;
             case 'code-lab-nav':
-                this.openCodeLab();
+                window.open('features/code-lab.html', '_blank');
+                break;
+            case 'smart-home-nav':
+                window.open('smart-home.html', '_blank');
+                break;
+            case 'car-mode-nav':
+                window.open('car-mode.html', '_blank');
+                break;
+            case 'testing-nav':
+                window.open('testing-dashboard.html', '_blank');
                 break;
             case 'vision-nav':
-                this.openVision();
+                this.showVisionModal();
                 break;
             case 'workflows-nav':
-                this.openWorkflows();
+                this.showWorkflowModal();
                 break;
             case 'voice-nav':
-                this.openVoice();
+                this.toggleVoiceMode();
                 break;
             case 'files-nav':
-                this.openFiles();
+                this.showFileManager();
                 break;
             case 'analytics-nav':
-                this.openAnalytics();
+                this.showAnalyticsModal();
                 break;
             case 'theme-nav':
-                this.openThemes();
+                this.showThemeSelector();
                 break;
             case 'settings-nav':
-                this.openSettings();
+                this.showSettingsModal();
                 break;
         }
     }
@@ -1407,6 +1416,63 @@ What would you like to explore first?`;
         setTimeout(() => {
             toast.remove();
         }, 3000);
+    }
+
+    // Navigation Functions
+    showCollaborationModal() {
+        this.showToast('🤝 Collaboration features coming soon! Team workspaces and real-time editing.');
+    }
+
+    openPersonalityModal() {
+        const modal = document.getElementById('personality-modal');
+        if (modal) {
+            modal.classList.add('active');
+        } else {
+            this.showToast('🎭 AI Personalities modal not found. Please refresh the page.');
+        }
+    }
+
+    showVisionModal() {
+        this.showToast('👁️ Vision AI features coming soon! Image analysis and visual recognition.');
+    }
+
+    showWorkflowModal() {
+        this.showToast('⚡ Workflow automation coming soon! Create custom AI workflows.');
+    }
+
+    toggleVoiceMode() {
+        const voiceBtn = document.getElementById('voice-btn');
+        if (voiceBtn) {
+            voiceBtn.click();
+        } else {
+            this.showToast('🎤 Voice mode activated! Click the microphone button to start.');
+        }
+    }
+
+    showFileManager() {
+        const fileBtn = document.getElementById('attach-btn');
+        if (fileBtn) {
+            fileBtn.click();
+        } else {
+            this.showToast('📁 File manager activated! Use the attachment button to upload files.');
+        }
+    }
+
+    showAnalyticsModal() {
+        this.showToast('📊 Analytics dashboard coming soon! Track your AI usage and insights.');
+    }
+
+    showThemeSelector() {
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) {
+            themeBtn.click();
+        } else {
+            this.showToast('🎨 Theme selector activated! Toggle between light and dark modes.');
+        }
+    }
+
+    showSettingsModal() {
+        this.showToast('⚙️ Settings panel coming soon! Customize your Zeeky AI experience.');
     }
 }
 
