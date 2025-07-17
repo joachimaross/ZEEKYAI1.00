@@ -1,7 +1,7 @@
 # Netlify configuration for Zeeky AI
 [build]
   publish = "frontend"
-  command = "npm run build"
+  command = "echo 'Static site - no build needed'"
 
   # Environment variables
   [build.environment]
@@ -11,7 +11,7 @@
 # Production context
 [context.production]
   publish = "frontend"
-  command = "npm run build"
+  command = "echo 'Static site - no build needed'"
 
   [context.production.environment]
     NODE_ENV = "production"
@@ -20,7 +20,7 @@
 # Deploy preview context
 [context.deploy-preview]
   publish = "frontend"
-  command = "npm run build"
+  command = "echo 'Static site - no build needed'"
 
   [context.deploy-preview.environment]
     NODE_ENV = "staging"
