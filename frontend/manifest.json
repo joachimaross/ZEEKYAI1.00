@@ -1,12 +1,13 @@
 {
-  "name": "Zeeky AI - Universal AI Platform",
+  "name": "Zeeky AI - Advanced AI Assistant",
   "short_name": "Zeeky AI",
-  "description": "Universal AI Assistant with 7500+ features including chat, smart home control, business tools, and entertainment",
+  "description": "Advanced AI assistant with voice, file processing, analytics, and comprehensive AI capabilities",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#667eea",
-  "theme_color": "#6366F1",
+  "background_color": "#ffffff",
+  "theme_color": "#0066cc",
   "orientation": "portrait-primary",
+  "scope": "/",
   "icons": [
     {
       "src": "assets/zeeky-logo.svg",
@@ -25,9 +26,70 @@
       "type": "image/png"
     }
   ],
-  "categories": ["productivity", "utilities", "business"],
+  "categories": ["productivity", "utilities", "business", "education"],
   "lang": "en",
   "dir": "ltr",
-  "scope": "/",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "New Chat",
+      "short_name": "New Chat",
+      "description": "Start a new conversation",
+      "url": "/?action=new-chat",
+      "icons": [
+        {
+          "src": "assets/zeeky-logo.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Voice Chat",
+      "short_name": "Voice",
+      "description": "Start voice conversation",
+      "url": "/?action=voice",
+      "icons": [
+        {
+          "src": "assets/zeeky-logo.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Upload File",
+      "short_name": "Upload",
+      "description": "Upload and analyze files",
+      "url": "/?action=upload",
+      "icons": [
+        {
+          "src": "assets/zeeky-logo.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View usage analytics",
+      "url": "/?action=analytics",
+      "icons": [
+        {
+          "src": "assets/zeeky-logo.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "features": [
+    "voice-input",
+    "file-upload",
+    "analytics",
+    "themes",
+    "keyboard-shortcuts",
+    "offline-support"
+  ]
 }

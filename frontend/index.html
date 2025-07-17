@@ -16,6 +16,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/extensions.css">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -52,6 +58,18 @@
             </div>
 
             <div class="sidebar-footer">
+                <button class="sidebar-btn" id="voice-btn" title="Voice Chat">
+                    <i class="fas fa-microphone"></i>
+                    <span>Voice</span>
+                </button>
+                <button class="sidebar-btn" id="files-btn" title="File Upload">
+                    <i class="fas fa-paperclip"></i>
+                    <span>Files</span>
+                </button>
+                <button class="sidebar-btn" id="analytics-btn" title="Analytics">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </button>
                 <button class="sidebar-btn" id="feedback-btn">
                     <i class="fas fa-comment-alt"></i>
                     <span>Feedback</span>
@@ -178,13 +196,28 @@
 
             <div class="chat-input-container">
                 <div class="input-wrapper">
+                    <div class="input-tools">
+                        <button class="tool-btn" id="voice-input-btn" title="Voice Input">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="tool-btn" id="file-upload-btn" title="Upload File">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <input type="file" id="file-input" multiple accept=".pdf,.txt,.doc,.docx,.jpg,.jpeg,.png,.csv,.json" style="display: none;">
+                    </div>
                     <textarea id="chat-input" placeholder="Message Zeeky..." class="chat-input" rows="1"></textarea>
-                    <button id="send-button" class="send-button" disabled>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <div class="send-controls">
+                        <button id="voice-output-btn" class="tool-btn" title="Voice Output">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <button id="send-button" class="send-button" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="input-footer">
-                    <span class="input-hint">Press Enter to send, Shift+Enter for new line</span>
+                    <span class="input-hint">Press Enter to send, Shift+Enter for new line • Ctrl+K to focus • Ctrl+/ for shortcuts</span>
+                    <div class="typing-status" id="typing-status"></div>
                 </div>
             </div>
         </div>
@@ -319,6 +352,157 @@
         </div>
     </div>
 
+    <!-- Voice Modal -->
+    <div class="modal" id="voice-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Voice Settings</h2>
+                <button class="modal-close" id="voice-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="voice-controls">
+                    <div class="setting-group">
+                        <label for="voice-select">Voice</label>
+                        <select id="voice-select">
+                            <!-- Populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="voice-speed">Speed</label>
+                        <input type="range" id="voice-speed" min="0.5" max="2" step="0.1" value="1">
+                        <span id="speed-value">1.0x</span>
+                    </div>
+                    <div class="setting-group">
+                        <label for="voice-pitch">Pitch</label>
+                        <input type="range" id="voice-pitch" min="0" max="2" step="0.1" value="1">
+                        <span id="pitch-value">1.0</span>
+                    </div>
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="auto-speak" checked>
+                            Auto-speak AI responses
+                        </label>
+                    </div>
+                    <div class="voice-test">
+                        <button class="btn-primary" id="test-voice">
+                            <i class="fas fa-play"></i>
+                            Test Voice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Modal -->
+    <div class="modal" id="files-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>File Manager</h2>
+                <button class="modal-close" id="files-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="file-upload-area" id="file-drop-zone">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h3>Drop files here or click to upload</h3>
+                    <p>Supports: PDF, DOC, TXT, Images, CSV, JSON</p>
+                    <button class="btn-primary" id="select-files">
+                        <i class="fas fa-folder-open"></i>
+                        Select Files
+                    </button>
+                </div>
+                <div class="uploaded-files" id="uploaded-files">
+                    <h4>Recent Files</h4>
+                    <div class="file-list" id="file-list">
+                        <!-- Files will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Modal -->
+    <div class="modal" id="analytics-modal">
+        <div class="modal-content analytics-modal">
+            <div class="modal-header">
+                <h2>Analytics Dashboard</h2>
+                <button class="modal-close" id="analytics-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="analytics-tabs">
+                    <button class="analytics-tab active" data-tab="usage">Usage</button>
+                    <button class="analytics-tab" data-tab="performance">Performance</button>
+                    <button class="analytics-tab" data-tab="conversations">Conversations</button>
+                </div>
+
+                <div class="analytics-content">
+                    <div class="analytics-panel active" id="usage-panel">
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <h3>Total Messages</h3>
+                                <div class="metric-value" id="total-messages">0</div>
+                                <div class="metric-change">+12% this week</div>
+                            </div>
+                            <div class="metric-card">
+                                <h3>Session Time</h3>
+                                <div class="metric-value" id="session-time">0m</div>
+                                <div class="metric-change">+8% this week</div>
+                            </div>
+                            <div class="metric-card">
+                                <h3>Files Uploaded</h3>
+                                <div class="metric-value" id="files-uploaded">0</div>
+                                <div class="metric-change">+25% this week</div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="usage-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-panel" id="performance-panel">
+                        <div class="performance-metrics">
+                            <div class="metric-card">
+                                <h3>Response Time</h3>
+                                <div class="metric-value" id="response-time">1.2s</div>
+                            </div>
+                            <div class="metric-card">
+                                <h3>Success Rate</h3>
+                                <div class="metric-value" id="success-rate">99.8%</div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="performance-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-panel" id="conversations-panel">
+                        <div class="conversation-stats">
+                            <div class="metric-card">
+                                <h3>Total Conversations</h3>
+                                <div class="metric-value" id="total-conversations">0</div>
+                            </div>
+                            <div class="metric-card">
+                                <h3>Avg Messages/Chat</h3>
+                                <div class="metric-value" id="avg-messages">0</div>
+                            </div>
+                        </div>
+                        <div class="conversation-list" id="conversation-analytics">
+                            <!-- Conversation analytics will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div class="modal" id="settings-modal">
         <div class="modal-content">
@@ -329,33 +513,118 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="setting-group">
-                    <label for="theme-select">Theme</label>
-                    <select id="theme-select">
-                        <option value="auto">Auto</option>
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                    </select>
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-tab="general">General</button>
+                    <button class="settings-tab" data-tab="ai">AI Models</button>
+                    <button class="settings-tab" data-tab="shortcuts">Shortcuts</button>
+                    <button class="settings-tab" data-tab="privacy">Privacy</button>
                 </div>
-                <div class="setting-group">
-                    <label for="font-size">Font Size</label>
-                    <select id="font-size">
-                        <option value="small">Small</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="large">Large</option>
-                    </select>
-                </div>
-                <div class="setting-group">
-                    <label>
-                        <input type="checkbox" id="sound-enabled" checked>
-                        Enable notification sounds
-                    </label>
-                </div>
-                <div class="setting-group">
-                    <label>
-                        <input type="checkbox" id="auto-save" checked>
-                        Auto-save conversations
-                    </label>
+
+                <div class="settings-content">
+                    <div class="settings-panel active" id="general-panel">
+                        <div class="setting-group">
+                            <label for="theme-select">Theme</label>
+                            <select id="theme-select">
+                                <option value="auto">Auto</option>
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label for="font-size">Font Size</label>
+                            <select id="font-size">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="sound-enabled" checked>
+                                Enable notification sounds
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="auto-save" checked>
+                                Auto-save conversations
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-panel" id="ai-panel">
+                        <div class="setting-group">
+                            <label for="ai-model">AI Model</label>
+                            <select id="ai-model">
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="gpt-3.5">GPT-3.5 Turbo</option>
+                                <option value="gemini">Google Gemini</option>
+                                <option value="claude">Anthropic Claude</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label for="temperature">Creativity Level</label>
+                            <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                            <span id="temperature-value">0.7</span>
+                        </div>
+                        <div class="setting-group">
+                            <label for="max-tokens">Max Response Length</label>
+                            <input type="range" id="max-tokens" min="100" max="4000" step="100" value="2000">
+                            <span id="tokens-value">2000</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-panel" id="shortcuts-panel">
+                        <div class="shortcuts-list">
+                            <div class="shortcut-item">
+                                <span class="shortcut-desc">Focus chat input</span>
+                                <kbd>Ctrl + K</kbd>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-desc">New conversation</span>
+                                <kbd>Ctrl + N</kbd>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-desc">Toggle voice input</span>
+                                <kbd>Ctrl + M</kbd>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-desc">Upload file</span>
+                                <kbd>Ctrl + U</kbd>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-desc">Show shortcuts</span>
+                                <kbd>Ctrl + /</kbd>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-panel" id="privacy-panel">
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="analytics-enabled" checked>
+                                Enable usage analytics
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" id="data-retention" checked>
+                                Store conversation history
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <button class="btn-secondary" id="export-data">
+                                <i class="fas fa-download"></i>
+                                Export My Data
+                            </button>
+                        </div>
+                        <div class="setting-group">
+                            <button class="btn-danger" id="delete-data">
+                                <i class="fas fa-trash"></i>
+                                Delete All Data
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -442,7 +711,102 @@
         </div>
     </div>
 
+    <!-- Command Palette -->
+    <div class="command-palette" id="command-palette">
+        <div class="command-input-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="command-input" placeholder="Type a command or search...">
+        </div>
+        <div class="command-results" id="command-results">
+            <!-- Command results will be populated here -->
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Help -->
+    <div class="modal" id="shortcuts-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Keyboard Shortcuts</h2>
+                <button class="modal-close" id="shortcuts-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcuts-grid">
+                    <div class="shortcut-category">
+                        <h3>Navigation</h3>
+                        <div class="shortcut-item">
+                            <span>Focus chat input</span>
+                            <kbd>Ctrl + K</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Command palette</span>
+                            <kbd>Ctrl + P</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>New conversation</span>
+                            <kbd>Ctrl + N</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-category">
+                        <h3>Actions</h3>
+                        <div class="shortcut-item">
+                            <span>Send message</span>
+                            <kbd>Enter</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>New line</span>
+                            <kbd>Shift + Enter</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Voice input</span>
+                            <kbd>Ctrl + M</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Upload file</span>
+                            <kbd>Ctrl + U</kbd>
+                        </div>
+                    </div>
+                    <div class="shortcut-category">
+                        <h3>Interface</h3>
+                        <div class="shortcut-item">
+                            <span>Toggle theme</span>
+                            <kbd>Ctrl + Shift + T</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Toggle sidebar</span>
+                            <kbd>Ctrl + B</kbd>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Settings</span>
+                            <kbd>Ctrl + ,</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notification-container">
+        <!-- Notifications will be added here -->
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
     <!-- Scripts -->
+    <script src="scripts/extensions/voice-handler.js"></script>
+    <script src="scripts/extensions/file-handler.js"></script>
+    <script src="scripts/extensions/analytics.js"></script>
+    <script src="scripts/extensions/keyboard-shortcuts.js"></script>
+    <script src="scripts/extensions/ai-models.js"></script>
+    <script src="scripts/extensions/theme-manager.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/admin.js"></script>
 </body>

@@ -30,6 +30,7 @@ class ZeekyAI {
         this.setupSuggestionChips();
         this.autoResizeTextarea();
         this.setupForms();
+        this.initializeExtensions();
     }
 
     setupTheme() {
@@ -81,6 +82,25 @@ class ZeekyAI {
             this.autoResizeTextarea();
         });
 
+        // Extension modals
+        const voiceBtn = document.getElementById('voice-btn');
+        const voiceClose = document.getElementById('voice-close');
+
+        voiceBtn?.addEventListener('click', () => this.openModal('voice-modal'));
+        voiceClose?.addEventListener('click', () => this.closeModal('voice-modal'));
+
+        const filesBtn = document.getElementById('files-btn');
+        const filesClose = document.getElementById('files-close');
+
+        filesBtn?.addEventListener('click', () => this.openModal('files-modal'));
+        filesClose?.addEventListener('click', () => this.closeModal('files-modal'));
+
+        const analyticsBtn = document.getElementById('analytics-btn');
+        const analyticsClose = document.getElementById('analytics-close');
+
+        analyticsBtn?.addEventListener('click', () => this.openModal('analytics-modal'));
+        analyticsClose?.addEventListener('click', () => this.closeModal('analytics-modal'));
+
         // Feedback modal
         const feedbackBtn = document.getElementById('feedback-btn');
         const feedbackClose = document.getElementById('feedback-close');
@@ -130,9 +150,10 @@ class ZeekyAI {
             });
         });
 
-        // Keyboard shortcuts
+        // Enhanced keyboard shortcuts (handled by keyboard-shortcuts extension)
+        // Basic shortcuts for fallback
         document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k' && !window.keyboardShortcuts) {
                 e.preventDefault();
                 this.chatInput?.focus();
             }
@@ -272,6 +293,92 @@ class ZeekyAI {
 
         this.saveChatHistory();
         this.renderChatHistory();
+    }
+
+    initializeExtensions() {
+        // Wait for extensions to load
+        setTimeout(() => {
+            // Initialize extension integrations
+            this.setupExtensionIntegrations();
+        }, 100);
+    }
+
+    setupExtensionIntegrations() {
+        // Voice integration
+        if (window.voiceHandler) {
+            // Auto-speak bot responses if enabled
+            this.originalAddBotMessage = this.addBotMessage;
+            this.addBotMessage = (message) => {
+                this.originalAddBotMessage(message);
+                if (window.voiceHandler.settings.autoSpeak) {
+                    // Extract text content for speech
+                    const textContent = this.extractTextFromMessage(message);
+                    window.voiceHandler.speakResponse(textContent);
+                }
+            };
+        }
+
+        // Analytics integration
+        if (window.analyticsManager) {
+            // Track messages
+            this.originalSendMessage = this.sendMessage;
+            this.sendMessage = async () => {
+                const startTime = Date.now();
+                window.analyticsManager.trackMessage(true);
+
+                await this.originalSendMessage();
+
+                window.analyticsManager.trackMessage(false);
+                window.analyticsManager.trackResponseTime(startTime);
+            };
+
+            // Track conversation starts
+            this.originalStartNewChat = this.startNewChat;
+            this.startNewChat = () => {
+                this.originalStartNewChat();
+                window.analyticsManager.trackConversationStart();
+            };
+        }
+
+        // File handler integration
+        if (window.fileHandler) {
+            // Track file uploads
+            const originalProcessFile = window.fileHandler.processFile;
+            window.fileHandler.processFile = async (file) => {
+                const result = await originalProcessFile.call(window.fileHandler, file);
+                if (window.analyticsManager) {
+                    window.analyticsManager.trackFileUpload();
+                }
+                return result;
+            };
+        }
+
+        // AI models integration
+        if (window.aiModelsManager) {
+            // Use AI models for responses
+            this.originalSimulateApiResponse = this.simulateApiResponse;
+            this.simulateApiResponse = async (message) => {
+                try {
+                    const response = await window.aiModelsManager.generateResponse(message);
+                    return response.text;
+                } catch (error) {
+                    console.error('AI model error:', error);
+                    return await this.originalSimulateApiResponse(message);
+                }
+            };
+        }
+    }
+
+    extractTextFromMessage(message) {
+        // Remove markdown and HTML formatting for speech
+        return message
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/\*(.*?)\*/g, '$1')
+            .replace(/```[\s\S]*?```/g, 'code block')
+            .replace(/`(.*?)`/g, '$1')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\n/g, ' ')
+            .trim();
     }
 
     async sendMessage() {
@@ -772,33 +879,47 @@ What would you like to explore today?`;
     }
 }
 
-// Utility functions
+// Enhanced Utility functions
 class ZeekyUtils {
-    static showNotification(message, type = 'info') {
+    static showNotification(message, type = 'info', duration = 3000) {
+        const container = document.getElementById('notification-container') || document.body;
+
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            background: ${type === 'error' ? 'var(--danger-color)' : 'var(--success-color)'};
-            color: white;
-            border-radius: 8px;
-            z-index: 1001;
-            box-shadow: var(--shadow-lg);
-            animation: slideIn 0.3s ease;
-            font-size: 14px;
-            max-width: 300px;
+
+        const iconMap = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-triangle',
+            warning: 'fas fa-exclamation-circle',
+            info: 'fas fa-info-circle'
+        };
+
+        notification.innerHTML = `
+            <div class="notification-header">
+                <div class="notification-title">
+                    <i class="${iconMap[type] || iconMap.info}"></i>
+                    ${type.charAt(0).toUpperCase() + type.slice(1)}
+                </div>
+                <button class="notification-close" onclick="this.closest('.notification').remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="notification-message">${message}</div>
         `;
 
-        document.body.appendChild(notification);
+        container.appendChild(notification);
 
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
+        // Auto-remove after duration
+        if (duration > 0) {
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'notificationSlideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, duration);
+        }
+
+        return notification;
     }
 
     static formatFileSize(bytes) {
