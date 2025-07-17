@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeeky AI - Smart Home Control</title>
+    <meta name="description" content="Control your smart home devices with Zeeky AI - lights, thermostat, garage doors, security systems, and more.">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/smart-home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1a73e8">
+</head>
+<body>
+    <!-- Smart Home App Container -->
+    <div class="smart-home-container">
+        <!-- Header -->
+        <header class="smart-home-header">
+            <div class="header-content">
+                <button class="back-btn" id="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="header-title">
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h1>Smart Home Control</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" id="voice-control-btn" title="Voice Control">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="header-btn" id="settings-btn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="smart-home-main">
+            <!-- Home Status Overview -->
+            <section class="home-status">
+                <div class="status-card">
+                    <div class="status-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="status-info">
+                        <h3>Home Status</h3>
+                        <p id="home-status-text">All systems normal</p>
+                    </div>
+                    <div class="status-indicator" id="home-status-indicator">
+                        <div class="indicator-dot active"></div>
+                    </div>
+                </div>
+                
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span id="current-temp">72°F</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="lights-on">5 on</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span id="security-status">Armed</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Room Navigation -->
+            <section class="room-navigation">
+                <h2>Rooms</h2>
+                <div class="room-grid">
+                    <div class="room-card" data-room="living-room">
+                        <div class="room-icon">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <h3>Living Room</h3>
+                        <p class="room-status">3 devices</p>
+                    </div>
+                    <div class="room-card" data-room="bedroom">
+                        <div class="room-icon">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <h3>Bedroom</h3>
+                        <p class="room-status">2 devices</p>
+                    </div>
+                    <div class="room-card" data-room="kitchen">
+                        <div class="room-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Kitchen</h3>
+                        <p class="room-status">4 devices</p>
+                    </div>
+                    <div class="room-card" data-room="bathroom">
+                        <div class="room-icon">
+                            <i class="fas fa-bath"></i>
+                        </div>
+                        <h3>Bathroom</h3>
+                        <p class="room-status">2 devices</p>
+                    </div>
+                    <div class="room-card" data-room="garage">
+                        <div class="room-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3>Garage</h3>
+                        <p class="room-status">3 devices</p>
+                    </div>
+                    <div class="room-card" data-room="outdoor">
+                        <div class="room-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <h3>Outdoor</h3>
+                        <p class="room-status">5 devices</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Device Categories -->
+            <section class="device-categories">
+                <h2>Device Categories</h2>
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">
+                        <i class="fas fa-th"></i>
+                        All
+                    </button>
+                    <button class="category-tab" data-category="lights">
+                        <i class="fas fa-lightbulb"></i>
+                        Lights
+                    </button>
+                    <button class="category-tab" data-category="climate">
+                        <i class="fas fa-thermometer-half"></i>
+                        Climate
+                    </button>
+                    <button class="category-tab" data-category="security">
+                        <i class="fas fa-shield-alt"></i>
+                        Security
+                    </button>
+                    <button class="category-tab" data-category="entertainment">
+                        <i class="fas fa-tv"></i>
+                        Entertainment
+                    </button>
+                    <button class="category-tab" data-category="appliances">
+                        <i class="fas fa-blender"></i>
+                        Appliances
+                    </button>
+                </div>
+            </section>
+
+            <!-- Devices Grid -->
+            <section class="devices-section">
+                <div class="devices-grid" id="devices-grid">
+                    <!-- Devices will be populated here -->
+                </div>
+            </section>
+
+            <!-- AI Assistant Panel -->
+            <section class="ai-assistant-panel">
+                <div class="ai-panel-header">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="ai-info">
+                        <h3>Zeeky Smart Home Assistant</h3>
+                        <p>Ask me to control your devices or create automations</p>
+                    </div>
+                </div>
+                
+                <div class="ai-suggestions">
+                    <div class="suggestion-chip" data-command="turn off all lights">
+                        Turn off all lights
+                    </div>
+                    <div class="suggestion-chip" data-command="set temperature to 70">
+                        Set temperature to 70°F
+                    </div>
+                    <div class="suggestion-chip" data-command="lock all doors">
+                        Lock all doors
+                    </div>
+                    <div class="suggestion-chip" data-command="goodnight routine">
+                        Goodnight routine
+                    </div>
+                </div>
+                
+                <div class="ai-input-container">
+                    <input type="text" id="ai-command-input" placeholder="Ask Zeeky to control your smart home..." />
+                    <button class="voice-input-btn" id="voice-input-btn">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="send-command-btn" id="send-command-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="emergency-btn" title="Emergency Controls">
+            <i class="fas fa-exclamation-triangle"></i>
+        </button>
+    </div>
+
+    <!-- Device Control Modal -->
+    <div class="modal" id="device-modal">
+        <div class="modal-content device-modal">
+            <div class="modal-header">
+                <h2 id="device-modal-title">Device Control</h2>
+                <button class="modal-close" id="device-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="device-modal-body">
+                <!-- Device controls will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Controls Modal -->
+    <div class="modal" id="emergency-modal">
+        <div class="modal-content emergency-modal">
+            <div class="modal-header">
+                <h2>Emergency Controls</h2>
+                <button class="modal-close" id="emergency-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="emergency-actions">
+                    <button class="emergency-btn" data-action="panic">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Panic Mode
+                    </button>
+                    <button class="emergency-btn" data-action="lockdown">
+                        <i class="fas fa-lock"></i>
+                        Lockdown
+                    </button>
+                    <button class="emergency-btn" data-action="all-lights-on">
+                        <i class="fas fa-lightbulb"></i>
+                        All Lights On
+                    </button>
+                    <button class="emergency-btn" data-action="call-emergency">
+                        <i class="fas fa-phone"></i>
+                        Call Emergency
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config/environment.js"></script>
+    <script src="scripts/error-handler.js"></script>
+    <script src="scripts/smart-home.js"></script>
+</body>
+</html>

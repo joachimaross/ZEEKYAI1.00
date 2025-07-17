@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeeky AI - Car Mode</title>
+    <meta name="description" content="Zeeky AI Car Mode - Your intelligent driving companion with navigation, voice control, and automotive integration.">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/car-mode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1a73e8">
+</head>
+<body class="car-mode-body">
+    <!-- Car Mode Container -->
+    <div class="car-mode-container">
+        <!-- Header Dashboard -->
+        <header class="car-dashboard">
+            <div class="dashboard-left">
+                <div class="time-display">
+                    <span id="current-time">12:34</span>
+                    <span id="current-date">Mon, Jan 15</span>
+                </div>
+                <div class="weather-display">
+                    <i class="fas fa-sun"></i>
+                    <span id="weather-temp">72°F</span>
+                </div>
+            </div>
+            
+            <div class="dashboard-center">
+                <div class="zeeky-logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span>Zeeky Car</span>
+                </div>
+            </div>
+            
+            <div class="dashboard-right">
+                <div class="connection-status">
+                    <div class="status-indicator active" title="Connected"></div>
+                    <span>Connected</span>
+                </div>
+                <button class="dashboard-btn" id="settings-btn" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Car Interface -->
+        <main class="car-main">
+            <!-- Navigation Panel -->
+            <section class="navigation-panel">
+                <div class="nav-header">
+                    <h2><i class="fas fa-route"></i> Navigation</h2>
+                    <button class="nav-btn" id="voice-nav-btn" title="Voice Navigation">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+                
+                <div class="destination-input">
+                    <input type="text" id="destination-input" placeholder="Where would you like to go?" />
+                    <button class="search-btn" id="search-destination">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="quick-destinations">
+                    <button class="quick-dest-btn" data-destination="Home">
+                        <i class="fas fa-home"></i>
+                        Home
+                    </button>
+                    <button class="quick-dest-btn" data-destination="Work">
+                        <i class="fas fa-briefcase"></i>
+                        Work
+                    </button>
+                    <button class="quick-dest-btn" data-destination="Gas Station">
+                        <i class="fas fa-gas-pump"></i>
+                        Gas
+                    </button>
+                    <button class="quick-dest-btn" data-destination="Parking">
+                        <i class="fas fa-parking"></i>
+                        Parking
+                    </button>
+                </div>
+                
+                <div class="current-route" id="current-route" style="display: none;">
+                    <div class="route-info">
+                        <div class="route-destination">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="route-destination-text">Downtown Office</span>
+                        </div>
+                        <div class="route-details">
+                            <span class="route-time">15 min</span>
+                            <span class="route-distance">8.2 miles</span>
+                        </div>
+                    </div>
+                    <button class="cancel-route-btn" id="cancel-route">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Vehicle Status -->
+            <section class="vehicle-status">
+                <h2><i class="fas fa-car"></i> Vehicle Status</h2>
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-gas-pump"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Fuel</span>
+                            <span class="status-value" id="fuel-level">75%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-battery-three-quarters"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Battery</span>
+                            <span class="status-value" id="battery-level">92%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Engine</span>
+                            <span class="status-value" id="engine-temp">Normal</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Speed</span>
+                            <span class="status-value" id="current-speed">0 mph</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Entertainment & Climate -->
+            <section class="car-controls">
+                <div class="control-section">
+                    <h3><i class="fas fa-music"></i> Entertainment</h3>
+                    <div class="entertainment-controls">
+                        <div class="now-playing">
+                            <div class="track-info">
+                                <span class="track-title" id="track-title">No music playing</span>
+                                <span class="track-artist" id="track-artist">Select a source</span>
+                            </div>
+                            <div class="playback-controls">
+                                <button class="control-btn" id="prev-track">
+                                    <i class="fas fa-step-backward"></i>
+                                </button>
+                                <button class="control-btn play-pause" id="play-pause">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button class="control-btn" id="next-track">
+                                    <i class="fas fa-step-forward"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="volume-control">
+                            <i class="fas fa-volume-down"></i>
+                            <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        
+                        <div class="source-selection">
+                            <button class="source-btn active" data-source="spotify">
+                                <i class="fab fa-spotify"></i>
+                                Spotify
+                            </button>
+                            <button class="source-btn" data-source="radio">
+                                <i class="fas fa-radio"></i>
+                                Radio
+                            </button>
+                            <button class="source-btn" data-source="bluetooth">
+                                <i class="fab fa-bluetooth"></i>
+                                Bluetooth
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3><i class="fas fa-snowflake"></i> Climate</h3>
+                    <div class="climate-controls">
+                        <div class="temperature-control">
+                            <button class="temp-btn" id="temp-down">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="temp-display">
+                                <span id="climate-temp">72</span>°F
+                            </div>
+                            <button class="temp-btn" id="temp-up">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="climate-options">
+                            <button class="climate-btn" id="ac-btn">
+                                <i class="fas fa-snowflake"></i>
+                                A/C
+                            </button>
+                            <button class="climate-btn" id="heat-btn">
+                                <i class="fas fa-fire"></i>
+                                Heat
+                            </button>
+                            <button class="climate-btn" id="defrost-btn">
+                                <i class="fas fa-wind"></i>
+                                Defrost
+                            </button>
+                            <button class="climate-btn" id="auto-btn">
+                                <i class="fas fa-magic"></i>
+                                Auto
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Assistant -->
+            <section class="car-ai-assistant">
+                <div class="ai-header">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="ai-info">
+                        <h3>Zeeky Driving Assistant</h3>
+                        <p id="ai-status">Ready to help with your drive</p>
+                    </div>
+                    <button class="voice-activation-btn" id="voice-activation">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+                
+                <div class="ai-suggestions">
+                    <div class="suggestion-row">
+                        <button class="ai-suggestion" data-command="navigate to nearest gas station">
+                            Find gas station
+                        </button>
+                        <button class="ai-suggestion" data-command="play my driving playlist">
+                            Play driving music
+                        </button>
+                        <button class="ai-suggestion" data-command="call home">
+                            Call home
+                        </button>
+                        <button class="ai-suggestion" data-command="what's the weather">
+                            Weather update
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-input-area">
+                    <input type="text" id="ai-input" placeholder="Ask Zeeky anything..." />
+                    <button class="ai-send-btn" id="ai-send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Emergency Button -->
+        <button class="emergency-btn" id="emergency-btn" title="Emergency Assistance">
+            <i class="fas fa-exclamation-triangle"></i>
+        </button>
+
+        <!-- Voice Indicator -->
+        <div class="voice-indicator" id="voice-indicator">
+            <div class="voice-animation">
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+                <div class="voice-bar"></div>
+            </div>
+            <span>Listening...</span>
+        </div>
+    </div>
+
+    <!-- Emergency Modal -->
+    <div class="modal" id="emergency-modal">
+        <div class="modal-content emergency-modal">
+            <div class="modal-header">
+                <h2>Emergency Assistance</h2>
+                <button class="modal-close" id="emergency-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="emergency-options">
+                    <button class="emergency-option" data-action="call-911">
+                        <i class="fas fa-phone"></i>
+                        <span>Call 911</span>
+                    </button>
+                    <button class="emergency-option" data-action="roadside-assistance">
+                        <i class="fas fa-wrench"></i>
+                        <span>Roadside Assistance</span>
+                    </button>
+                    <button class="emergency-option" data-action="share-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Share Location</span>
+                    </button>
+                    <button class="emergency-option" data-action="emergency-contact">
+                        <i class="fas fa-user"></i>
+                        <span>Emergency Contact</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Modal -->
+    <div class="modal" id="navigation-modal">
+        <div class="modal-content navigation-modal">
+            <div class="modal-header">
+                <h2>Navigation Options</h2>
+                <button class="modal-close" id="navigation-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="route-options" id="route-options">
+                    <!-- Route options will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config/environment.js"></script>
+    <script src="scripts/error-handler.js"></script>
+    <script src="scripts/car-mode.js"></script>
+</body>
+</html>

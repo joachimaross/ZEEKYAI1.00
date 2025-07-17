@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeeky AI - Code Lab</title>
+    <meta name="description" content="Advanced code generation, debugging, and development tools powered by Zeeky AI.">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/features.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="../manifest.json">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1a73e8">
+</head>
+<body>
+    <!-- Feature Page Container -->
+    <div class="feature-container">
+        <!-- Header -->
+        <header class="feature-header">
+            <div class="header-content">
+                <button class="back-btn" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="feature-title">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="title-info">
+                        <h1>Code Lab</h1>
+                        <p>Advanced AI-powered development environment</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn" id="run-code-btn" title="Run Code">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="action-btn" id="save-code-btn" title="Save Code">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button class="action-btn" id="share-code-btn" title="Share Code">
+                        <i class="fas fa-share"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="feature-main">
+            <!-- Code Editor Section -->
+            <section class="code-editor-section">
+                <div class="editor-header">
+                    <div class="language-selector">
+                        <select id="language-select">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="sql">SQL</option>
+                            <option value="bash">Bash</option>
+                        </select>
+                    </div>
+                    <div class="editor-tools">
+                        <button class="tool-btn" id="format-code" title="Format Code">
+                            <i class="fas fa-align-left"></i>
+                        </button>
+                        <button class="tool-btn" id="clear-code" title="Clear Code">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="tool-btn" id="fullscreen-editor" title="Fullscreen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="code-editor-container">
+                    <textarea id="code-editor" placeholder="// Start coding here...
+// Ask Zeeky AI to help you write, debug, or optimize your code
+
+function helloWorld() {
+    console.log('Hello, Zeeky AI!');
+}
+
+helloWorld();"></textarea>
+                </div>
+            </section>
+
+            <!-- AI Assistant Panel -->
+            <section class="ai-code-assistant">
+                <div class="assistant-header">
+                    <div class="assistant-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="assistant-info">
+                        <h3>Zeeky Code Assistant</h3>
+                        <p>Ask me to write, debug, explain, or optimize your code</p>
+                    </div>
+                </div>
+
+                <div class="code-suggestions">
+                    <div class="suggestion-tabs">
+                        <button class="suggestion-tab active" data-tab="generate">Generate</button>
+                        <button class="suggestion-tab" data-tab="debug">Debug</button>
+                        <button class="suggestion-tab" data-tab="optimize">Optimize</button>
+                        <button class="suggestion-tab" data-tab="explain">Explain</button>
+                    </div>
+
+                    <div class="suggestion-content">
+                        <div class="suggestion-panel active" id="generate-panel">
+                            <div class="quick-actions">
+                                <button class="quick-action" data-action="create-function">
+                                    <i class="fas fa-function"></i>
+                                    Create Function
+                                </button>
+                                <button class="quick-action" data-action="create-class">
+                                    <i class="fas fa-cube"></i>
+                                    Create Class
+                                </button>
+                                <button class="quick-action" data-action="create-api">
+                                    <i class="fas fa-server"></i>
+                                    Create API
+                                </button>
+                                <button class="quick-action" data-action="create-algorithm">
+                                    <i class="fas fa-cogs"></i>
+                                    Algorithm
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="suggestion-panel" id="debug-panel">
+                            <div class="debug-tools">
+                                <button class="debug-btn" id="find-bugs">
+                                    <i class="fas fa-bug"></i>
+                                    Find Bugs
+                                </button>
+                                <button class="debug-btn" id="fix-errors">
+                                    <i class="fas fa-wrench"></i>
+                                    Fix Errors
+                                </button>
+                                <button class="debug-btn" id="add-logging">
+                                    <i class="fas fa-file-alt"></i>
+                                    Add Logging
+                                </button>
+                                <button class="debug-btn" id="test-code">
+                                    <i class="fas fa-vial"></i>
+                                    Generate Tests
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="suggestion-panel" id="optimize-panel">
+                            <div class="optimize-tools">
+                                <button class="optimize-btn" id="improve-performance">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    Improve Performance
+                                </button>
+                                <button class="optimize-btn" id="reduce-complexity">
+                                    <i class="fas fa-compress"></i>
+                                    Reduce Complexity
+                                </button>
+                                <button class="optimize-btn" id="add-comments">
+                                    <i class="fas fa-comment"></i>
+                                    Add Comments
+                                </button>
+                                <button class="optimize-btn" id="refactor-code">
+                                    <i class="fas fa-recycle"></i>
+                                    Refactor Code
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="suggestion-panel" id="explain-panel">
+                            <div class="explain-tools">
+                                <button class="explain-btn" id="explain-code">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Explain Code
+                                </button>
+                                <button class="explain-btn" id="code-documentation">
+                                    <i class="fas fa-book"></i>
+                                    Generate Docs
+                                </button>
+                                <button class="explain-btn" id="code-review">
+                                    <i class="fas fa-search"></i>
+                                    Code Review
+                                </button>
+                                <button class="explain-btn" id="best-practices">
+                                    <i class="fas fa-star"></i>
+                                    Best Practices
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-chat-input">
+                    <input type="text" id="code-ai-input" placeholder="Ask Zeeky AI about your code..." />
+                    <button class="voice-input-btn" id="voice-code-input">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="send-btn" id="send-code-query">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="code-output-section">
+                <div class="output-header">
+                    <h3><i class="fas fa-terminal"></i> Output</h3>
+                    <div class="output-controls">
+                        <button class="output-btn" id="clear-output">
+                            <i class="fas fa-trash"></i>
+                            Clear
+                        </button>
+                        <button class="output-btn" id="download-output">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="output-container">
+                    <div class="output-tabs">
+                        <button class="output-tab active" data-output="console">Console</button>
+                        <button class="output-tab" data-output="result">Result</button>
+                        <button class="output-tab" data-output="errors">Errors</button>
+                    </div>
+                    
+                    <div class="output-content">
+                        <div class="output-panel active" id="console-output">
+                            <pre id="console-text">Ready to run your code...</pre>
+                        </div>
+                        <div class="output-panel" id="result-output">
+                            <pre id="result-text">No results yet</pre>
+                        </div>
+                        <div class="output-panel" id="errors-output">
+                            <pre id="errors-text">No errors</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Templates -->
+            <section class="code-templates">
+                <h3><i class="fas fa-layer-group"></i> Code Templates</h3>
+                <div class="templates-grid">
+                    <div class="template-card" data-template="react-component">
+                        <div class="template-icon">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <h4>React Component</h4>
+                        <p>Functional React component with hooks</p>
+                    </div>
+                    
+                    <div class="template-card" data-template="express-api">
+                        <div class="template-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h4>Express API</h4>
+                        <p>RESTful API with Express.js</p>
+                    </div>
+                    
+                    <div class="template-card" data-template="python-class">
+                        <div class="template-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <h4>Python Class</h4>
+                        <p>Object-oriented Python class</p>
+                    </div>
+                    
+                    <div class="template-card" data-template="sql-query">
+                        <div class="template-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4>SQL Query</h4>
+                        <p>Complex database query</p>
+                    </div>
+                    
+                    <div class="template-card" data-template="algorithm">
+                        <div class="template-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h4>Algorithm</h4>
+                        <p>Common algorithms and data structures</p>
+                    </div>
+                    
+                    <div class="template-card" data-template="unit-test">
+                        <div class="template-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <h4>Unit Test</h4>
+                        <p>Test cases and assertions</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Code Generation Modal -->
+    <div class="modal" id="code-generation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Code Generation</h2>
+                <button class="modal-close" id="code-generation-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="generation-form">
+                    <label for="code-description">Describe what you want to create:</label>
+                    <textarea id="code-description" placeholder="E.g., Create a function that sorts an array of objects by date..."></textarea>
+                    
+                    <div class="generation-options">
+                        <div class="option-group">
+                            <label for="code-language">Language:</label>
+                            <select id="code-language">
+                                <option value="javascript">JavaScript</option>
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label for="code-style">Style:</label>
+                            <select id="code-style">
+                                <option value="clean">Clean & Simple</option>
+                                <option value="commented">Well Commented</option>
+                                <option value="optimized">Performance Optimized</option>
+                                <option value="enterprise">Enterprise Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="generate-btn" id="generate-code-btn">
+                        <i class="fas fa-magic"></i>
+                        Generate Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../config/environment.js"></script>
+    <script src="../scripts/error-handler.js"></script>
+    <script src="../scripts/features/code-lab.js"></script>
+</body>
+</html>
