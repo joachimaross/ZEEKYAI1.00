@@ -35,13 +35,30 @@ def install_requirements():
     """Install required packages"""
     print("\n📦 Installing required packages...")
     
+    # Install from requirements.txt if available
+    requirements_file = Path("requirements.txt")
+    if requirements_file.exists():
+        try:
+            print("   Installing from requirements.txt...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"],
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print("   ✅ All requirements installed from requirements.txt")
+            return True
+        except subprocess.CalledProcessError:
+            print("   ⚠️  Failed to install from requirements.txt, trying individual packages...")
+
+    # Fallback to individual packages
     requirements = [
         "fastapi>=0.104.0",
-        "uvicorn>=0.24.0",
+        "uvicorn[standard]>=0.24.0",
         "httpx>=0.25.0",
         "python-multipart>=0.0.6",
+        "websockets>=12.0",
         "jinja2>=3.1.2",
-        "python-dotenv>=1.0.0"
+        "python-dotenv>=1.0.0",
+        "PyJWT>=2.8.0",
+        "bleach>=6.1.0",
+        "Pillow>=10.1.0"
     ]
     
     for requirement in requirements:

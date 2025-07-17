@@ -1,7 +1,7 @@
 import os
 import logging
 from datetime import datetime
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, WebSocket, File, UploadFile
 from typing import Dict, Optional, Any, List
 from datetime import datetime
 from dataclasses import asdict
@@ -18,6 +18,10 @@ from db.database import init_database, close_database
 # Import Zeeky services
 from config import get_openai_config, get_zeeky_config
 from zeeky_enhanced_ai import enhanced_zeeky
+from zeeky_rate_limiter import rate_limiter, api_key_manager, rate_limit_middleware
+from zeeky_file_processor import file_processor
+from zeeky_websocket import connection_manager, websocket_endpoint
+from zeeky_security import security_manager
 from zeeky_rag_system import rag_system
 from zeeky_business_system import crm_system, task_manager, meeting_scheduler, email_automation, business_analytics
 from zeeky_entertainment_system import game_engine, story_generator, music_recommendations
@@ -62,11 +66,21 @@ else:
 
 # Create FastAPI app with lifespan
 app = FastAPI(
-    title="Zeeky AI Platform",
-    description="Universal AI Assistant with 7500+ features",
+    title="Zeeky AI 2.0 Enhanced",
+    description="Revolutionary AI Assistant with Human-like Responses and Advanced Features",
     version="2.0.0",
     lifespan=lifespan
 )
+
+# Add rate limiting middleware
+@app.middleware("http")
+async def add_rate_limiting(request, call_next):
+    try:
+        return await rate_limit_middleware(request, call_next)
+    except Exception as e:
+        # Fallback if rate limiting fails
+        logging.error(f"Rate limiting error: {e}")
+        return await call_next(request)
 
 # Configure CORS
 app.add_middleware(
@@ -242,6 +256,107 @@ async def get_conversation_stats(user_id: str = "default", chat_id: str = "defau
         return {
             "success": True,
             "stats": stats
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+# File Upload Endpoints
+@app.post("/api/upload")
+async def upload_file(file: UploadFile = File(...), user_id: str = "default"):
+    """Upload and process files"""
+    try:
+        # Read file data
+        file_data = await file.read()
+
+        # Process file
+        result = await file_processor.upload_file(file_data, file.filename, user_id)
+
+        return result
+
+    except Exception as e:
+        logger.error(f"File upload error: {e}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+@app.get("/api/file/{file_id}")
+async def get_file_info(file_id: str):
+    """Get file information"""
+    try:
+        file_info = file_processor.get_file_info(file_id)
+        if file_info:
+            return {
+                "success": True,
+                "file_info": file_info
+            }
+        else:
+            return {
+                "success": False,
+                "error": "File not found"
+            }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+@app.delete("/api/file/{file_id}")
+async def delete_file(file_id: str):
+    """Delete a file"""
+    try:
+        success = file_processor.delete_file(file_id)
+        return {
+            "success": success,
+            "message": "File deleted successfully" if success else "File not found"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+# WebSocket endpoint
+@app.websocket("/ws/{user_id}")
+async def websocket_chat(websocket: WebSocket, user_id: str, room_id: str = "general"):
+    """WebSocket endpoint for real-time chat"""
+    await websocket_endpoint(websocket, user_id, room_id)
+
+@app.websocket("/ws/{user_id}/{room_id}")
+async def websocket_room(websocket: WebSocket, user_id: str, room_id: str):
+    """WebSocket endpoint for specific room"""
+    await websocket_endpoint(websocket, user_id, room_id)
+
+# Security and validation endpoints
+@app.post("/api/validate")
+async def validate_input_endpoint(data: dict):
+    """Validate input data"""
+    try:
+        input_data = data.get("input", "")
+        input_type = data.get("type", "text")
+
+        result = security_manager.validate_input(input_data, input_type)
+        return result
+
+    except Exception as e:
+        return {
+            "valid": False,
+            "error": str(e)
+        }
+
+@app.get("/api/security/stats")
+async def get_security_stats():
+    """Get security statistics"""
+    try:
+        return {
+            "success": True,
+            "stats": {
+                "rate_limiter": rate_limiter.get_global_stats(),
+                "websocket": connection_manager.get_stats()
+            }
         }
     except Exception as e:
         return {

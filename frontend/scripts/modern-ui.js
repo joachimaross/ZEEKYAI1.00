@@ -62,6 +62,9 @@ class ModernUI {
         // Personality modal
         this.setupPersonalityModal();
 
+        // File upload
+        this.setupFileUpload();
+
         // Window resize
         window.addEventListener('resize', () => this.handleResize());
     }
@@ -828,6 +831,144 @@ What would you like to explore first?`,
             "philosopher": "Shall we explore some deep thoughts together? 🤔"
         };
         return greetings[personality] || greetings["default"];
+    }
+
+    // File Upload System
+    setupFileUpload() {
+        const attachBtn = document.getElementById('attach-btn');
+        const fileInput = document.getElementById('file-input');
+        const fileUploadArea = document.getElementById('file-upload-area');
+
+        // Attach button click
+        attachBtn?.addEventListener('click', () => {
+            fileInput?.click();
+        });
+
+        // File input change
+        fileInput?.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length > 0) {
+                this.handleFileUpload(files);
+            }
+        });
+
+        // Drag and drop support
+        const chatContainer = document.querySelector('.chat-container');
+        if (chatContainer) {
+            chatContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                chatContainer.classList.add('drag-over');
+            });
+
+            chatContainer.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                chatContainer.classList.remove('drag-over');
+            });
+
+            chatContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                chatContainer.classList.remove('drag-over');
+
+                const files = Array.from(e.dataTransfer.files);
+                if (files.length > 0) {
+                    this.handleFileUpload(files);
+                }
+            });
+        }
+    }
+
+    async handleFileUpload(files) {
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+
+        // Show upload area
+        fileUploadArea.style.display = 'block';
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            try {
+                // Update progress
+                progressText.textContent = `Uploading ${file.name}... (${i + 1}/${files.length})`;
+                progressBar.style.width = `${((i + 1) / files.length) * 100}%`;
+
+                // Upload file
+                const result = await this.uploadFile(file);
+
+                if (result.success) {
+                    // Show success message
+                    this.addMessageToDOM('bot', `📁 File "${file.name}" uploaded successfully!\n\n${this.formatFileAnalysis(result)}`);
+                } else {
+                    // Show error message
+                    this.addMessageToDOM('bot', `❌ Failed to upload "${file.name}": ${result.error}`);
+                }
+
+            } catch (error) {
+                console.error('File upload error:', error);
+                this.addMessageToDOM('bot', `❌ Error uploading "${file.name}": ${error.message}`);
+            }
+        }
+
+        // Hide upload area
+        setTimeout(() => {
+            fileUploadArea.style.display = 'none';
+            progressBar.style.width = '0%';
+        }, 1000);
+
+        // Clear file input
+        const fileInput = document.getElementById('file-input');
+        if (fileInput) fileInput.value = '';
+    }
+
+    async uploadFile(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('user_id', 'frontend_user');
+
+        const response = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        return await response.json();
+    }
+
+    formatFileAnalysis(result) {
+        if (!result.processing_result || !result.processing_result.analysis) {
+            return `File type: ${result.file_type}\nSize: ${this.formatFileSize(result.file_size)}`;
+        }
+
+        const analysis = result.processing_result.analysis;
+        let formatted = `**File Analysis:**\n`;
+        formatted += `• Type: ${result.file_type}\n`;
+        formatted += `• Size: ${this.formatFileSize(result.file_size)}\n`;
+
+        if (analysis.word_count) {
+            formatted += `• Words: ${analysis.word_count}\n`;
+        }
+        if (analysis.line_count) {
+            formatted += `• Lines: ${analysis.line_count}\n`;
+        }
+        if (analysis.dimensions) {
+            formatted += `• Dimensions: ${analysis.dimensions}\n`;
+        }
+        if (analysis.language_detected) {
+            formatted += `• Language: ${analysis.language_detected}\n`;
+        }
+        if (analysis.preview) {
+            formatted += `\n**Preview:**\n${analysis.preview}`;
+        }
+
+        return formatted;
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
         // Feature-specific responses
