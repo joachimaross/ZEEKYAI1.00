@@ -6,363 +6,443 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Zeeky AI - Sci-Fi Interface</title>
+    <title>Zeeky AI - Advanced AI Assistant</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="assets/zeeky-logo.svg">
     <style>
-        /* CRITICAL: All CSS must be inline and work immediately */
+        /* ZEEKY AI - UNIFIED PROFESSIONAL INTERFACE */
+        :root {
+            --matrix-green: #00ff41;
+            --matrix-blue: #00d4ff;
+            --dark-bg: #000000;
+            --dark-panel: #0a0a0a;
+            --border-glow: #00ff4150;
+            --text-dim: #00ff4180;
+            --danger: #ff0040;
+            --warning: #ffaa00;
+            --success: #00ff41;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Courier New', monospace !important;
-            background: #000000 !important;
-            color: #00ff41 !important;
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            position: relative !important;
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+            background: var(--dark-bg);
+            color: var(--matrix-green);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
         }
 
-        /* Loading Screen - MUST work immediately */
+        /* MATRIX LOADING SCREEN */
         .loader {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: #000000 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            z-index: 10000 !important;
-            animation: fadeOut 3s ease-out 2s forwards !important;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
         }
-
+        
+        .loader.hidden { opacity: 0; pointer-events: none; }
+        
         .loader-content {
-            text-align: center !important;
-            animation: glitch 0.5s infinite alternate !important;
+            text-align: center;
+            animation: matrixGlow 2s ease-in-out infinite alternate;
         }
-
-        .logo {
-            width: 120px !important;
-            height: 120px !important;
-            background: linear-gradient(135deg, #00ff41, #00d4ff) !important;
-            border-radius: 50% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-size: 3rem !important;
-            color: #000000 !important;
-            font-weight: 900 !important;
-            margin: 0 auto 2rem !important;
-            animation: spin 3s linear infinite, glow 2s ease-in-out infinite !important;
-            box-shadow: 0 0 30px #00ff41 !important;
+        
+        .logo-matrix {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--matrix-green);
+            text-shadow: 0 0 20px var(--matrix-green);
+            margin-bottom: 1rem;
         }
-
+        
         .loading-text {
-            color: #00ff41 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 3px !important;
-            text-shadow: 0 0 10px #00ff41 !important;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
-
-        .loading-title {
-            font-size: 1.2rem !important;
-            font-weight: 700 !important;
-            margin-bottom: 1rem !important;
-        }
-
+        
         .loading-bar {
-            width: 300px !important;
-            height: 4px !important;
-            background: rgba(0, 255, 65, 0.2) !important;
-            border-radius: 2px !important;
-            margin: 1rem auto !important;
-            overflow: hidden !important;
-            position: relative !important;
+            width: 300px;
+            height: 4px;
+            background: var(--dark-panel);
+            border: 1px solid var(--border-glow);
+            margin: 1rem auto;
+            overflow: hidden;
         }
-
+        
         .loading-progress {
-            height: 100% !important;
-            background: linear-gradient(135deg, #00ff41, #00d4ff) !important;
-            width: 0% !important;
-            animation: progress 2s ease-out forwards !important;
-            box-shadow: 0 0 20px #00ff41 !important;
+            height: 100%;
+            background: linear-gradient(90deg, var(--matrix-green), var(--matrix-blue));
+            width: 0%;
+            animation: loadProgress 3s ease-in-out forwards;
         }
-
-        .status {
-            margin-top: 2rem !important;
-            text-align: left !important;
-            font-size: 0.9rem !important;
-        }
-
+        
         .status-line {
-            margin: 0.5rem 0 !important;
-            color: #00ff41 !important;
-            text-shadow: 0 0 10px #00ff41 !important;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
         }
+        
+        .status-line:nth-child(1) { animation-delay: 0.5s; }
+        .status-line:nth-child(2) { animation-delay: 1s; }
+        .status-line:nth-child(3) { animation-delay: 1.5s; }
 
-        /* Animated Background */
-        .background {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: -1 !important;
-            background: 
-                linear-gradient(90deg, transparent 98%, #00ff41 100%),
-                linear-gradient(180deg, transparent 98%, #00ff41 100%) !important;
-            background-size: 50px 50px !important;
-            animation: rain 20s linear infinite !important;
-            opacity: 0.1 !important;
+        /* MAIN INTERFACE */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            background: var(--dark-bg);
         }
-
-        /* Main Interface */
-        .interface {
-            position: relative !important;
-            z-index: 1 !important;
-            min-height: 100vh !important;
-            display: flex !important;
-            flex-direction: column !important;
+        
+        .sidebar {
+            width: 300px;
+            background: var(--dark-panel);
+            border-right: 1px solid var(--border-glow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
         }
-
+        
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+        
         .header {
-            background: rgba(0, 0, 0, 0.9) !important;
-            border-bottom: 2px solid #00ff41 !important;
-            box-shadow: 0 4px 20px rgba(0, 255, 65, 0.3) !important;
-            padding: 1rem 2rem !important;
-            position: sticky !important;
-            top: 0 !important;
-            z-index: 1000 !important;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-glow);
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--matrix-green);
+            text-shadow: 0 0 10px var(--matrix-green);
+        }
+        
+        .status {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+        
+        .nav-menu {
+            flex: 1;
+            padding: 1rem 0;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: var(--matrix-green);
+            background: var(--border-glow);
+            border-left-color: var(--matrix-green);
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .top-bar {
+            height: 60px;
+            background: var(--dark-panel);
+            border-bottom: 1px solid var(--border-glow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+        }
+        
+        .menu-toggle {
+            background: none;
+            border: 1px solid var(--border-glow);
+            color: var(--matrix-green);
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .content-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .welcome-panel {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .welcome-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--matrix-green);
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-glow);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--matrix-green);
+            box-shadow: 0 0 20px var(--border-glow);
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--matrix-blue);
+        }
+        
+        .feature-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
         }
 
-        .header-content {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
+        /* ANIMATIONS */
+        @keyframes matrixGlow {
+            0% { text-shadow: 0 0 10px var(--matrix-green); }
+            100% { text-shadow: 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-green); }
         }
-
-        .logo-text {
-            font-size: 2rem !important;
-            font-weight: 900 !important;
-            color: #00ff41 !important;
-            text-shadow: 0 0 20px #00ff41 !important;
-            letter-spacing: 2px !important;
-            margin: 0 !important;
-        }
-
-        .ai-suffix {
-            color: #00d4ff !important;
-            text-shadow: 0 0 20px #00d4ff !important;
-        }
-
-        .status-indicator {
-            display: flex !important;
-            align-items: center !important;
-            gap: 0.5rem !important;
-            color: #00ff41 !important;
-            font-size: 0.9rem !important;
-        }
-
-        .status-dot {
-            width: 8px !important;
-            height: 8px !important;
-            background: #00ff41 !important;
-            border-radius: 50% !important;
-            box-shadow: 0 0 10px #00ff41 !important;
-            animation: pulse 2s ease-in-out infinite !important;
-        }
-
-        .main {
-            flex: 1 !important;
-            padding: 2rem !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 2rem !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            width: 100% !important;
-        }
-
-        .display {
-            flex: 1 !important;
-            background: rgba(0, 0, 0, 0.7) !important;
-            border: 2px solid #00ffff !important;
-            border-radius: 25px !important;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3) !important;
-            overflow: hidden !important;
-            position: relative !important;
-            min-height: 400px !important;
-            padding: 2rem !important;
-            text-align: center !important;
-        }
-
-        .display h2 {
-            color: #00ffff !important;
-            text-shadow: 0 0 20px #00ffff !important;
-            font-size: 2rem !important;
-            margin: 0 0 1rem 0 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 3px !important;
-            animation: textGlow 2s ease-in-out infinite alternate !important;
-        }
-
-        .display p {
-            color: rgba(0, 255, 255, 0.8) !important;
-            font-size: 1.1rem !important;
-            margin: 0 0 2rem 0 !important;
-            line-height: 1.6 !important;
-        }
-
-        /* Animations - MUST work */
-        @keyframes fadeOut {
-            0% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-
-        @keyframes glitch {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-2px); }
-            40% { transform: translateX(2px); }
-            60% { transform: translateX(-1px); }
-            80% { transform: translateX(1px); }
-            100% { transform: translateX(0); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 30px #00ff41; }
-            50% { box-shadow: 0 0 50px #00ff41, 0 0 70px #00ff41; }
-        }
-
-        @keyframes progress {
+        
+        @keyframes loadProgress {
             0% { width: 0%; }
             100% { width: 100%; }
         }
-
-        @keyframes rain {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100vh); }
+        
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 20px #00ffff; }
-            100% { text-shadow: 0 0 40px #00ffff, 0 0 60px #00ffff; }
-        }
-
-        /* Responsive */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column !important;
-                gap: 1rem !important;
-                text-align: center !important;
+            .sidebar {
+                position: fixed;
+                z-index: 1000;
+                height: 100%;
             }
             
-            .logo-text {
-                font-size: 1.5rem !important;
+            .app-container {
+                flex-direction: column;
             }
             
-            .main {
-                padding: 1rem !important;
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-title {
+                font-size: 2rem;
             }
         }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
+    <!-- MATRIX LOADING SCREEN -->
     <div class="loader" id="loader">
         <div class="loader-content">
-            <div class="logo">Z</div>
-            <div class="loading-text">
-                <div class="loading-title">INITIALIZING ZEEKY AI MATRIX</div>
-                <div class="loading-bar">
-                    <div class="loading-progress"></div>
-                </div>
-                <div class="status">
-                    <div class="status-line">► Neural Networks: ONLINE</div>
-                    <div class="status-line">► Personality Matrix: ACTIVE</div>
-                    <div class="status-line">► Quantum Processors: READY</div>
-                </div>
+            <div class="logo-matrix">Z</div>
+            <div class="loading-text">INITIALIZING ZEEKY AI MATRIX</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="status">
+                <div class="status-line">► Neural Networks: ONLINE</div>
+                <div class="status-line">► Personality Matrix: ACTIVE</div>
+                <div class="status-line">► Quantum Processors: READY</div>
             </div>
         </div>
     </div>
 
-    <!-- Animated Background -->
-    <div class="background"></div>
-
-    <!-- Main Interface -->
-    <div class="interface">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1 class="logo-text">ZEEKY<span class="ai-suffix">AI</span></h1>
-                <div class="status-indicator">
-                    <div class="status-dot"></div>
-                    <span>ONLINE</span>
-                </div>
+    <!-- MAIN APPLICATION -->
+    <div class="app-container hidden" id="app">
+        <!-- SIDEBAR -->
+        <nav class="sidebar" id="sidebar">
+            <div class="header">
+                <div class="logo">ZEEKY AI</div>
+                <div class="status">● ONLINE</div>
             </div>
-        </header>
+            <div class="nav-menu">
+                <a href="#" class="nav-item active" data-section="home">🏠 Home</a>
+                <a href="#" class="nav-item" data-section="chat">💬 AI Chat</a>
+                <a href="#" class="nav-item" data-section="voice">🎤 Voice Assistant</a>
+                <a href="#" class="nav-item" data-section="files">📁 File Analysis</a>
+                <a href="#" class="nav-item" data-section="analytics">📊 Analytics</a>
+                <a href="#" class="nav-item" data-section="settings">⚙️ Settings</a>
+            </div>
+        </nav>
 
-        <!-- Main Content -->
-        <main class="main">
-            <div class="display">
-                <h2>ZEEKY AI MATRIX ONLINE</h2>
-                <p>Neural pathways established. Revolutionary sci-fi interface activated.</p>
-                <p>All systems operational. Ready for interaction.</p>
-                <p style="margin-top: 2rem; font-size: 1.3rem; color: #00ff41;">🚀 SCI-FI INTERFACE WORKING! 🚀</p>
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <div class="top-bar">
+                <button class="menu-toggle" id="menuToggle">☰</button>
+                <div>Advanced AI Assistant Platform</div>
+                <div>🟢 Connected</div>
+            </div>
+            
+            <div class="content-area" id="content">
+                <!-- HOME SECTION -->
+                <div class="welcome-panel">
+                    <h1 class="welcome-title">ZEEKY AI MATRIX ONLINE</h1>
+                    <p class="welcome-subtitle">Neural pathways established. Revolutionary AI interface activated.</p>
+                    <p style="color: var(--success); font-size: 1.1rem;">🚀 ALL SYSTEMS OPERATIONAL 🚀</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card" data-feature="chat">
+                            <div class="feature-icon">🤖</div>
+                            <div class="feature-title">AI Chat</div>
+                            <div class="feature-desc">Intelligent conversations with advanced AI</div>
+                        </div>
+                        <div class="feature-card" data-feature="voice">
+                            <div class="feature-icon">🎙️</div>
+                            <div class="feature-title">Voice Assistant</div>
+                            <div class="feature-desc">Hands-free voice interactions</div>
+                        </div>
+                        <div class="feature-card" data-feature="files">
+                            <div class="feature-icon">📄</div>
+                            <div class="feature-title">File Analysis</div>
+                            <div class="feature-desc">Upload and analyze documents</div>
+                        </div>
+                        <div class="feature-card" data-feature="analytics">
+                            <div class="feature-icon">📈</div>
+                            <div class="feature-title">Analytics</div>
+                            <div class="feature-desc">Usage insights and statistics</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
-        // Hide loader after 5 seconds
-        setTimeout(function() {
-            var loader = document.getElementById('loader');
-            if (loader) {
-                loader.style.display = 'none';
+        // ZEEKY AI - UNIFIED INTERFACE CONTROLLER
+        class ZeekyAI {
+            constructor() {
+                this.currentSection = 'home';
+                this.sidebarCollapsed = false;
+                this.init();
             }
-        }, 5000);
-
-        console.log('🚀 Zeeky AI Sci-Fi Interface Loaded Successfully!');
-        console.log('🎬 All animations and styling working!');
-
-        // Force apply styles if needed
-        document.body.style.background = '#000000';
-        document.body.style.color = '#00ff41';
-        document.body.style.fontFamily = 'Courier New, monospace';
-
-        // Service Worker registration with update handling
+            
+            init() {
+                this.setupEventListeners();
+                this.startLoadingSequence();
+            }
+            
+            setupEventListeners() {
+                // Menu toggle
+                document.getElementById('menuToggle').addEventListener('click', () => {
+                    this.toggleSidebar();
+                });
+                
+                // Navigation
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.switchSection(item.dataset.section);
+                    });
+                });
+                
+                // Feature cards
+                document.querySelectorAll('.feature-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        this.activateFeature(card.dataset.feature);
+                    });
+                });
+            }
+            
+            startLoadingSequence() {
+                // Hide loader after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('loader').classList.add('hidden');
+                    document.getElementById('app').classList.remove('hidden');
+                    console.log('🚀 Zeeky AI Interface Loaded Successfully!');
+                }, 3000);
+            }
+            
+            toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                this.sidebarCollapsed = !this.sidebarCollapsed;
+                sidebar.classList.toggle('collapsed', this.sidebarCollapsed);
+            }
+            
+            switchSection(section) {
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.section === section);
+                });
+                
+                this.currentSection = section;
+                console.log(`Switched to section: ${section}`);
+                
+                // Here you would load different content based on section
+                // For now, we'll just log it
+            }
+            
+            activateFeature(feature) {
+                console.log(`Activating feature: ${feature}`);
+                // Here you would implement the specific feature functionality
+                alert(`${feature.toUpperCase()} feature activated! (Implementation coming soon)`);
+            }
+        }
+        
+        // Initialize Zeeky AI when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.zeekyAI = new ZeekyAI();
+        });
+        
+        // Service Worker registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
-                .then(function(registration) {
-                    console.log('✅ Service Worker registered successfully');
-
-                    // Check for updates
-                    registration.addEventListener('updatefound', function() {
-                        console.log('🔄 Service Worker update found');
-                        const newWorker = registration.installing;
-
-                        newWorker.addEventListener('statechange', function() {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('🆕 New Service Worker installed, reloading...');
-                                // Force reload to get fresh content
-                                window.location.reload(true);
-                            }
-                        });
-                    });
-                })
-                .catch(function(error) {
-                    console.log('❌ Service Worker registration failed:', error);
-                });
+                .then(registration => console.log('✅ Service Worker registered'))
+                .catch(error => console.log('❌ Service Worker registration failed:', error));
         }
     </script>
 </body>
