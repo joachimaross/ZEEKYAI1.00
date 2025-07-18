@@ -2,8 +2,8 @@
 class ZeekyAI {
     constructor() {
         this.apiBaseUrl = window.location.hostname === 'localhost'
-            ? 'http://localhost:5000'
-            : 'https://your-backend-api.herokuapp.com';
+            ? 'http://localhost:8000'
+            : 'https://zeekyai-backend.herokuapp.com';
 
         // DOM elements
         this.welcomeScreen = document.getElementById('welcome-screen');
