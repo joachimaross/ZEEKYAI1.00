@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeeky AI Diagnostic</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff41;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .diagnostic-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px #00ff41;
+        }
+        h1 {
+            text-align: center;
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            background: rgba(0, 255, 65, 0.1);
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .pass {
+            background: rgba(0, 255, 0, 0.2);
+            border-left: 4px solid #00ff00;
+        }
+        .fail {
+            background: rgba(255, 0, 0, 0.2);
+            border-left: 4px solid #ff0000;
+            color: #ff6666;
+        }
+        .info {
+            background: rgba(0, 255, 255, 0.2);
+            border-left: 4px solid #00ffff;
+            color: #66ffff;
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover {
+            box-shadow: 0 0 15px #00ff41;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagnostic-container">
+        <h1>🔍 ZEEKY AI DIAGNOSTIC SYSTEM</h1>
+        
+        <div class="test-section">
+            <h3>📁 File System Check</h3>
+            <div id="file-check"></div>
+            <button onclick="checkFiles()">Run File Check</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🎨 CSS Loading Test</h3>
+            <div id="css-check"></div>
+            <button onclick="checkCSS()">Test CSS Loading</button>
+        </div>
+
+        <div class="test-section">
+            <h3>⚡ JavaScript Test</h3>
+            <div id="js-check"></div>
+            <button onclick="checkJS()">Test JavaScript</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🖼️ Asset Loading Test</h3>
+            <div id="asset-check"></div>
+            <button onclick="checkAssets()">Test Assets</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🎭 Interface Elements Test</h3>
+            <div id="interface-check"></div>
+            <button onclick="checkInterface()">Test Interface</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🚀 Live Interface Preview</h3>
+            <iframe src="index.html" width="100%" height="400" style="border: 2px solid #00ff41; border-radius: 5px;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        async function checkFiles() {
+            const fileCheck = document.getElementById('file-check');
+            fileCheck.innerHTML = '<div class="info">Checking file accessibility...</div>';
+            
+            const files = [
+                'styles/sci-fi-interface.css',
+                'themes/personality-themes.css',
+                'scripts/sci-fi-interface.js',
+                'assets/zeeky-logo.svg',
+                'assets/zeeky-logo-new.svg'
+            ];
+            
+            let results = '';
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(file);
+                    if (response.ok) {
+                        results += `<div class="test-result pass">✅ ${file} - OK (${response.status})</div>`;
+                    } else {
+                        results += `<div class="test-result fail">❌ ${file} - Failed (${response.status})</div>`;
+                    }
+                } catch (error) {
+                    results += `<div class="test-result fail">❌ ${file} - Error: ${error.message}</div>`;
+                }
+            }
+            
+            fileCheck.innerHTML = results;
+        }
+
+        async function checkCSS() {
+            const cssCheck = document.getElementById('css-check');
+            cssCheck.innerHTML = '<div class="info">Testing CSS loading and parsing...</div>';
+            
+            try {
+                // Test if CSS is loaded
+                const testElement = document.createElement('div');
+                testElement.className = 'sci-fi-container';
+                testElement.style.display = 'none';
+                document.body.appendChild(testElement);
+                
+                const computedStyle = window.getComputedStyle(testElement);
+                const fontFamily = computedStyle.fontFamily;
+                
+                document.body.removeChild(testElement);
+                
+                let results = '';
+                
+                if (fontFamily.includes('Orbitron') || fontFamily.includes('Courier')) {
+                    results += '<div class="test-result pass">✅ Sci-Fi CSS is loading correctly</div>';
+                    results += `<div class="test-result info">Font Family: ${fontFamily}</div>`;
+                } else {
+                    results += '<div class="test-result fail">❌ Sci-Fi CSS not applied correctly</div>';
+                    results += `<div class="test-result info">Current Font: ${fontFamily}</div>`;
+                }
+                
+                // Test CSS variables
+                const rootStyles = window.getComputedStyle(document.documentElement);
+                const matrixGreen = rootStyles.getPropertyValue('--matrix-green');
+                
+                if (matrixGreen) {
+                    results += '<div class="test-result pass">✅ CSS variables are loaded</div>';
+                    results += `<div class="test-result info">Matrix Green: ${matrixGreen}</div>`;
+                } else {
+                    results += '<div class="test-result fail">❌ CSS variables not found</div>';
+                }
+                
+                cssCheck.innerHTML = results;
+                
+            } catch (error) {
+                cssCheck.innerHTML = `<div class="test-result fail">❌ CSS test failed: ${error.message}</div>`;
+            }
+        }
+
+        async function checkJS() {
+            const jsCheck = document.getElementById('js-check');
+            jsCheck.innerHTML = '<div class="info">Testing JavaScript loading...</div>';
+            
+            let results = '';
+            
+            // Check if SciFiInterface class exists
+            if (typeof window.SciFiInterface !== 'undefined') {
+                results += '<div class="test-result pass">✅ SciFiInterface class loaded</div>';
+            } else {
+                results += '<div class="test-result fail">❌ SciFiInterface class not found</div>';
+            }
+            
+            // Check if sciFiInterface instance exists
+            if (typeof window.sciFiInterface !== 'undefined') {
+                results += '<div class="test-result pass">✅ SciFiInterface instance created</div>';
+                results += `<div class="test-result info">Current personality: ${window.sciFiInterface.getCurrentPersonality()}</div>`;
+            } else {
+                results += '<div class="test-result fail">❌ SciFiInterface instance not found</div>';
+            }
+            
+            jsCheck.innerHTML = results;
+        }
+
+        async function checkAssets() {
+            const assetCheck = document.getElementById('asset-check');
+            assetCheck.innerHTML = '<div class="info">Testing asset loading...</div>';
+            
+            let results = '';
+            
+            // Test logo loading
+            const img = new Image();
+            img.onload = function() {
+                results += '<div class="test-result pass">✅ Logo SVG loads correctly</div>';
+                results += `<div class="test-result info">Logo dimensions: ${this.width}x${this.height}</div>`;
+                assetCheck.innerHTML = results;
+            };
+            img.onerror = function() {
+                results += '<div class="test-result fail">❌ Logo SVG failed to load</div>';
+                assetCheck.innerHTML = results;
+            };
+            img.src = 'assets/zeeky-logo.svg';
+            
+            // Test font loading
+            if (document.fonts) {
+                document.fonts.ready.then(() => {
+                    const orbitronLoaded = document.fonts.check('16px Orbitron');
+                    if (orbitronLoaded) {
+                        results += '<div class="test-result pass">✅ Orbitron font loaded</div>';
+                    } else {
+                        results += '<div class="test-result fail">❌ Orbitron font not loaded</div>';
+                    }
+                    assetCheck.innerHTML = results;
+                });
+            }
+        }
+
+        function checkInterface() {
+            const interfaceCheck = document.getElementById('interface-check');
+            interfaceCheck.innerHTML = '<div class="info">Checking interface elements...</div>';
+            
+            let results = '';
+            
+            // Check for sci-fi elements in the current page
+            const sciFiContainer = document.querySelector('.sci-fi-container');
+            const sciFiLoader = document.querySelector('.sci-fi-loader');
+            const sciFiHeader = document.querySelector('.sci-fi-header');
+            
+            if (sciFiContainer) {
+                results += '<div class="test-result pass">✅ Sci-Fi container found</div>';
+            } else {
+                results += '<div class="test-result fail">❌ Sci-Fi container not found</div>';
+            }
+            
+            if (sciFiLoader) {
+                results += '<div class="test-result pass">✅ Sci-Fi loader found</div>';
+            } else {
+                results += '<div class="test-result fail">❌ Sci-Fi loader not found</div>';
+            }
+            
+            if (sciFiHeader) {
+                results += '<div class="test-result pass">✅ Sci-Fi header found</div>';
+            } else {
+                results += '<div class="test-result fail">❌ Sci-Fi header not found</div>';
+            }
+            
+            // Check computed styles
+            if (sciFiContainer) {
+                const containerStyle = window.getComputedStyle(sciFiContainer);
+                results += `<div class="test-result info">Container background: ${containerStyle.backgroundColor}</div>`;
+                results += `<div class="test-result info">Container color: ${containerStyle.color}</div>`;
+            }
+            
+            interfaceCheck.innerHTML = results;
+        }
+
+        // Auto-run tests on page load
+        window.onload = function() {
+            setTimeout(() => {
+                checkFiles();
+                setTimeout(checkCSS, 1000);
+                setTimeout(checkJS, 2000);
+                setTimeout(checkAssets, 3000);
+                setTimeout(checkInterface, 4000);
+            }, 500);
+        };
+    </script>
+</body>
+</html>

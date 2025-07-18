@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeeky AI Interface Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-pass {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .test-fail {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .test-loading {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .button-group {
+            margin: 20px 0;
+            text-align: center;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .sci-fi-btn {
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚀 Zeeky AI Interface Test Dashboard</h1>
+        
+        <div class="button-group">
+            <button onclick="testOriginal()">Test Original Interface</button>
+            <button onclick="testSciFi()" class="sci-fi-btn">Test Sci-Fi Interface</button>
+            <button onclick="runTests()">Run All Tests</button>
+        </div>
+
+        <div id="test-results">
+            <div class="test-item test-loading">
+                <strong>🔄 Interface Test Status:</strong> Ready to test
+            </div>
+        </div>
+
+        <iframe id="test-frame" src="about:blank"></iframe>
+
+        <div id="detailed-tests">
+            <h3>🧪 Detailed Test Results</h3>
+            <div id="css-test" class="test-item test-loading">
+                <strong>CSS Loading Test:</strong> <span id="css-status">Pending...</span>
+            </div>
+            <div id="js-test" class="test-item test-loading">
+                <strong>JavaScript Loading Test:</strong> <span id="js-status">Pending...</span>
+            </div>
+            <div id="files-test" class="test-item test-loading">
+                <strong>File Accessibility Test:</strong> <span id="files-status">Pending...</span>
+            </div>
+            <div id="interface-test" class="test-item test-loading">
+                <strong>Interface Elements Test:</strong> <span id="interface-status">Pending...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function testOriginal() {
+            document.getElementById('test-frame').src = 'index.html';
+            updateTestStatus('Testing Original Interface...', 'loading');
+        }
+
+        function testSciFi() {
+            document.getElementById('test-frame').src = 'sci-fi-index.html';
+            updateTestStatus('Testing Sci-Fi Interface...', 'loading');
+        }
+
+        function updateTestStatus(message, status) {
+            const testResults = document.getElementById('test-results');
+            const statusClass = status === 'pass' ? 'test-pass' : 
+                               status === 'fail' ? 'test-fail' : 'test-loading';
+            testResults.innerHTML = `<div class="test-item ${statusClass}"><strong>🔄 Interface Test Status:</strong> ${message}</div>`;
+        }
+
+        async function runTests() {
+            updateTestStatus('Running comprehensive tests...', 'loading');
+            
+            // Test CSS file accessibility
+            try {
+                const cssResponse = await fetch('styles/sci-fi-interface.css');
+                if (cssResponse.ok) {
+                    document.getElementById('css-status').textContent = '✅ CSS file loaded successfully';
+                    document.getElementById('css-test').className = 'test-item test-pass';
+                } else {
+                    throw new Error('CSS file not accessible');
+                }
+            } catch (error) {
+                document.getElementById('css-status').textContent = '❌ CSS file failed to load: ' + error.message;
+                document.getElementById('css-test').className = 'test-item test-fail';
+            }
+
+            // Test JavaScript file accessibility
+            try {
+                const jsResponse = await fetch('scripts/sci-fi-interface.js');
+                if (jsResponse.ok) {
+                    document.getElementById('js-status').textContent = '✅ JavaScript file loaded successfully';
+                    document.getElementById('js-test').className = 'test-item test-pass';
+                } else {
+                    throw new Error('JavaScript file not accessible');
+                }
+            } catch (error) {
+                document.getElementById('js-status').textContent = '❌ JavaScript file failed to load: ' + error.message;
+                document.getElementById('js-test').className = 'test-item test-fail';
+            }
+
+            // Test theme files
+            try {
+                const themeResponse = await fetch('themes/personality-themes.css');
+                if (themeResponse.ok) {
+                    document.getElementById('files-status').textContent = '✅ All theme files accessible';
+                    document.getElementById('files-test').className = 'test-item test-pass';
+                } else {
+                    throw new Error('Theme files not accessible');
+                }
+            } catch (error) {
+                document.getElementById('files-status').textContent = '❌ Theme files failed to load: ' + error.message;
+                document.getElementById('files-test').className = 'test-item test-fail';
+            }
+
+            // Test interface elements
+            setTimeout(() => {
+                const frame = document.getElementById('test-frame');
+                try {
+                    const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                    const sciFiElements = frameDoc.querySelector('.sci-fi-container');
+                    const loader = frameDoc.querySelector('.sci-fi-loader');
+                    const header = frameDoc.querySelector('.sci-fi-header');
+                    
+                    if (sciFiElements && loader && header) {
+                        document.getElementById('interface-status').textContent = '✅ All sci-fi interface elements found';
+                        document.getElementById('interface-test').className = 'test-item test-pass';
+                        updateTestStatus('✅ All tests passed! Sci-Fi interface is working correctly.', 'pass');
+                    } else {
+                        throw new Error('Sci-fi interface elements not found');
+                    }
+                } catch (error) {
+                    document.getElementById('interface-status').textContent = '❌ Interface elements test failed: ' + error.message;
+                    document.getElementById('interface-test').className = 'test-item test-fail';
+                    updateTestStatus('❌ Some tests failed. Check detailed results below.', 'fail');
+                }
+            }, 2000);
+        }
+
+        // Auto-load sci-fi interface on page load
+        window.onload = function() {
+            testSciFi();
+            setTimeout(runTests, 1000);
+        };
+    </script>
+</body>
+</html>
