@@ -1,4 +1,2 @@
 [build]
   publish = "."
-
-# No redirects - serve everything as static files
