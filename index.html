@@ -6,25 +6,33 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Zeeky AI - Advanced AI Assistant</title>
+    <title>Zeeky AI - Smart Home Hub</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="assets/zeeky-logo.svg">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* ZEEKY AI - UNIFIED PROFESSIONAL INTERFACE */
+        /* ZEEKY AI - SMART HOME HUB DASHBOARD */
         :root {
             --matrix-green: #00ff41;
             --matrix-blue: #00d4ff;
+            --matrix-purple: #8a2be2;
+            --matrix-orange: #ff6b35;
             --dark-bg: #000000;
             --dark-panel: #0a0a0a;
+            --widget-bg: #111111;
             --border-glow: #00ff4150;
             --text-dim: #00ff4180;
             --danger: #ff0040;
             --warning: #ffaa00;
             --success: #00ff41;
+            --info: #00d4ff;
+            --widget-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            --hover-glow: 0 0 30px rgba(0, 255, 65, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
             background: var(--dark-bg);
@@ -33,6 +41,9 @@
             overflow-x: hidden;
             position: relative;
             line-height: 1.6;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 65, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
         }
 
         /* MATRIX LOADING SCREEN */
@@ -47,12 +58,107 @@
             z-index: 10000;
             transition: opacity 0.5s ease;
         }
-        
+
         .loader.hidden { opacity: 0; pointer-events: none; }
-        
+
         .loader-content {
             text-align: center;
             animation: matrixGlow 2s ease-in-out infinite alternate;
+        }
+
+        /* DASHBOARD LAYOUT */
+        .dashboard-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-header {
+            height: 80px;
+            background: var(--dark-panel);
+            border-bottom: 2px solid var(--border-glow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--matrix-green), var(--matrix-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--dark-bg);
+            box-shadow: var(--widget-shadow);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--matrix-green);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .voice-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--widget-bg);
+            border: 2px solid var(--border-glow);
+            color: var(--matrix-green);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-button:hover {
+            box-shadow: var(--hover-glow);
+            transform: scale(1.05);
+        }
+
+        .voice-button.listening {
+            background: var(--matrix-green);
+            color: var(--dark-bg);
+            animation: pulse 1s infinite;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
         }
         
         .logo-matrix {
@@ -62,14 +168,14 @@
             text-shadow: 0 0 20px var(--matrix-green);
             margin-bottom: 1rem;
         }
-        
+
         .loading-text {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        
+
         .loading-bar {
             width: 300px;
             height: 4px;
@@ -78,172 +184,439 @@
             margin: 1rem auto;
             overflow: hidden;
         }
-        
+
         .loading-progress {
             height: 100%;
             background: linear-gradient(90deg, var(--matrix-green), var(--matrix-blue));
             width: 0%;
             animation: loadProgress 3s ease-in-out forwards;
         }
-        
+
         .status-line {
             font-size: 0.9rem;
             margin: 0.5rem 0;
             opacity: 0;
             animation: fadeInUp 0.5s ease forwards;
         }
-        
+
         .status-line:nth-child(1) { animation-delay: 0.5s; }
         .status-line:nth-child(2) { animation-delay: 1s; }
         .status-line:nth-child(3) { animation-delay: 1.5s; }
 
-        /* MAIN INTERFACE */
-        .app-container {
-            display: flex;
-            height: 100vh;
-            background: var(--dark-bg);
-        }
-        
-        .sidebar {
-            width: 300px;
-            background: var(--dark-panel);
-            border-right: 1px solid var(--border-glow);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
-        }
-        
-        .sidebar.collapsed {
-            transform: translateX(-100%);
-        }
-        
-        .header {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-glow);
-            text-align: center;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--matrix-green);
-            text-shadow: 0 0 10px var(--matrix-green);
-        }
-        
-        .status {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-top: 0.5rem;
-        }
-        
-        .nav-menu {
-            flex: 1;
-            padding: 1rem 0;
-        }
-        
-        .nav-item {
-            display: block;
-            padding: 0.8rem 1rem;
-            color: var(--text-dim);
-            text-decoration: none;
-            border-left: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            color: var(--matrix-green);
-            background: var(--border-glow);
-            border-left-color: var(--matrix-green);
-        }
-        
+        /* WIDGET GRID SYSTEM */
         .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .top-bar {
-            height: 60px;
-            background: var(--dark-panel);
-            border-bottom: 1px solid var(--border-glow);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1rem;
-        }
-        
-        .menu-toggle {
-            background: none;
-            border: 1px solid var(--border-glow);
-            color: var(--matrix-green);
-            padding: 0.5rem;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        
-        .content-area {
             flex: 1;
             padding: 2rem;
             overflow-y: auto;
         }
-        
-        .welcome-panel {
-            text-align: center;
-            max-width: 800px;
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 200px);
+            gap: 1.5rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
-        
-        .welcome-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 15px var(--matrix-green);
-        }
-        
-        .welcome-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            margin-bottom: 3rem;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .feature-card {
-            background: var(--dark-panel);
-            border: 1px solid var(--border-glow);
+
+        .widget {
+            background: var(--widget-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 16px;
             padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-            transition: all 0.3s ease;
             cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--widget-shadow);
         }
-        
-        .feature-card:hover {
+
+        .widget:hover {
             border-color: var(--matrix-green);
-            box-shadow: 0 0 20px var(--border-glow);
-            transform: translateY(-2px);
+            box-shadow: var(--hover-glow);
+            transform: translateY(-4px);
         }
-        
-        .feature-icon {
-            font-size: 2rem;
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--matrix-green), var(--matrix-blue));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .widget:hover::before {
+            opacity: 1;
+        }
+
+        .widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 1rem;
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--matrix-green);
+        }
+
+        .widget-icon {
+            font-size: 1.5rem;
             color: var(--matrix-blue);
         }
-        
-        .feature-title {
-            font-size: 1.1rem;
+
+        .widget-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .widget-value {
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
         }
-        
-        .feature-desc {
+
+        .widget-label {
             font-size: 0.9rem;
             color: var(--text-dim);
         }
+
+        /* SPECIFIC WIDGET STYLES */
+        .weather-widget {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--widget-bg), #001a33);
+        }
+
+        .calendar-widget {
+            grid-row: span 2;
+            background: linear-gradient(135deg, var(--widget-bg), #1a0033);
+        }
+
+        .smart-home-widget {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--widget-bg), #003300);
+        }
+
+        .news-widget {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--widget-bg), #330000);
+        }
+
+        .media-widget {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--widget-bg), #331a00);
+        }
+
+        .system-widget {
+            background: linear-gradient(135deg, var(--widget-bg), #001a1a);
+        }
+
+        .actions-widget {
+            background: linear-gradient(135deg, var(--widget-bg), #1a1a00);
+        }
+
+        .chat-widget {
+            grid-row: span 2;
+            background: linear-gradient(135deg, var(--widget-bg), #0d1a0d);
+        }
+
+        /* PAGE NAVIGATION SYSTEM */
+        .page {
+            display: none;
+            min-height: calc(100vh - 80px);
+            padding: 2rem;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-glow);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--matrix-green);
+            text-shadow: 0 0 10px var(--matrix-green);
+        }
+
+        .back-button {
+            background: var(--widget-bg);
+            border: 2px solid var(--border-glow);
+            color: var(--matrix-green);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            border-color: var(--matrix-green);
+            box-shadow: var(--hover-glow);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .breadcrumb-item {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--matrix-green);
+        }
+
+        .breadcrumb-separator {
+            color: var(--border-glow);
+        }
+
+        /* INTERACTIVE ELEMENTS */
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .control-group {
+            background: var(--widget-bg);
+            border: 2px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .control-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--matrix-green);
+            margin-bottom: 1rem;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--dark-panel);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .control-item:hover {
+            background: var(--border-glow);
+        }
+
+        .toggle-switch {
+            width: 60px;
+            height: 30px;
+            background: var(--dark-panel);
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active {
+            background: var(--matrix-green);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--matrix-green);
+            top: 2px;
+            left: 2px;
+            transition: var(--transition);
+        }
+
+        .toggle-switch.active::after {
+            background: var(--dark-bg);
+            transform: translateX(30px);
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            background: var(--dark-panel);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--matrix-green);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--matrix-green);
+        }
+        
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(auto, 200px);
+            }
+
+            .weather-widget,
+            .smart-home-widget,
+            .news-widget,
+            .media-widget {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header {
+                padding: 0 1rem;
+                height: 70px;
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .calendar-widget,
+            .chat-widget {
+                grid-row: span 1;
+            }
+
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .widget {
+                padding: 1rem;
+            }
+
+            .page {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes matrixGlow {
+            0% { text-shadow: 0 0 10px var(--matrix-green); }
+            100% { text-shadow: 0 0 20px var(--matrix-green), 0 0 30px var(--matrix-green); }
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* UTILITY CLASSES */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .slide-in { animation: slideIn 0.5s ease-in-out; }
+
+        .btn {
+            background: var(--widget-bg);
+            border: 2px solid var(--border-glow);
+            color: var(--matrix-green);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: 1rem;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .btn:hover {
+            border-color: var(--matrix-green);
+            box-shadow: var(--hover-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--matrix-green);
+            color: var(--dark-bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--matrix-blue);
+        }
+
+        .text-center { text-align: center; }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        .text-info { color: var(--info); }
 
         /* ANIMATIONS */
         @keyframes matrixGlow {
@@ -290,163 +663,694 @@
     <div class="loader" id="loader">
         <div class="loader-content">
             <div class="logo-matrix">Z</div>
-            <div class="loading-text">INITIALIZING ZEEKY AI MATRIX</div>
+            <div class="loading-text">INITIALIZING SMART HOME HUB</div>
             <div class="loading-bar">
                 <div class="loading-progress"></div>
             </div>
             <div class="status">
-                <div class="status-line">► Neural Networks: ONLINE</div>
-                <div class="status-line">► Personality Matrix: ACTIVE</div>
-                <div class="status-line">► Quantum Processors: READY</div>
+                <div class="status-line">► Smart Devices: CONNECTING</div>
+                <div class="status-line">► AI Systems: ONLINE</div>
+                <div class="status-line">► Home Network: SECURED</div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APPLICATION -->
-    <div class="app-container hidden" id="app">
-        <!-- SIDEBAR -->
-        <nav class="sidebar" id="sidebar">
-            <div class="header">
-                <div class="logo">ZEEKY AI</div>
-                <div class="status">● ONLINE</div>
+    <!-- SMART HOME DASHBOARD -->
+    <div class="dashboard-container hidden" id="app">
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="logo-section">
+                <div class="logo-icon">Z</div>
+                <div class="logo-text">ZEEKY HOME</div>
             </div>
-            <div class="nav-menu">
-                <a href="#" class="nav-item active" data-section="home">🏠 Home</a>
-                <a href="#" class="nav-item" data-section="chat">💬 AI Chat</a>
-                <a href="#" class="nav-item" data-section="voice">🎤 Voice Assistant</a>
-                <a href="#" class="nav-item" data-section="files">📁 File Analysis</a>
-                <a href="#" class="nav-item" data-section="analytics">📊 Analytics</a>
-                <a href="#" class="nav-item" data-section="settings">⚙️ Settings</a>
-            </div>
-        </nav>
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <div class="top-bar">
-                <button class="menu-toggle" id="menuToggle">☰</button>
-                <div>Advanced AI Assistant Platform</div>
-                <div>🟢 Connected</div>
+            <div class="header-controls">
+                <button class="voice-button" id="voiceButton" title="Voice Control">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>CONNECTED</span>
+                </div>
             </div>
-            
-            <div class="content-area" id="content">
-                <!-- HOME SECTION -->
-                <div class="welcome-panel">
-                    <h1 class="welcome-title">ZEEKY AI MATRIX ONLINE</h1>
-                    <p class="welcome-subtitle">Neural pathways established. Revolutionary AI interface activated.</p>
-                    <p style="color: var(--success); font-size: 1.1rem;">🚀 ALL SYSTEMS OPERATIONAL 🚀</p>
-                    
-                    <div class="feature-grid">
-                        <div class="feature-card" data-feature="chat">
-                            <div class="feature-icon">🤖</div>
-                            <div class="feature-title">AI Chat</div>
-                            <div class="feature-desc">Intelligent conversations with advanced AI</div>
+        </header>
+
+        <!-- DASHBOARD PAGE -->
+        <div class="page active" id="dashboard-page">
+            <div class="main-content">
+                <div class="dashboard-grid">
+                    <!-- Weather Widget -->
+                    <div class="widget weather-widget" data-page="weather">
+                        <div class="widget-header">
+                            <div class="widget-title">Weather</div>
+                            <div class="widget-icon"><i class="fas fa-cloud-sun"></i></div>
                         </div>
-                        <div class="feature-card" data-feature="voice">
-                            <div class="feature-icon">🎙️</div>
-                            <div class="feature-title">Voice Assistant</div>
-                            <div class="feature-desc">Hands-free voice interactions</div>
+                        <div class="widget-content">
+                            <div class="widget-value">72°F</div>
+                            <div class="widget-label">Partly Cloudy</div>
                         </div>
-                        <div class="feature-card" data-feature="files">
-                            <div class="feature-icon">📄</div>
-                            <div class="feature-title">File Analysis</div>
-                            <div class="feature-desc">Upload and analyze documents</div>
+                    </div>
+
+                    <!-- Calendar Widget -->
+                    <div class="widget calendar-widget" data-page="calendar">
+                        <div class="widget-header">
+                            <div class="widget-title">Calendar</div>
+                            <div class="widget-icon"><i class="fas fa-calendar"></i></div>
                         </div>
-                        <div class="feature-card" data-feature="analytics">
-                            <div class="feature-icon">📈</div>
-                            <div class="feature-title">Analytics</div>
-                            <div class="feature-desc">Usage insights and statistics</div>
+                        <div class="widget-content">
+                            <div class="widget-value">3</div>
+                            <div class="widget-label">Events Today</div>
+                        </div>
+                    </div>
+
+                    <!-- Smart Home Controls -->
+                    <div class="widget smart-home-widget" data-page="smart-home">
+                        <div class="widget-header">
+                            <div class="widget-title">Smart Home</div>
+                            <div class="widget-icon"><i class="fas fa-home"></i></div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-value">8/12</div>
+                            <div class="widget-label">Devices Online</div>
+                        </div>
+                    </div>
+
+                    <!-- News Widget -->
+                    <div class="widget news-widget" data-page="news">
+                        <div class="widget-header">
+                            <div class="widget-title">News</div>
+                            <div class="widget-icon"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-value">12</div>
+                            <div class="widget-label">New Articles</div>
+                        </div>
+                    </div>
+
+                    <!-- Media Player -->
+                    <div class="widget media-widget" data-page="media">
+                        <div class="widget-header">
+                            <div class="widget-title">Media</div>
+                            <div class="widget-icon"><i class="fas fa-music"></i></div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-value">♪</div>
+                            <div class="widget-label">Now Playing</div>
+                        </div>
+                    </div>
+
+                    <!-- System Status -->
+                    <div class="widget system-widget" data-page="system">
+                        <div class="widget-header">
+                            <div class="widget-title">System</div>
+                            <div class="widget-icon"><i class="fas fa-cog"></i></div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-value">98%</div>
+                            <div class="widget-label">Performance</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="widget actions-widget" data-page="actions">
+                        <div class="widget-header">
+                            <div class="widget-title">Actions</div>
+                            <div class="widget-icon"><i class="fas fa-bolt"></i></div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-value">5</div>
+                            <div class="widget-label">Quick Actions</div>
+                        </div>
+                    </div>
+
+                    <!-- AI Chat -->
+                    <div class="widget chat-widget" data-page="chat">
+                        <div class="widget-header">
+                            <div class="widget-title">AI Assistant</div>
+                            <div class="widget-icon"><i class="fas fa-robot"></i></div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="widget-value">AI</div>
+                            <div class="widget-label">Ready to Help</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+
+        <!-- WEATHER PAGE -->
+        <div class="page" id="weather-page">
+            <div class="page-header">
+                <div class="page-title">Weather Center</div>
+                <button class="back-button" onclick="navigateTo('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+            <div class="breadcrumb">
+                <span class="breadcrumb-item" onclick="navigateTo('dashboard')">Dashboard</span>
+                <span class="breadcrumb-separator">></span>
+                <span class="breadcrumb-item">Weather</span>
+            </div>
+
+            <div class="control-panel">
+                <div class="control-group">
+                    <div class="control-title">Current Conditions</div>
+                    <div class="control-item">
+                        <span>Temperature</span>
+                        <span class="text-info">72°F</span>
+                    </div>
+                    <div class="control-item">
+                        <span>Humidity</span>
+                        <span class="text-info">65%</span>
+                    </div>
+                    <div class="control-item">
+                        <span>Wind Speed</span>
+                        <span class="text-info">8 mph</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-title">7-Day Forecast</div>
+                    <div class="control-item">
+                        <span>Today</span>
+                        <span class="text-success">72°F / 58°F</span>
+                    </div>
+                    <div class="control-item">
+                        <span>Tomorrow</span>
+                        <span class="text-success">75°F / 60°F</span>
+                    </div>
+                    <div class="control-item">
+                        <span>Wednesday</span>
+                        <span class="text-warning">68°F / 55°F</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CALENDAR PAGE -->
+        <div class="page" id="calendar-page">
+            <div class="page-header">
+                <div class="page-title">Calendar Management</div>
+                <button class="back-button" onclick="navigateTo('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+            <div class="breadcrumb">
+                <span class="breadcrumb-item" onclick="navigateTo('dashboard')">Dashboard</span>
+                <span class="breadcrumb-separator">></span>
+                <span class="breadcrumb-item">Calendar</span>
+            </div>
+
+            <div class="control-panel">
+                <div class="control-group">
+                    <div class="control-title">Today's Events</div>
+                    <div class="control-item">
+                        <span>9:00 AM - Team Meeting</span>
+                        <button class="btn">Edit</button>
+                    </div>
+                    <div class="control-item">
+                        <span>2:00 PM - Doctor Appointment</span>
+                        <button class="btn">Edit</button>
+                    </div>
+                    <div class="control-item">
+                        <span>6:00 PM - Dinner with Family</span>
+                        <button class="btn">Edit</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-title">Quick Actions</div>
+                    <button class="btn btn-primary" onclick="createEvent()">Create New Event</button>
+                    <button class="btn" onclick="viewWeek()">View Week</button>
+                    <button class="btn" onclick="viewMonth()">View Month</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SMART HOME PAGE -->
+        <div class="page" id="smart-home-page">
+            <div class="page-header">
+                <div class="page-title">Smart Home Control</div>
+                <button class="back-button" onclick="navigateTo('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+            <div class="breadcrumb">
+                <span class="breadcrumb-item" onclick="navigateTo('dashboard')">Dashboard</span>
+                <span class="breadcrumb-separator">></span>
+                <span class="breadcrumb-item">Smart Home</span>
+            </div>
+
+            <div class="control-panel">
+                <div class="control-group">
+                    <div class="control-title">Lighting</div>
+                    <div class="control-item">
+                        <span>Living Room</span>
+                        <div class="toggle-switch active" onclick="toggleDevice(this)"></div>
+                    </div>
+                    <div class="control-item">
+                        <span>Kitchen</span>
+                        <div class="toggle-switch" onclick="toggleDevice(this)"></div>
+                    </div>
+                    <div class="control-item">
+                        <span>Bedroom</span>
+                        <div class="toggle-switch active" onclick="toggleDevice(this)"></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-title">Climate Control</div>
+                    <div class="control-item">
+                        <span>Temperature: <span id="temp-display">72°F</span></span>
+                        <input type="range" class="slider" min="60" max="80" value="72" onchange="updateTemperature(this.value)">
+                    </div>
+                    <div class="control-item">
+                        <span>Fan Speed</span>
+                        <div class="toggle-switch" onclick="toggleDevice(this)"></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-title">Security</div>
+                    <div class="control-item">
+                        <span>Alarm System</span>
+                        <div class="toggle-switch active" onclick="toggleDevice(this)"></div>
+                    </div>
+                    <div class="control-item">
+                        <span>Door Locks</span>
+                        <div class="toggle-switch active" onclick="toggleDevice(this)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // ZEEKY AI - UNIFIED INTERFACE CONTROLLER
-        class ZeekyAI {
+        // ZEEKY AI - SMART HOME HUB CONTROLLER
+        class ZeekySmartHome {
             constructor() {
-                this.currentSection = 'home';
-                this.sidebarCollapsed = false;
+                this.currentPage = 'dashboard';
+                this.isListening = false;
+                this.devices = {
+                    lights: { livingRoom: true, kitchen: false, bedroom: true },
+                    climate: { temperature: 72, fanSpeed: false },
+                    security: { alarm: true, locks: true }
+                };
                 this.init();
             }
-            
+
             init() {
                 this.setupEventListeners();
                 this.startLoadingSequence();
+                this.initializeVoiceControl();
+                this.startRealTimeUpdates();
             }
-            
+
             setupEventListeners() {
-                // Menu toggle
-                document.getElementById('menuToggle').addEventListener('click', () => {
-                    this.toggleSidebar();
-                });
-                
-                // Navigation
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        this.switchSection(item.dataset.section);
+                // Widget navigation
+                document.querySelectorAll('.widget').forEach(widget => {
+                    widget.addEventListener('click', () => {
+                        const page = widget.dataset.page;
+                        if (page) {
+                            this.navigateTo(page);
+                        }
                     });
                 });
-                
-                // Feature cards
-                document.querySelectorAll('.feature-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        this.activateFeature(card.dataset.feature);
-                    });
+
+                // Voice button
+                document.getElementById('voiceButton').addEventListener('click', () => {
+                    this.toggleVoiceControl();
                 });
+
+                // Touch optimization for mobile
+                this.setupTouchEvents();
             }
-            
+
             startLoadingSequence() {
                 // Hide loader after 3 seconds
                 setTimeout(() => {
                     document.getElementById('loader').classList.add('hidden');
                     document.getElementById('app').classList.remove('hidden');
-                    console.log('🚀 Zeeky AI Interface Loaded Successfully!');
+                    console.log('🏠 Smart Home Hub Loaded Successfully!');
+                    this.showWelcomeMessage();
                 }, 3000);
             }
-            
-            toggleSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                this.sidebarCollapsed = !this.sidebarCollapsed;
-                sidebar.classList.toggle('collapsed', this.sidebarCollapsed);
-            }
-            
-            switchSection(section) {
-                // Update active nav item
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.toggle('active', item.dataset.section === section);
+
+            navigateTo(page) {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(p => {
+                    p.classList.remove('active');
                 });
-                
-                this.currentSection = section;
-                console.log(`Switched to section: ${section}`);
-                
-                // Here you would load different content based on section
-                // For now, we'll just log it
+
+                // Show target page
+                const targetPage = document.getElementById(`${page}-page`);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    targetPage.classList.add('fade-in');
+                    this.currentPage = page;
+                    console.log(`Navigated to: ${page}`);
+                }
             }
-            
-            activateFeature(feature) {
-                console.log(`Activating feature: ${feature}`);
-                // Here you would implement the specific feature functionality
-                alert(`${feature.toUpperCase()} feature activated! (Implementation coming soon)`);
+
+            toggleVoiceControl() {
+                const voiceButton = document.getElementById('voiceButton');
+                this.isListening = !this.isListening;
+
+                if (this.isListening) {
+                    voiceButton.classList.add('listening');
+                    voiceButton.innerHTML = '<i class="fas fa-stop"></i>';
+                    this.startVoiceRecognition();
+                } else {
+                    voiceButton.classList.remove('listening');
+                    voiceButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    this.stopVoiceRecognition();
+                }
+            }
+
+            startVoiceRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+                    this.recognition.continuous = true;
+                    this.recognition.interimResults = true;
+
+                    this.recognition.onresult = (event) => {
+                        const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                        this.processVoiceCommand(transcript);
+                    };
+
+                    this.recognition.start();
+                    console.log('🎤 Voice recognition started');
+                } else {
+                    alert('Voice recognition not supported in this browser');
+                }
+            }
+
+            stopVoiceRecognition() {
+                if (this.recognition) {
+                    this.recognition.stop();
+                    console.log('🎤 Voice recognition stopped');
+                }
+            }
+
+            processVoiceCommand(command) {
+                console.log('Voice command:', command);
+
+                if (command.includes('turn on lights')) {
+                    this.controlDevice('lights', 'livingRoom', true);
+                    this.speak('Living room lights turned on');
+                } else if (command.includes('turn off lights')) {
+                    this.controlDevice('lights', 'livingRoom', false);
+                    this.speak('Living room lights turned off');
+                } else if (command.includes('set temperature')) {
+                    const temp = command.match(/\d+/);
+                    if (temp) {
+                        this.updateTemperature(temp[0]);
+                        this.speak(`Temperature set to ${temp[0]} degrees`);
+                    }
+                } else if (command.includes('show weather')) {
+                    this.navigateTo('weather');
+                    this.speak('Showing weather information');
+                } else if (command.includes('go home') || command.includes('dashboard')) {
+                    this.navigateTo('dashboard');
+                    this.speak('Returning to dashboard');
+                }
+            }
+
+            speak(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = 0.8;
+                    utterance.pitch = 1;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            initializeVoiceControl() {
+                // Wake word detection simulation
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    console.log('🎤 Voice control initialized - Say "Hey Zeeky" to activate');
+                }
+            }
+
+            startRealTimeUpdates() {
+                // Simulate real-time data updates
+                setInterval(() => {
+                    this.updateWeatherData();
+                    this.updateSystemStatus();
+                }, 30000); // Update every 30 seconds
+            }
+
+            updateWeatherData() {
+                // Simulate weather data updates
+                const temps = [70, 71, 72, 73, 74];
+                const newTemp = temps[Math.floor(Math.random() * temps.length)];
+                const weatherWidget = document.querySelector('.weather-widget .widget-value');
+                if (weatherWidget) {
+                    weatherWidget.textContent = `${newTemp}°F`;
+                }
+            }
+
+            updateSystemStatus() {
+                // Simulate system performance updates
+                const performance = Math.floor(Math.random() * 5) + 95; // 95-99%
+                const systemWidget = document.querySelector('.system-widget .widget-value');
+                if (systemWidget) {
+                    systemWidget.textContent = `${performance}%`;
+                }
+            }
+
+            setupTouchEvents() {
+                // Add touch feedback for mobile devices
+                document.querySelectorAll('.widget, .btn, .control-item').forEach(element => {
+                    element.addEventListener('touchstart', () => {
+                        element.style.transform = 'scale(0.95)';
+                    });
+
+                    element.addEventListener('touchend', () => {
+                        element.style.transform = '';
+                    });
+                });
+            }
+
+            showWelcomeMessage() {
+                setTimeout(() => {
+                    this.speak('Welcome to your smart home hub. All systems are online and ready.');
+                }, 1000);
+            }
+
+            controlDevice(category, device, state) {
+                this.devices[category][device] = state;
+                console.log(`${category}.${device} set to ${state}`);
+
+                // Update UI if on smart home page
+                if (this.currentPage === 'smart-home') {
+                    this.updateDeviceUI(category, device, state);
+                }
+            }
+
+            updateDeviceUI(category, device, state) {
+                // Update toggle switches and other UI elements
+                const deviceElements = document.querySelectorAll('.toggle-switch');
+                deviceElements.forEach(toggle => {
+                    // This would be more sophisticated in a real implementation
+                    // with proper device identification
+                });
             }
         }
         
-        // Initialize Zeeky AI when page loads
+        // UTILITY FUNCTIONS
+        function navigateTo(page) {
+            window.smartHome.navigateTo(page);
+        }
+
+        function toggleDevice(element) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+
+            // Add haptic feedback on mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+
+            // Visual feedback
+            element.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                element.style.transform = '';
+            }, 150);
+
+            console.log('Device toggled:', isActive);
+        }
+
+        function updateTemperature(value) {
+            document.getElementById('temp-display').textContent = `${value}°F`;
+            window.smartHome.devices.climate.temperature = parseInt(value);
+            console.log('Temperature updated to:', value);
+        }
+
+        function createEvent() {
+            const eventName = prompt('Enter event name:');
+            const eventTime = prompt('Enter event time (e.g., 3:00 PM):');
+
+            if (eventName && eventTime) {
+                alert(`Event "${eventName}" scheduled for ${eventTime}`);
+                console.log('Event created:', { name: eventName, time: eventTime });
+            }
+        }
+
+        function viewWeek() {
+            alert('Week view would open here');
+            console.log('Week view requested');
+        }
+
+        function viewMonth() {
+            alert('Month view would open here');
+            console.log('Month view requested');
+        }
+
+        // DRAG AND DROP FUNCTIONALITY
+        function enableDragAndDrop() {
+            const widgets = document.querySelectorAll('.widget');
+
+            widgets.forEach(widget => {
+                widget.draggable = true;
+
+                widget.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', widget.dataset.page);
+                    widget.style.opacity = '0.5';
+                });
+
+                widget.addEventListener('dragend', () => {
+                    widget.style.opacity = '';
+                });
+
+                widget.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+
+                widget.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const draggedPage = e.dataTransfer.getData('text/plain');
+                    console.log('Widget repositioned:', draggedPage);
+                });
+            });
+        }
+
+        // KEYBOARD SHORTCUTS
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'h':
+                            e.preventDefault();
+                            navigateTo('dashboard');
+                            break;
+                        case 'w':
+                            e.preventDefault();
+                            navigateTo('weather');
+                            break;
+                        case 'c':
+                            e.preventDefault();
+                            navigateTo('calendar');
+                            break;
+                        case 's':
+                            e.preventDefault();
+                            navigateTo('smart-home');
+                            break;
+                    }
+                }
+
+                // Voice activation with spacebar
+                if (e.code === 'Space' && e.ctrlKey) {
+                    e.preventDefault();
+                    window.smartHome.toggleVoiceControl();
+                }
+            });
+        }
+
+        // NOTIFICATION SYSTEM
+        function showNotification(title, message, type = 'info') {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: message,
+                    icon: '/assets/zeeky-logo.svg'
+                });
+            }
+
+            // Also show in-app notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <strong>${title}</strong><br>
+                ${message}
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // INITIALIZE APPLICATION
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 DOM Content Loaded - Initializing Zeeky AI');
+            console.log('🏠 DOM Content Loaded - Initializing Smart Home Hub');
             console.log('Current URL:', window.location.href);
             console.log('Timestamp:', new Date().toISOString());
-            window.zeekyAI = new ZeekyAI();
+
+            window.smartHome = new ZeekySmartHome();
+
+            // Enable additional features
+            enableDragAndDrop();
+            setupKeyboardShortcuts();
+
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
         });
-        
-        // Service Worker registration
+
+        // SERVICE WORKER REGISTRATION
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
-                .then(registration => console.log('✅ Service Worker registered'))
+                .then(registration => {
+                    console.log('✅ Service Worker registered');
+                    showNotification('System Ready', 'Smart Home Hub is online and ready');
+                })
                 .catch(error => console.log('❌ Service Worker registration failed:', error));
         }
+
+        // WAKE WORD DETECTION (Simulated)
+        let wakeWordActive = false;
+
+        function initWakeWordDetection() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const wakeWordRecognition = new SpeechRecognition();
+
+                wakeWordRecognition.continuous = true;
+                wakeWordRecognition.interimResults = false;
+
+                wakeWordRecognition.onresult = (event) => {
+                    const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+
+                    if (transcript.includes('hey zeeky') || transcript.includes('hey zeke')) {
+                        wakeWordActive = true;
+                        window.smartHome.toggleVoiceControl();
+                        window.smartHome.speak('Yes, how can I help you?');
+                    }
+                };
+
+                // Start wake word detection after a delay
+                setTimeout(() => {
+                    wakeWordRecognition.start();
+                    console.log('🎤 Wake word detection active - Say "Hey Zeeky"');
+                }, 5000);
+            }
+        }
+
+        // Initialize wake word detection
+        setTimeout(initWakeWordDetection, 3000);
     </script>
 </body>
 </html>
