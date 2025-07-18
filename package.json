@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npx http-server . -p 8000",
     "build": "echo 'Static build ready'",
+    "netlify-build": "echo 'Netlify build - static site ready'",
     "vercel-build": "echo 'Vercel deployment ready'"
   },
   "repository": {
