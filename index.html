@@ -31,6 +31,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/modern-ui.css">
     <link rel="stylesheet" href="styles/futuristic-dashboard.css">
+    <link rel="stylesheet" href="styles/sci-fi-interface.css">
+    <link rel="stylesheet" href="themes/personality-themes.css">
+
+    <!-- Sci-Fi Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -38,282 +43,300 @@
     <!-- Theme Color -->
     <meta name="theme-color" content="#1a73e8">
 </head>
-<body class="dashboard-container">
-    <!-- Animated Background -->
-    <div class="dashboard-bg"></div>
-
-    <!-- Modern App Container -->
-    <div class="app-container">
-        <!-- Modern Sidebar -->
-        <aside class="modern-sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <img src="assets/zeeky-logo.svg" alt="Zeeky AI Logo" class="logo-image" style="filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));">
-                    <span class="logo-text">Zeeky AI</span>
-                </div>
-                <button class="sidebar-toggle" id="sidebar-toggle">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
+<body class="sci-fi-container">
+    <!-- Sci-Fi Loading Screen -->
+    <div id="sci-fi-loader" class="sci-fi-loader">
+        <div class="loader-content">
+            <div class="hologram-logo">
+                <img src="assets/zeeky-logo.svg" alt="Zeeky AI" class="hologram-img">
+                <div class="hologram-glow"></div>
             </div>
-
-            <button class="new-chat-btn" id="new-chat-btn">
-                <i class="fas fa-plus"></i>
-                <span>New Chat</span>
-            </button>
-
-            <!-- Chat History Section -->
-            <div class="chat-history-section">
-                <div class="section-title">Recent Chats</div>
-                <div class="chat-history" id="chat-history">
-                    <!-- Chat history items will be populated here -->
+            <div class="loading-text">
+                <span class="loading-label">INITIALIZING ZEEKY AI MATRIX</span>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+                <div class="system-status">
+                    <div class="status-line">► Neural Networks: <span class="status-ok">ONLINE</span></div>
+                    <div class="status-line">► Personality Matrix: <span class="status-ok">ACTIVE</span></div>
+                    <div class="status-line">► Quantum Processors: <span class="status-ok">READY</span></div>
                 </div>
             </div>
-            
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">Features</div>
-                    <div class="nav-item" id="collaboration-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        Collaboration
-                    </div>
-                    <div class="nav-item" id="personalities-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-theater-masks"></i>
-                        </div>
-                        AI Personalities
-                        <div class="personality-indicator" id="personality-indicator">
-                            <span class="current-personality">Default</span>
-                        </div>
-                    </div>
-                    <div class="nav-item" id="code-lab-nav" onclick="window.open('features/code-lab.html', '_blank')">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        Code Laboratory
-                    </div>
-                    <div class="nav-item" id="smart-home-nav" onclick="window.open('smart-home.html', '_blank')">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        Smart Home
-                    </div>
-                    <div class="nav-item" id="car-mode-nav" onclick="window.open('car-mode.html', '_blank')">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-car"></i>
-                        </div>
-                        Car Mode
-                    </div>
-                    <div class="nav-item" id="vision-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        Vision AI
-                    </div>
-                    <div class="nav-item" id="workflows-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-project-diagram"></i>
-                        </div>
-                        Workflows
-                    </div>
-                    <div class="nav-item" id="testing-nav" onclick="window.open('testing-dashboard.html', '_blank')">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-vial"></i>
-                        </div>
-                        Testing Dashboard
-                    </div>
-                </div>
-                
-                <div class="nav-section">
-                    <div class="nav-section-title">Tools</div>
-                    <div class="nav-item" id="voice-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-microphone"></i>
-                        </div>
-                        Voice Chat
-                    </div>
-                    <div class="nav-item" id="files-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-paperclip"></i>
-                        </div>
-                        File Upload
-                    </div>
-                    <div class="nav-item" id="analytics-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        Analytics
-                    </div>
-                </div>
-                
-                <div class="nav-section">
-                    <div class="nav-section-title">Settings</div>
-                    <div class="nav-item" id="theme-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        Themes
-                    </div>
-                    <div class="nav-item" id="settings-nav">
-                        <div class="nav-item-icon">
-                            <i class="fas fa-cog"></i>
-                        </div>
-                        Settings
-                    </div>
-                </div>
-            </nav>
-        </aside>
+        </div>
+    </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Modern Header -->
-            <header class="modern-header">
-                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="header-title-container" style="display: flex; align-items: center; gap: 1rem;">
-                    <img src="assets/zeeky-logo.svg" alt="Zeeky AI" class="header-logo" style="width: 40px; height: 40px; filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));">
-                    <h1 class="header-title" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Zeeky AI</h1>
-                </div>
-                <div class="header-actions">
-                    <button class="header-btn" id="theme-toggle" title="Toggle Theme">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="header-btn" id="help-btn" title="Help">
-                        <i class="fas fa-question-circle"></i>
-                    </button>
-                </div>
-            </header>
+    <!-- Animated Sci-Fi Background -->
+    <div class="sci-fi-bg">
+        <div class="matrix-rain"></div>
+        <div class="neural-network"></div>
+        <div class="particle-field"></div>
+    </div>
 
-            <!-- Chat Container -->
-            <div class="chat-container">
-                <!-- Welcome Screen (shown when no messages) -->
-                <div class="welcome-screen" id="welcome-screen">
-                    <div class="welcome-content">
-                        <div class="welcome-logo">
-                            <img src="assets/zeeky-logo.svg" alt="Zeeky AI" class="logo-icon large" style="width: 80px; height: 80px; filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));">
-                            <h1>Welcome to Zeeky AI</h1>
-                            <p>Your revolutionary AI assistant with advanced capabilities</p>
-                        </div>
-
-                        <!-- Quick Action Cards -->
-                        <div class="quick-actions dashboard-main" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
-                            <div class="action-card dashboard-card" data-action="collaboration" style="background: var(--card-bg, rgba(15, 15, 25, 0.8)); border: 1px solid var(--border-glow, rgba(99, 102, 241, 0.3)); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(20px); transition: all 0.3s ease;">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="card-icon" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);"><i class="fas fa-users"></i></div>
-                                        Team Collaboration
-                                    </div>
-                                </div>
-                                <p style="color: var(--text-secondary, #a1a1aa);">Work together in real-time with advanced AI assistance</p>
-                            </div>
-                            <div class="action-card dashboard-card" data-action="code" style="background: var(--card-bg, rgba(15, 15, 25, 0.8)); border: 1px solid var(--border-glow, rgba(99, 102, 241, 0.3)); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(20px); transition: all 0.3s ease;">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="card-icon" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);"><i class="fas fa-code"></i></div>
-                                        Code Laboratory
-                                    </div>
-                                </div>
-                                <p style="color: var(--text-secondary, #a1a1aa);">Execute code in multiple languages with AI assistance</p>
-                            </div>
-                            <div class="action-card dashboard-card" data-action="vision" style="background: var(--card-bg, rgba(15, 15, 25, 0.8)); border: 1px solid var(--border-glow, rgba(99, 102, 241, 0.3)); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(20px); transition: all 0.3s ease;">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="card-icon" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);"><i class="fas fa-eye"></i></div>
-                                        Vision AI
-                                    </div>
-                                </div>
-                                <p style="color: var(--text-secondary, #a1a1aa);">Analyze and generate images with advanced AI</p>
-                            </div>
-                            <div class="action-card dashboard-card" data-action="personalities" style="background: var(--card-bg, rgba(15, 15, 25, 0.8)); border: 1px solid var(--border-glow, rgba(99, 102, 241, 0.3)); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(20px); transition: all 0.3s ease;">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="card-icon" style="background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);"><i class="fas fa-theater-masks"></i></div>
-                                        AI Personalities
-                                    </div>
-                                </div>
-                                <p style="color: var(--text-secondary, #a1a1aa);">15+ unique AI assistants for different tasks</p>
-                            </div>
-                        </div>
-
-                        <!-- Suggested Prompts -->
-                        <div class="suggested-prompts">
-                            <div class="prompt-chip" data-prompt="Help me write a professional email">
-                                Help me write a professional email
-                            </div>
-                            <div class="prompt-chip" data-prompt="Explain quantum computing in simple terms">
-                                Explain quantum computing in simple terms
-                            </div>
-                            <div class="prompt-chip" data-prompt="Create a Python script for data analysis">
-                                Create a Python script for data analysis
-                            </div>
-                            <div class="prompt-chip" data-prompt="Design a modern website layout">
-                                Design a modern website layout
-                            </div>
-                        </div>
+    <!-- Main Sci-Fi Interface -->
+    <div class="sci-fi-interface">
+        <!-- Futuristic Header -->
+        <header class="sci-fi-header">
+            <div class="header-grid">
+                <div class="header-left">
+                    <div class="logo-hologram">
+                        <img src="assets/zeeky-logo.svg" alt="Zeeky AI" class="logo-3d">
+                        <div class="logo-glow"></div>
+                        <h1 class="logo-text">ZEEKY<span class="ai-suffix">AI</span></h1>
                     </div>
                 </div>
 
-                <!-- Chat Messages -->
-                <div class="chat-messages" id="chat-messages" style="display: none;">
-                    <!-- Messages will be populated here -->
-                </div>
-
-                <!-- Chat Input -->
-                <div class="chat-input-container">
-                    <!-- Model Selection -->
-                    <div class="model-selector" id="model-selector">
-                        <div class="model-info">
-                            <span class="model-name">Zeeky AI Pro</span>
-                            <span class="model-status">●</span>
-                        </div>
-                        <button class="model-dropdown-btn" id="model-dropdown-btn">
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                    </div>
-
-                    <div class="chat-input-wrapper">
-                        <div class="input-actions">
-                            <button class="input-action-btn" id="attach-btn" title="Attach file">
-                                <i class="fas fa-paperclip"></i>
-                            </button>
-                            <button class="input-action-btn" id="voice-btn" title="Voice input">
-                                <i class="fas fa-microphone"></i>
+                <div class="header-center">
+                    <div class="neural-search">
+                        <div class="search-frame">
+                            <input type="text" placeholder="NEURAL INTERFACE READY..." class="neural-input" id="main-search">
+                            <div class="search-particles"></div>
+                            <button class="neural-btn" id="neural-search-btn">
+                                <i class="fas fa-brain"></i>
                             </button>
                         </div>
-
-                        <!-- Hidden file input -->
-                        <input type="file" id="file-input" style="display: none;" multiple
-                               accept=".txt,.md,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.py,.js,.html,.css,.json,.csv,.xlsx">
-
-                        <!-- File upload area -->
-                        <div class="file-upload-area" id="file-upload-area" style="display: none;">
-                            <div class="upload-progress" id="upload-progress">
-                                <div class="progress-bar" id="progress-bar"></div>
-                                <div class="progress-text" id="progress-text">Uploading...</div>
-                            </div>
+                        <div class="voice-indicator" id="voice-indicator">
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
+                            <div class="voice-wave"></div>
                         </div>
-                        <textarea
-                            class="chat-input"
-                            id="chat-input"
-                            placeholder="Message Zeeky AI..."
-                            rows="1"
-                        ></textarea>
-                        <button class="send-btn" id="send-btn" disabled>
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
                     </div>
+                </div>
 
-                    <!-- Usage Indicator -->
-                    <div class="usage-indicator" id="usage-indicator">
-                        <div class="usage-text">Free plan • 15 messages remaining today</div>
-                        <button class="upgrade-btn">Upgrade</button>
+                <div class="header-right">
+                    <div class="control-panel">
+                        <button class="holo-btn" id="personality-selector" title="AI Personality Matrix">
+                            <i class="fas fa-user-astronaut"></i>
+                            <span class="btn-label">PERSONALITY</span>
+                        </button>
+                        <button class="holo-btn" id="games-portal" title="Gaming Portal">
+                            <i class="fas fa-gamepad"></i>
+                            <span class="btn-label">GAMES</span>
+                        </button>
+                        <button class="holo-btn" id="auth-portal" title="Authentication">
+                            <i class="fas fa-shield-alt"></i>
+                            <span class="btn-label">AUTH</span>
+                        </button>
+                        <div class="system-status-indicator">
+                            <div class="status-dot online"></div>
+                            <span class="status-text">ONLINE</span>
+                        </div>
                     </div>
                 </div>
             </div>
+        </header>
+
+        <!-- AI Avatar & Personality Selector -->
+        <div class="ai-avatar-container" id="ai-avatar-container">
+            <div class="avatar-hologram">
+                <div class="avatar-display" id="avatar-display">
+                    <div class="avatar-face" id="avatar-face">
+                        <div class="avatar-eyes">
+                            <div class="eye left-eye"></div>
+                            <div class="eye right-eye"></div>
+                        </div>
+                        <div class="avatar-mouth" id="avatar-mouth"></div>
+                    </div>
+                    <div class="avatar-glow"></div>
+                </div>
+                <div class="personality-info">
+                    <h3 class="personality-name" id="personality-name">ZEEKY DEFAULT</h3>
+                    <p class="personality-desc" id="personality-desc">Standard AI Assistant</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personality Selection Matrix -->
+        <div class="personality-matrix" id="personality-matrix">
+            <div class="matrix-header">
+                <h2>AI PERSONALITY MATRIX</h2>
+                <button class="close-matrix" id="close-matrix">×</button>
+            </div>
+            <div class="personality-grid">
+                <!-- Personalities will be populated by JavaScript -->
+            </div>
+        </div>
+        <!-- Sci-Fi Navigation Panel -->
+        <nav class="sci-fi-nav" id="sci-fi-nav">
+            <div class="nav-header">
+                <h3>SYSTEM MODULES</h3>
+            </div>
+            <div class="nav-modules">
+                <div class="nav-module" data-module="chat">
+                    <div class="module-icon"><i class="fas fa-comments"></i></div>
+                    <span class="module-name">NEURAL CHAT</span>
+                    <div class="module-status active"></div>
+                </div>
+                <div class="nav-module" data-module="vision">
+                    <div class="module-icon"><i class="fas fa-eye"></i></div>
+                    <span class="module-name">VISION AI</span>
+                    <div class="module-status active"></div>
+                </div>
+                <div class="nav-module" data-module="code">
+                    <div class="module-icon"><i class="fas fa-code"></i></div>
+                    <span class="module-name">CODE LAB</span>
+                    <div class="module-status active"></div>
+                </div>
+                <div class="nav-module" data-module="data">
+                    <div class="module-icon"><i class="fas fa-chart-bar"></i></div>
+                    <span class="module-name">DATA ANALYSIS</span>
+                    <div class="module-status active"></div>
+                </div>
+                <div class="nav-module" data-module="multimodal">
+                    <div class="module-icon"><i class="fas fa-magic"></i></div>
+                    <span class="module-name">MULTIMODAL</span>
+                    <div class="module-status active"></div>
+                </div>
+                <div class="nav-module" data-module="plugins">
+                    <div class="module-icon"><i class="fas fa-plug"></i></div>
+                    <span class="module-name">PLUGINS</span>
+                    <div class="module-status active"></div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Sci-Fi Interface -->
+        <main class="sci-fi-main">
+            <!-- Holographic Display Area -->
+            <div class="holographic-display">
+                <div class="display-grid">
+                    <!-- Left Panel: Chat Interface -->
+                    <div class="chat-panel">
+                        <div class="panel-header">
+                            <h3>NEURAL COMMUNICATION</h3>
+                            <div class="panel-controls">
+                                <button class="panel-btn" id="clear-chat">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="panel-btn" id="export-chat">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chat-display" id="chat-display">
+                            <!-- Welcome Message -->
+                            <div class="welcome-hologram" id="welcome-hologram">
+                                <div class="hologram-content">
+                                    <div class="zeeky-intro">
+                                        <h2>ZEEKY AI MATRIX ONLINE</h2>
+                                        <p>Neural pathways established. Ready for interaction.</p>
+                                    </div>
+                                    <div class="capability-indicators">
+                                        <div class="capability-item">
+                                            <i class="fas fa-brain"></i>
+                                            <span>Advanced Reasoning</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-eye"></i>
+                                            <span>Vision Processing</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-code"></i>
+                                            <span>Code Execution</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-chart-bar"></i>
+                                            <span>Data Analysis</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Chat messages will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: System Status & Controls -->
+                    <div class="system-panel">
+                        <div class="panel-header">
+                            <h3>SYSTEM STATUS</h3>
+                        </div>
+                        <div class="system-metrics">
+                            <div class="metric-item">
+                                <div class="metric-label">CPU USAGE</div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 45%"></div>
+                                </div>
+                                <div class="metric-value">45%</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">MEMORY</div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 62%"></div>
+                                </div>
+                                <div class="metric-value">62%</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">NEURAL LOAD</div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 78%"></div>
+                                </div>
+                                <div class="metric-value">78%</div>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions-panel">
+                            <h4>QUICK ACTIONS</h4>
+                            <div class="action-buttons">
+                                <button class="action-btn" data-action="vision">
+                                    <i class="fas fa-camera"></i>
+                                    <span>VISION AI</span>
+                                </button>
+                                <button class="action-btn" data-action="code">
+                                    <i class="fas fa-terminal"></i>
+                                    <span>CODE LAB</span>
+                                </button>
+                                <button class="action-btn" data-action="data">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>DATA ANALYSIS</span>
+                                </button>
+                                <button class="action-btn" data-action="games">
+                                    <i class="fas fa-gamepad"></i>
+                                    <span>GAMES</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neural Input Interface -->
+            <div class="neural-interface">
+                <div class="interface-frame">
+                    <div class="input-section">
+                        <div class="neural-input-container">
+                            <div class="input-frame">
+                                <textarea
+                                    id="neural-input"
+                                    class="neural-textarea"
+                                    placeholder="ENTER NEURAL COMMAND..."
+                                    rows="1"
+                                ></textarea>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-controls">
+                                <button class="neural-control-btn" id="attach-file" title="Attach File">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <button class="neural-control-btn" id="voice-input" title="Voice Input">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="neural-control-btn" id="camera-input" title="Camera Input">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <button class="neural-send-btn" id="send-message" title="Send Message">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
+
+    <!-- Hidden file input -->
+    <input type="file" id="file-input" style="display: none;" multiple
+           accept=".txt,.md,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.py,.js,.html,.css,.json,.csv,.xlsx">
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay" style="display: none;">
@@ -482,6 +505,7 @@
     <script src="scripts/universal-settings.js"></script>
     <script src="scripts/website-components-checker.js"></script>
     <script src="scripts/edge-functions-client.js"></script>
+    <script src="scripts/sci-fi-interface.js"></script>
     <script src="scripts/oauth-auth.js"></script>
     <script src="scripts/user-profile.js"></script>
     <script src="scripts/extensions/zeeky-games.js"></script>
