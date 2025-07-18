@@ -435,6 +435,9 @@
         
         // Initialize Zeeky AI when page loads
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 DOM Content Loaded - Initializing Zeeky AI');
+            console.log('Current URL:', window.location.href);
+            console.log('Timestamp:', new Date().toISOString());
             window.zeekyAI = new ZeekyAI();
         });
         
