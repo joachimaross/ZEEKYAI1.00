@@ -88,6 +88,31 @@
     width: 48px;
     height: 48px;
     filter: drop-shadow(var(--glow-shadow));
+    transition: all 0.3s ease;
+}
+
+.logo-icon:hover {
+    filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.6));
+    transform: scale(1.05);
+}
+
+/* Universal logo styling */
+.logo-image, .header-logo {
+    filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));
+    transition: all 0.3s ease;
+}
+
+.logo-image:hover, .header-logo:hover {
+    filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.6));
+    transform: scale(1.05);
+}
+
+.logo-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
 }
 
 .logo-text {
@@ -213,10 +238,39 @@
     background: var(--primary-gradient);
 }
 
-.dashboard-card:hover {
+.dashboard-card:hover,
+.action-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--glass-shadow), var(--glow-shadow);
     border-color: var(--accent-cyan);
+}
+
+/* Action card specific styling */
+.action-card {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-gradient);
+}
+
+.action-card:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%);
+    pointer-events: none;
 }
 
 .card-header {
