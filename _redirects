@@ -1,11 +1,1 @@
-# API routes to Netlify Functions
-/api/* /.netlify/functions/:splat 200
-
-# Static assets should be served directly (no redirect)
-/styles/* /styles/:splat 200
-/scripts/* /scripts/:splat 200
-/themes/* /themes/:splat 200
-/assets/* /assets/:splat 200
-
-# SPA fallback - redirect HTML pages only
-/* /index.html 200
+# No redirects - serve all files as static

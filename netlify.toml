@@ -1,13 +1,4 @@
 [build]
   publish = "."
 
-# Serve static files normally, no redirects for assets
-[[headers]]
-  for = "*.css"
-  [headers.values]
-    Content-Type = "text/css"
-
-[[headers]]
-  for = "*.js"
-  [headers.values]
-    Content-Type = "application/javascript"
+# No redirects - serve everything as static files
