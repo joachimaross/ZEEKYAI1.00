@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Zeeky AI - Sci-Fi Interface</title>
     <style>
         /* CRITICAL: All CSS must be inline and work immediately */
@@ -331,11 +334,36 @@
 
         console.log('🚀 Zeeky AI Sci-Fi Interface Loaded Successfully!');
         console.log('🎬 All animations and styling working!');
-        
+
         // Force apply styles if needed
         document.body.style.background = '#000000';
         document.body.style.color = '#00ff41';
         document.body.style.fontFamily = 'Courier New, monospace';
+
+        // Service Worker registration with update handling
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('✅ Service Worker registered successfully');
+
+                    // Check for updates
+                    registration.addEventListener('updatefound', function() {
+                        console.log('🔄 Service Worker update found');
+                        const newWorker = registration.installing;
+
+                        newWorker.addEventListener('statechange', function() {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('🆕 New Service Worker installed, reloading...');
+                                // Force reload to get fresh content
+                                window.location.reload(true);
+                            }
+                        });
+                    });
+                })
+                .catch(function(error) {
+                    console.log('❌ Service Worker registration failed:', error);
+                });
+        }
     </script>
 </body>
 </html>

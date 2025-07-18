@@ -1,29 +1,17 @@
 // Zeeky AI Service Worker - PWA Functionality
-const CACHE_NAME = 'zeeky-ai-v1.0.0';
-const STATIC_CACHE = 'zeeky-static-v1.0.0';
-const DYNAMIC_CACHE = 'zeeky-dynamic-v1.0.0';
+const CACHE_NAME = 'zeeky-ai-v1.1.0';
+const STATIC_CACHE = 'zeeky-static-v1.1.0';
+const DYNAMIC_CACHE = 'zeeky-dynamic-v1.1.0';
 
-// Files to cache for offline functionality
+// Files to cache for offline functionality - UPDATED to match actual structure
 const STATIC_FILES = [
     '/',
     '/index.html',
-    '/styles/main.css',
-    '/styles/extensions.css',
-    '/scripts/main.js',
-    '/scripts/admin.js',
-    '/scripts/extensions/voice-handler.js',
-    '/scripts/extensions/file-handler.js',
-    '/scripts/extensions/analytics.js',
-    '/scripts/extensions/keyboard-shortcuts.js',
-    '/scripts/extensions/ai-models.js',
-    '/scripts/extensions/theme-manager.js',
-    '/scripts/extensions/collaboration.js',
-    '/scripts/extensions/ai-personalities.js',
-    '/scripts/extensions/code-laboratory.js',
-    '/scripts/extensions/vision-ai.js',
-    '/scripts/extensions/workflow-automation.js',
     '/manifest.json',
-    '/assets/zeeky-logo.svg'
+    '/assets/zeeky-logo.svg',
+    '/assets/zeeky-logo-new.svg'
+    // Note: Removed non-existent files to prevent cache errors
+    // The main index.html has inline CSS and JS, so no external dependencies
 ];
 
 // Install event - cache static files
@@ -73,24 +61,29 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const { request } = event;
     const url = new URL(request.url);
-    
+
     // Skip non-GET requests
     if (request.method !== 'GET') {
         return;
     }
-    
-    // Handle different types of requests
-    if (STATIC_FILES.includes(url.pathname)) {
-        // Static files - cache first strategy
-        event.respondWith(cacheFirst(request));
+
+    // Skip external requests (CDNs, etc.)
+    if (!url.origin.includes(self.location.origin)) {
+        return;
+    }
+
+    // Handle different types of requests - UPDATED for better loading
+    if (url.pathname === '/' || url.pathname === '/index.html') {
+        // Main page - network first to ensure fresh content
+        event.respondWith(networkFirst(request));
     } else if (url.pathname.startsWith('/api/')) {
         // API requests - network first strategy
         event.respondWith(networkFirst(request));
-    } else if (request.destination === 'image') {
-        // Images - cache first strategy
+    } else if (request.destination === 'image' || url.pathname.startsWith('/assets/')) {
+        // Images and assets - cache first strategy
         event.respondWith(cacheFirst(request));
     } else {
-        // Other requests - network first strategy
+        // Other requests - network first to prevent stale content
         event.respondWith(networkFirst(request));
     }
 });
