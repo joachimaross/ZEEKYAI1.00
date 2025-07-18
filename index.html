@@ -3,106 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeeky AI - Revolutionary Sci-Fi Interface</title>
-    
-    <!-- External Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- ALL CSS EMBEDDED INLINE -->
+    <title>Zeeky AI - Sci-Fi Interface</title>
     <style>
-        /* Revolutionary Sci-Fi Interface - Complete Inline Version */
-        :root {
-            --matrix-green: #00ff41;
-            --neon-blue: #00d4ff;
-            --cyber-purple: #b300ff;
-            --plasma-pink: #ff0080;
-            --hologram-cyan: #00ffff;
-            --neural-orange: #ff6600;
-            --matrix-black: #000000;
-            --deep-space: #0a0a0f;
-            --void-blue: #0f0f23;
-            --shadow-purple: #1a0d2e;
-            --matrix-glow: 0 0 20px var(--matrix-green);
-            --neon-glow: 0 0 30px var(--neon-blue);
-            --cyber-glow: 0 0 25px var(--cyber-purple);
-            --plasma-glow: 0 0 35px var(--plasma-pink);
-            --hologram-glow: 0 0 40px var(--hologram-cyan);
-            --matrix-gradient: linear-gradient(135deg, var(--matrix-green) 0%, var(--neon-blue) 100%);
-            --cyber-gradient: linear-gradient(135deg, var(--cyber-purple) 0%, var(--plasma-pink) 100%);
-            --hologram-gradient: linear-gradient(135deg, var(--hologram-cyan) 0%, var(--neon-blue) 100%);
-            --neural-gradient: linear-gradient(135deg, var(--neural-orange) 0%, var(--plasma-pink) 100%);
-        }
-
-        * { box-sizing: border-box; }
-
-        body.sci-fi-container {
-            margin: 0 !important;
-            padding: 0 !important;
-            font-family: 'Orbitron', 'Courier New', monospace !important;
-            background: var(--matrix-black) !important;
-            color: var(--matrix-green) !important;
+        /* CRITICAL: All CSS must be inline and work immediately */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Courier New', monospace !important;
+            background: #000000 !important;
+            color: #00ff41 !important;
+            min-height: 100vh !important;
             overflow-x: hidden !important;
             position: relative !important;
-            min-height: 100vh !important;
         }
 
-        /* Sci-Fi Loading Screen */
-        .sci-fi-loader {
+        /* Loading Screen - MUST work immediately */
+        .loader {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            background: var(--matrix-black) !important;
+            background: #000000 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             z-index: 10000 !important;
-            animation: fadeOut 3s ease-in-out 2s forwards !important;
+            animation: fadeOut 3s ease-out 2s forwards !important;
         }
 
         .loader-content {
             text-align: center !important;
-            animation: glitchEffect 0.5s infinite alternate !important;
+            animation: glitch 0.5s infinite alternate !important;
         }
 
-        .hologram-logo {
-            position: relative !important;
-            margin-bottom: 2rem !important;
-        }
-
-        .hologram-img {
+        .logo {
             width: 120px !important;
             height: 120px !important;
-            filter: drop-shadow(var(--matrix-glow)) hue-rotate(120deg) !important;
-            animation: hologramFloat 3s ease-in-out infinite !important;
-        }
-
-        .hologram-glow {
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 200px !important;
-            height: 200px !important;
-            background: radial-gradient(circle, var(--matrix-green) 0%, transparent 70%) !important;
-            opacity: 0.3 !important;
-            animation: pulseGlow 2s ease-in-out infinite !important;
+            background: linear-gradient(135deg, #00ff41, #00d4ff) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 3rem !important;
+            color: #000000 !important;
+            font-weight: 900 !important;
+            margin: 0 auto 2rem !important;
+            animation: spin 3s linear infinite, glow 2s ease-in-out infinite !important;
+            box-shadow: 0 0 30px #00ff41 !important;
         }
 
         .loading-text {
-            color: var(--matrix-green) !important;
+            color: #00ff41 !important;
             text-transform: uppercase !important;
             letter-spacing: 3px !important;
+            text-shadow: 0 0 10px #00ff41 !important;
         }
 
-        .loading-label {
+        .loading-title {
             font-size: 1.2rem !important;
             font-weight: 700 !important;
-            display: block !important;
             margin-bottom: 1rem !important;
-            text-shadow: var(--matrix-glow) !important;
         }
 
         .loading-bar {
@@ -117,85 +78,42 @@
 
         .loading-progress {
             height: 100% !important;
-            background: var(--matrix-gradient) !important;
+            background: linear-gradient(135deg, #00ff41, #00d4ff) !important;
             width: 0% !important;
-            animation: loadingProgress 2s ease-in-out forwards !important;
-            box-shadow: var(--matrix-glow) !important;
+            animation: progress 2s ease-out forwards !important;
+            box-shadow: 0 0 20px #00ff41 !important;
         }
 
-        .system-status {
+        .status {
             margin-top: 2rem !important;
             text-align: left !important;
+            font-size: 0.9rem !important;
         }
 
         .status-line {
-            font-size: 0.9rem !important;
             margin: 0.5rem 0 !important;
-            font-family: 'Courier New', monospace !important;
+            color: #00ff41 !important;
+            text-shadow: 0 0 10px #00ff41 !important;
         }
 
-        .status-ok {
-            color: var(--matrix-green) !important;
-            text-shadow: var(--matrix-glow) !important;
-        }
-
-        /* Animated Sci-Fi Background */
-        .sci-fi-bg {
+        /* Animated Background */
+        .background {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
             z-index: -1 !important;
-            overflow: hidden !important;
-        }
-
-        .matrix-rain {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
             background: 
-                linear-gradient(90deg, transparent 98%, var(--matrix-green) 100%),
-                linear-gradient(180deg, transparent 98%, var(--matrix-green) 100%);
+                linear-gradient(90deg, transparent 98%, #00ff41 100%),
+                linear-gradient(180deg, transparent 98%, #00ff41 100%) !important;
             background-size: 50px 50px !important;
-            animation: matrixRain 20s linear infinite !important;
+            animation: rain 20s linear infinite !important;
             opacity: 0.1 !important;
         }
 
-        .neural-network {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background-image: 
-                radial-gradient(circle at 20% 20%, var(--neon-blue) 1px, transparent 1px),
-                radial-gradient(circle at 80% 80%, var(--cyber-purple) 1px, transparent 1px),
-                radial-gradient(circle at 40% 60%, var(--plasma-pink) 1px, transparent 1px);
-            background-size: 100px 100px, 150px 150px, 200px 200px !important;
-            animation: neuralPulse 15s ease-in-out infinite !important;
-            opacity: 0.3 !important;
-        }
-
-        .particle-field {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: 
-                radial-gradient(circle at 10% 10%, var(--hologram-cyan) 2px, transparent 2px),
-                radial-gradient(circle at 90% 90%, var(--neural-orange) 2px, transparent 2px),
-                radial-gradient(circle at 50% 50%, var(--matrix-green) 1px, transparent 1px);
-            background-size: 300px 300px, 250px 250px, 400px 400px !important;
-            animation: particleFloat 25s linear infinite !important;
-            opacity: 0.2 !important;
-        }
-
-        /* Main Sci-Fi Interface */
-        .sci-fi-interface {
+        /* Main Interface */
+        .interface {
             position: relative !important;
             z-index: 1 !important;
             min-height: 100vh !important;
@@ -203,14 +121,9 @@
             flex-direction: column !important;
         }
 
-        /* Futuristic Header */
-        .sci-fi-header {
-            background: linear-gradient(135deg, 
-                rgba(0, 0, 0, 0.9) 0%, 
-                rgba(15, 15, 35, 0.8) 50%, 
-                rgba(0, 0, 0, 0.9) 100%) !important;
-            backdrop-filter: blur(20px) !important;
-            border-bottom: 2px solid var(--matrix-green) !important;
+        .header {
+            background: rgba(0, 0, 0, 0.9) !important;
+            border-bottom: 2px solid #00ff41 !important;
             box-shadow: 0 4px 20px rgba(0, 255, 65, 0.3) !important;
             padding: 1rem 2rem !important;
             position: sticky !important;
@@ -218,62 +131,93 @@
             z-index: 1000 !important;
         }
 
-        .header-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 2fr 1fr !important;
-            align-items: center !important;
-            gap: 2rem !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-        }
-
-        .logo-hologram {
+        .header-content {
             display: flex !important;
             align-items: center !important;
-            gap: 1rem !important;
-            position: relative !important;
-        }
-
-        .logo-3d {
-            width: 50px !important;
-            height: 50px !important;
-            filter: drop-shadow(var(--matrix-glow)) !important;
-            animation: logoSpin 10s linear infinite !important;
-        }
-
-        .logo-glow {
-            position: absolute !important;
-            top: 50% !important;
-            left: 25px !important;
-            transform: translate(-50%, -50%) !important;
-            width: 80px !important;
-            height: 80px !important;
-            background: radial-gradient(circle, var(--matrix-green) 0%, transparent 70%) !important;
-            opacity: 0.5 !important;
-            animation: pulseGlow 3s ease-in-out infinite !important;
+            justify-content: space-between !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
         }
 
         .logo-text {
             font-size: 2rem !important;
             font-weight: 900 !important;
-            color: var(--matrix-green) !important;
-            text-shadow: var(--matrix-glow) !important;
+            color: #00ff41 !important;
+            text-shadow: 0 0 20px #00ff41 !important;
             letter-spacing: 2px !important;
             margin: 0 !important;
         }
 
         .ai-suffix {
-            color: var(--neon-blue) !important;
-            text-shadow: var(--neon-glow) !important;
+            color: #00d4ff !important;
+            text-shadow: 0 0 20px #00d4ff !important;
         }
 
-        /* Animations */
+        .status-indicator {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            color: #00ff41 !important;
+            font-size: 0.9rem !important;
+        }
+
+        .status-dot {
+            width: 8px !important;
+            height: 8px !important;
+            background: #00ff41 !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 10px #00ff41 !important;
+            animation: pulse 2s ease-in-out infinite !important;
+        }
+
+        .main {
+            flex: 1 !important;
+            padding: 2rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2rem !important;
+            max-width: 1400px !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+        }
+
+        .display {
+            flex: 1 !important;
+            background: rgba(0, 0, 0, 0.7) !important;
+            border: 2px solid #00ffff !important;
+            border-radius: 25px !important;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            min-height: 400px !important;
+            padding: 2rem !important;
+            text-align: center !important;
+        }
+
+        .display h2 {
+            color: #00ffff !important;
+            text-shadow: 0 0 20px #00ffff !important;
+            font-size: 2rem !important;
+            margin: 0 0 1rem 0 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 3px !important;
+            animation: textGlow 2s ease-in-out infinite alternate !important;
+        }
+
+        .display p {
+            color: rgba(0, 255, 255, 0.8) !important;
+            font-size: 1.1rem !important;
+            margin: 0 0 2rem 0 !important;
+            line-height: 1.6 !important;
+        }
+
+        /* Animations - MUST work */
         @keyframes fadeOut {
-            0% { opacity: 1; }
+            0% { opacity: 1; visibility: visible; }
             100% { opacity: 0; visibility: hidden; }
         }
 
-        @keyframes glitchEffect {
+        @keyframes glitch {
             0% { transform: translateX(0); }
             20% { transform: translateX(-2px); }
             40% { transform: translateX(2px); }
@@ -282,95 +226,40 @@
             100% { transform: translateX(0); }
         }
 
-        @keyframes hologramFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        @keyframes loadingProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        @keyframes matrixRain {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100vh); }
-        }
-
-        @keyframes neuralPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-
-        @keyframes particleFloat {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
-
-        @keyframes logoSpin {
+        @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Simple Interface Elements */
-        .sci-fi-main {
-            flex: 1 !important;
-            padding: 2rem !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 2rem !important;
-            max-width: 1400px !important;
-            margin: 0 auto !important;
-            width: 100% !important;
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 30px #00ff41; }
+            50% { box-shadow: 0 0 50px #00ff41, 0 0 70px #00ff41; }
         }
 
-        .holographic-display {
-            flex: 1 !important;
-            background: rgba(0, 0, 0, 0.7) !important;
-            border: 2px solid var(--hologram-cyan) !important;
-            border-radius: 25px !important;
-            backdrop-filter: blur(20px) !important;
-            box-shadow: var(--hologram-glow) !important;
-            overflow: hidden !important;
-            position: relative !important;
-            min-height: 400px !important;
-            padding: 2rem !important;
-            text-align: center !important;
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
 
-        .holographic-display h2 {
-            color: var(--hologram-cyan) !important;
-            text-shadow: var(--hologram-glow) !important;
-            font-size: 2rem !important;
-            margin: 0 0 1rem 0 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 3px !important;
-            animation: textGlow 2s ease-in-out infinite alternate !important;
+        @keyframes rain {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
         }
 
-        .holographic-display p {
-            color: rgba(0, 255, 255, 0.8) !important;
-            font-size: 1.1rem !important;
-            margin: 0 0 2rem 0 !important;
-            font-family: 'Orbitron', monospace !important;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         @keyframes textGlow {
-            0% { text-shadow: var(--hologram-glow); }
-            100% { text-shadow: 0 0 40px var(--hologram-cyan), 0 0 60px var(--hologram-cyan); }
+            0% { text-shadow: 0 0 20px #00ffff; }
+            100% { text-shadow: 0 0 40px #00ffff, 0 0 60px #00ffff; }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header-grid {
-                grid-template-columns: 1fr !important;
+            .header-content {
+                flex-direction: column !important;
                 gap: 1rem !important;
                 text-align: center !important;
             }
@@ -379,108 +268,74 @@
                 font-size: 1.5rem !important;
             }
             
-            .sci-fi-main {
+            .main {
                 padding: 1rem !important;
             }
         }
     </style>
 </head>
-<body class="sci-fi-container">
-    <!-- Sci-Fi Loading Screen -->
-    <div id="sci-fi-loader" class="sci-fi-loader">
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
         <div class="loader-content">
-            <div class="hologram-logo">
-                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #00ff41, #00d4ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #000; font-weight: 900;">Z</div>
-                <div class="hologram-glow"></div>
-            </div>
+            <div class="logo">Z</div>
             <div class="loading-text">
-                <span class="loading-label">INITIALIZING ZEEKY AI MATRIX</span>
+                <div class="loading-title">INITIALIZING ZEEKY AI MATRIX</div>
                 <div class="loading-bar">
                     <div class="loading-progress"></div>
                 </div>
-                <div class="system-status">
-                    <div class="status-line">► Neural Networks: <span class="status-ok">ONLINE</span></div>
-                    <div class="status-line">► Personality Matrix: <span class="status-ok">ACTIVE</span></div>
-                    <div class="status-line">► Quantum Processors: <span class="status-ok">READY</span></div>
+                <div class="status">
+                    <div class="status-line">► Neural Networks: ONLINE</div>
+                    <div class="status-line">► Personality Matrix: ACTIVE</div>
+                    <div class="status-line">► Quantum Processors: READY</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Animated Sci-Fi Background -->
-    <div class="sci-fi-bg">
-        <div class="matrix-rain"></div>
-        <div class="neural-network"></div>
-        <div class="particle-field"></div>
-    </div>
+    <!-- Animated Background -->
+    <div class="background"></div>
 
-    <!-- Main Sci-Fi Interface -->
-    <div class="sci-fi-interface">
-        <!-- Futuristic Header -->
-        <header class="sci-fi-header">
-            <div class="header-grid">
-                <div class="header-left">
-                    <div class="logo-hologram">
-                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #00ff41, #00d4ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #000; font-weight: 900;" class="logo-3d">Z</div>
-                        <div class="logo-glow"></div>
-                        <h1 class="logo-text">ZEEKY<span class="ai-suffix">AI</span></h1>
-                    </div>
-                </div>
-                
-                <div class="header-center">
-                    <div style="text-align: center; color: var(--matrix-green); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;">
-                        NEURAL INTERFACE READY
-                    </div>
-                </div>
-                
-                <div class="header-right">
-                    <div style="text-align: right; color: var(--matrix-green); font-size: 0.9rem;">
-                        <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                            <div style="width: 8px; height: 8px; background: var(--matrix-green); border-radius: 50%; box-shadow: var(--matrix-glow); animation: pulseGlow 2s ease-in-out infinite;"></div>
-                            <span>ONLINE</span>
-                        </div>
-                    </div>
+    <!-- Main Interface -->
+    <div class="interface">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo-text">ZEEKY<span class="ai-suffix">AI</span></h1>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>ONLINE</span>
                 </div>
             </div>
         </header>
 
-        <!-- Main Sci-Fi Interface -->
-        <main class="sci-fi-main">
-            <!-- Holographic Display Area -->
-            <div class="holographic-display">
+        <!-- Main Content -->
+        <main class="main">
+            <div class="display">
                 <h2>ZEEKY AI MATRIX ONLINE</h2>
                 <p>Neural pathways established. Revolutionary sci-fi interface activated.</p>
                 <p>All systems operational. Ready for interaction.</p>
-                
-                <div style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <div style="background: rgba(0, 255, 65, 0.1); border: 1px solid var(--matrix-green); border-radius: 10px; padding: 1rem; text-align: center;">
-                        <i class="fas fa-brain" style="font-size: 2rem; color: var(--matrix-green); margin-bottom: 0.5rem;"></i>
-                        <div style="color: var(--matrix-green); font-weight: 600;">ADVANCED REASONING</div>
-                    </div>
-                    <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--neon-blue); border-radius: 10px; padding: 1rem; text-align: center;">
-                        <i class="fas fa-eye" style="font-size: 2rem; color: var(--neon-blue); margin-bottom: 0.5rem;"></i>
-                        <div style="color: var(--neon-blue); font-weight: 600;">VISION PROCESSING</div>
-                    </div>
-                    <div style="background: rgba(0, 255, 255, 0.1); border: 1px solid var(--hologram-cyan); border-radius: 10px; padding: 1rem; text-align: center;">
-                        <i class="fas fa-code" style="font-size: 2rem; color: var(--hologram-cyan); margin-bottom: 0.5rem;"></i>
-                        <div style="color: var(--hologram-cyan); font-weight: 600;">CODE EXECUTION</div>
-                    </div>
-                </div>
+                <p style="margin-top: 2rem; font-size: 1.3rem; color: #00ff41;">🚀 SCI-FI INTERFACE WORKING! 🚀</p>
             </div>
         </main>
     </div>
 
     <script>
-        // Simple JavaScript for loading screen
-        setTimeout(() => {
-            const loader = document.getElementById('sci-fi-loader');
+        // Hide loader after 5 seconds
+        setTimeout(function() {
+            var loader = document.getElementById('loader');
             if (loader) {
                 loader.style.display = 'none';
             }
         }, 5000);
 
         console.log('🚀 Zeeky AI Sci-Fi Interface Loaded Successfully!');
-        console.log('🎬 All animations and styling are working!');
+        console.log('🎬 All animations and styling working!');
+        
+        // Force apply styles if needed
+        document.body.style.background = '#000000';
+        document.body.style.color = '#00ff41';
+        document.body.style.fontFamily = 'Courier New, monospace';
     </script>
 </body>
 </html>
