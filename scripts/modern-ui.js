@@ -980,7 +980,8 @@ What would you like to explore first?`,
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-        // Feature-specific responses
+    // Feature-specific responses helper method
+    getFeatureResponse(lowerMessage) {
         if (lowerMessage.includes('collaboration') || lowerMessage.includes('team')) {
             return "🤝 I can help you set up real-time collaboration! With Zeeky AI, you can create rooms where multiple users can chat with AI together, see live typing indicators, and share AI interactions in real-time. Would you like me to show you how to create a collaboration room?";
         }

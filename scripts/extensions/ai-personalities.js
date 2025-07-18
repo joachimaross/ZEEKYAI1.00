@@ -79,7 +79,6 @@ class AIPersonalitiesManager {
                     color: '#e67e22'
                 }
             },
-            },
             technical: {
                 quantum_zeeky: {
                     name: 'Quantum Zeeky',
