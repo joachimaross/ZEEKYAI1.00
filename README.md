@@ -51,16 +51,18 @@ npm start
 
 ```
 ZEEKYAI1.00/
-├── frontend/           # Main application files
-│   ├── index.html     # Main application entry
-│   ├── assets/        # Images, icons, media
-│   ├── scripts/       # JavaScript modules
-│   ├── styles/        # CSS stylesheets
-│   ├── config/        # Configuration files
-│   └── features/      # Feature-specific files
+├── index.html         # Main application entry
+├── assets/            # Images, icons, media
+├── scripts/           # JavaScript modules
+├── styles/            # CSS stylesheets
+├── config/            # Configuration files
+├── features/          # Feature-specific files
+├── netlify/           # Netlify functions and edge functions
 ├── api/               # Backend API (optional)
+├── netlify.toml       # Netlify deployment configuration
 ├── vercel.json        # Vercel deployment configuration
 ├── package.json       # Project dependencies and scripts
+├── manifest.json      # PWA manifest
 └── README.md          # This file
 ```
 
@@ -78,9 +80,11 @@ ZEEKYAI1.00/
 #### Available Scripts
 
 ```bash
-npm start          # Start development server
-npm run build      # Build for production
-npm run vercel-build # Vercel-specific build
+npm start          # Start development server (serves from root directory)
+npm run dev        # Start development server with auto-open
+npm run build      # Build for production (static site ready)
+npm run netlify-build # Netlify-specific build
+npm run vercel-build  # Vercel-specific build
 ```
 
 #### Code Quality

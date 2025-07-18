@@ -1,0 +1,36 @@
+{
+  "name": "zeeky-ai",
+  "version": "1.0.0",
+  "description": "Professional AI Assistant Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8000",
+    "build": "echo 'Static build ready - all files in root directory'",
+    "dev": "npx http-server . -p 8000 -o",
+    "test": "echo 'No tests specified'",
+    "netlify-build": "echo 'Netlify build ready - static site'",
+    "vercel-build": "echo 'Vercel build ready - static site'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joachimaross/ZEEKYAI1.00.git"
+  },
+  "keywords": [
+    "ai",
+    "assistant",
+    "chatbot",
+    "zeeky",
+    "artificial-intelligence",
+    "web-app",
+    "pwa"
+  ],
+  "author": "Joachima Ross <zeekyai@hotmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
