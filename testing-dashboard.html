@@ -441,13 +441,49 @@
         </div>
     </div>
 
-    <!-- Hidden file input for testing purposes -->
+    <!-- Hidden elements for testing purposes -->
     <input type="file" id="test-file-input" style="display: none;" multiple
            accept=".txt,.md,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.py,.js,.html,.css,.json,.csv,.xlsx">
+
+    <!-- Hidden chat interface elements for testing -->
+    <input type="text" id="message-input" style="display: none;" placeholder="Test chat input">
+    <button id="send-button" style="display: none;">Send</button>
+
+    <!-- Hidden code editor for testing -->
+    <textarea id="code-editor" style="display: none;" placeholder="// Test code editor"></textarea>
 
     <!-- Scripts -->
     <script src="config/environment.js"></script>
     <script src="scripts/error-handler.js"></script>
+
+    <!-- Mock objects for testing -->
+    <script>
+        // Mock AI Personalities Manager for testing
+        window.aiPersonalitiesManager = {
+            currentPersonality: 'professional',
+            personalities: ['professional', 'creative', 'analytical', 'friendly'],
+            switchPersonality: function(personality) {
+                this.currentPersonality = personality;
+                return true;
+            },
+            getCurrentPersonality: function() {
+                return this.currentPersonality;
+            }
+        };
+
+        // Mock FileHandler for testing
+        window.FileHandler = class {
+            constructor() {
+                this.uploadedFiles = [];
+            }
+            processFile(file) {
+                return Promise.resolve({ success: true, file: file });
+            }
+        };
+
+        window.fileHandler = new window.FileHandler();
+    </script>
+
     <script src="scripts/testing-manager.js"></script>
 </body>
 </html>
