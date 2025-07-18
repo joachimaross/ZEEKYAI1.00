@@ -1,12 +1,15 @@
 [build]
   # Build command - since this is a static site, we just need to ensure files are ready
   command = "npm run build"
-  
+
   # Publish directory - the root directory contains our static files
   publish = "."
-  
+
   # Base directory - use the repository root
   base = "."
+
+  # Functions directory
+  functions = "netlify/functions"
 
 [build.environment]
   # Node.js version
@@ -73,3 +76,30 @@
 
 [build.processing.images]
   compress = true
+
+# Edge Functions Configuration
+[[edge_functions]]
+  function = "personalization"
+  path = "/*"
+
+[[edge_functions]]
+  function = "localization"
+  path = "/*"
+
+[[edge_functions]]
+  function = "performance"
+  path = "/*"
+
+[[edge_functions]]
+  function = "api-aggregator"
+  path = "/edge-api/*"
+
+[[edge_functions]]
+  function = "auth"
+  path = "/auth/*"
+
+# Environment Variables for Edge Functions
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "8"
+  ZEEKY_EDGE_FUNCTIONS = "true"
