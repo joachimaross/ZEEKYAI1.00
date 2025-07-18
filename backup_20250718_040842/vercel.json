@@ -1,10 +1,6 @@
 {
   "version": 2,
   "name": "zeeky-ai",
-  "public": true,
-  "github": {
-    "silent": true
-  },
   "builds": [
     {
       "src": "frontend/**",
@@ -14,24 +10,15 @@
   "routes": [
     {
       "src": "/assets/(.*)",
-      "dest": "/frontend/assets/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "dest": "/frontend/assets/$1"
     },
     {
       "src": "/scripts/(.*)",
-      "dest": "/frontend/scripts/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "dest": "/frontend/scripts/$1"
     },
     {
       "src": "/styles/(.*)",
-      "dest": "/frontend/styles/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "dest": "/frontend/styles/$1"
     },
     {
       "src": "/config/(.*)",
@@ -66,10 +53,24 @@
       "dest": "/frontend/500.html"
     },
     {
+      "src": "/frontend/(.*)",
+      "dest": "/frontend/$1"
+    },
+    {
+      "src": "/frontend/?",
+      "dest": "/frontend/index.html"
+    },
+    {
+      "src": "/",
+      "dest": "/frontend/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/frontend/index.html"
     }
   ],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -89,15 +90,14 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
-        }
-      ]
-    },
-    {
-      "source": "/frontend/index.html",
-      "headers": [
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com; connect-src 'self' wss: https:;"
+        },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
@@ -107,6 +107,11 @@
       "source": "/home",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/docs",
+      "destination": "/",
+      "permanent": false
     }
   ]
 }

@@ -1,168 +1,18 @@
 {
   "name": "zeeky-ai",
   "version": "1.0.0",
-  "description": "Advanced AI Assistant Platform with Real-time Collaboration, Code Execution, and Vision AI",
+  "description": "Professional AI Assistant Platform",
   "main": "frontend/index.html",
   "scripts": {
-    "start": "npm run serve",
-    "serve": "python -m http.server 8000 --directory frontend",
-    "serve:node": "npx http-server frontend -p 8000 -c-1",
-    "build": "echo 'Zeeky AI build ready for deployment'",
-    "vercel-build": "echo 'Vercel build complete - static site ready'",
-    "netlify:build": "echo 'Netlify build - static site ready'",
-    "build:optimize": "node scripts/build-optimizer.js",
-    "build:compress": "node scripts/compress-assets.js",
-    "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "jest",
-    "test:e2e": "playwright test",
-    "test:lighthouse": "lighthouse http://localhost:8000 --output=html --output-path=./reports/lighthouse.html",
-    "lint": "eslint frontend/scripts/**/*.js",
-    "lint:fix": "eslint frontend/scripts/**/*.js --fix",
-    "format": "prettier --write frontend/**/*.{js,css,html}",
-    "validate": "npm run lint && npm run test:unit",
-    "deploy": "npm run build && npm run deploy:netlify",
-    "deploy:netlify": "netlify deploy --prod --dir=frontend",
-    "deploy:github": "gh-pages -d frontend",
-    "analyze": "npm run analyze:bundle && npm run analyze:performance",
-    "analyze:bundle": "webpack-bundle-analyzer frontend/dist/stats.json",
-    "analyze:performance": "node scripts/performance-analyzer.js",
-    "security:audit": "npm audit && node scripts/security-check.js",
-    "docs": "jsdoc -c jsdoc.conf.json",
-    "clean": "rimraf frontend/dist reports coverage",
-    "precommit": "npm run validate && npm run format",
-    "postinstall": "echo 'Build completed successfully'",
-    "setup:hooks": "husky install || echo 'Husky not available in production'",
-    "version:patch": "npm version patch && git push --tags",
-    "version:minor": "npm version minor && git push --tags",
-    "version:major": "npm version major && git push --tags"
+    "start": "npx http-server frontend -p 8000",
+    "build": "echo 'Static build ready'",
+    "vercel-build": "echo 'Vercel deployment ready'"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/joachimaross/ZEEKYAI1.00.git"
   },
-  "keywords": [
-    "ai",
-    "assistant",
-    "chatbot",
-    "collaboration",
-    "code-execution",
-    "vision-ai",
-    "workflow-automation",
-    "pwa",
-    "real-time",
-    "javascript"
-  ],
+  "keywords": ["ai", "assistant", "chatbot"],
   "author": "Joachima Ross <zeekyai@hotmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/joachimaross/ZEEKYAI1.00/issues"
-  },
-  "homepage": "https://github.com/joachimaross/ZEEKYAI1.00#readme",
-  "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "@types/jest": "^29.5.0",
-    "eslint": "^8.50.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "gh-pages": "^6.0.0",
-    "husky": "^8.0.3",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "jsdoc": "^4.0.2",
-    "lighthouse": "^12.8.0",
-    "netlify-cli": "^22.3.0",
-    "prettier": "^3.0.0",
-    "rimraf": "^5.0.0",
-    "terser": "^5.20.0",
-    "webpack-bundle-analyzer": "^4.9.0"
-  },
-  "dependencies": {
-    "chart.js": "^4.4.0",
-    "compression": "^1.7.4",
-    "express": "^4.18.2",
-    "helmet": "^7.0.0"
-  },
-  "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "<rootDir>/tests/setup.js"
-    ],
-    "testMatch": [
-      "<rootDir>/tests/**/*.test.js"
-    ],
-    "collectCoverageFrom": [
-      "frontend/scripts/**/*.js",
-      "!frontend/scripts/vendor/**",
-      "!**/node_modules/**"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "html",
-      "text",
-      "lcov"
-    ]
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es2021": true,
-      "jest": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "prettier"
-    ],
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
-    "rules": {
-      "no-unused-vars": "warn",
-      "no-console": "off",
-      "prefer-const": "error",
-      "no-var": "error"
-    },
-    "globals": {
-      "window": "readonly",
-      "document": "readonly",
-      "navigator": "readonly",
-      "localStorage": "readonly",
-      "sessionStorage": "readonly",
-      "fetch": "readonly",
-      "URL": "readonly",
-      "URLSearchParams": "readonly",
-      "FormData": "readonly",
-      "Blob": "readonly",
-      "File": "readonly",
-      "FileReader": "readonly",
-      "WebSocket": "readonly",
-      "Worker": "readonly",
-      "ServiceWorker": "readonly",
-      "Chart": "readonly"
-    }
-  },
-  "prettier": {
-    "semi": true,
-    "trailingComma": "es5",
-    "singleQuote": true,
-    "printWidth": 100,
-    "tabWidth": 2,
-    "useTabs": false
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit",
-      "pre-push": "npm run test"
-    }
-  }
+  "license": "MIT"
 }
