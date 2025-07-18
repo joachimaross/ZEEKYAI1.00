@@ -321,17 +321,28 @@ class TestingManager {
         const chatInput = document.querySelector('#chat-input, #message-input');
         const sendButton = document.querySelector('#send-btn, #send-button');
 
-        if (!chatInput && !sendButton) {
+        if (!chatInput || !sendButton) {
+            let missingElements = [];
+            if (!chatInput) missingElements.push('chat input');
+            if (!sendButton) missingElements.push('send button');
+
             return {
                 success: false,
                 message: 'Chat interface elements not found',
-                details: 'Missing chat input or send button elements. Expected #chat-input/#message-input and #send-btn/#send-button'
+                details: `Missing ${missingElements.join(' and ')} elements. Expected #chat-input/#message-input and #send-btn/#send-button`
             };
         }
 
         let details = 'Chat interface elements found: ';
-        if (chatInput) details += 'input element ✓ ';
-        if (sendButton) details += 'send button ✓ ';
+        if (chatInput) details += `input element (${chatInput.id}) ✓ `;
+        if (sendButton) details += `send button (${sendButton.id}) ✓ `;
+
+        // Test if elements are functional
+        const isInputFunctional = chatInput.tagName === 'TEXTAREA' || chatInput.tagName === 'INPUT';
+        const isButtonFunctional = sendButton.tagName === 'BUTTON';
+
+        if (isInputFunctional) details += 'input functional ✓ ';
+        if (isButtonFunctional) details += 'button functional ✓ ';
 
         return {
             success: true,
