@@ -7,7 +7,8 @@
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
-        "runtime": "python3.9"
+        "runtime": "python3.9",
+        "maxDuration": 30
       }
     },
     {
@@ -84,10 +85,5 @@
   "env": {
     "ENVIRONMENT": "production",
     "DEBUG": "false"
-  },
-  "functions": {
-    "api/index.py": {
-      "maxDuration": 30
-    }
   }
 }
