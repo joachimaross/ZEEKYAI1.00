@@ -1,6 +1,50 @@
 {
   "version": 2,
   "name": "zeeky-ai",
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "runtime": "python3.9"
+      }
+    },
+    {
+      "src": "frontend/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/chat",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/personalities",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/features",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg))",
+      "dest": "/frontend/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/index.html"
+    }
+  ],
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -37,10 +81,13 @@
       "permanent": true
     }
   ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+  "env": {
+    "ENVIRONMENT": "production",
+    "DEBUG": "false"
+  },
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 30
     }
-  ]
+  }
 }
