@@ -1,17 +1,13 @@
 [build]
-  command = "npm run build"
   publish = "."
-  base = "."
 
-[build.environment]
-  NODE_VERSION = "18"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Serve static files normally, no redirects for assets
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Content-Type = "text/css"
 
 [[headers]]
-  for = "/*"
+  for = "*.js"
   [headers.values]
-    X-Content-Type-Options = "nosniff"
+    Content-Type = "application/javascript"

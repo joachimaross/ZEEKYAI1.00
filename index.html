@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeeky AI - Revolutionary Sci-Fi Interface</title>
     
-    <!-- ONLY Sci-Fi Interface Styles (Cache Busted) -->
-    <link rel="stylesheet" href="styles/sci-fi-interface.css?v=2.0">
-    <link rel="stylesheet" href="themes/personality-themes.css?v=2.0">
+    <!-- Fallback CSS (Critical Styles) -->
+    <link rel="stylesheet" href="styles/fallback.css?v=3.0">
+
+    <!-- Full Sci-Fi Interface Styles (Cache Busted) -->
+    <link rel="stylesheet" href="styles/sci-fi-interface.css?v=3.0">
+    <link rel="stylesheet" href="themes/personality-themes.css?v=3.0">
     
     <!-- Sci-Fi Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -21,6 +24,11 @@
     <!-- Meta Tags -->
     <meta name="description" content="Zeeky AI - Revolutionary Sci-Fi Interface with AI Personalities">
     <meta name="theme-color" content="#00ff41">
+
+    <!-- Critical Inline CSS for Immediate Loading -->
+    <style>
+        body.sci-fi-container{margin:0!important;padding:0!important;font-family:'Orbitron','Courier New',monospace!important;background:#000!important;color:#00ff41!important;min-height:100vh!important;overflow-x:hidden!important}.sci-fi-loader{position:fixed!important;top:0!important;left:0!important;width:100%!important;height:100%!important;background:#000!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:10000!important;color:#00ff41!important;text-align:center!important;animation:fadeOut 1s ease-out 3s forwards!important}.loader-content{text-align:center!important}.loading-label{font-size:1.5rem!important;color:#00ff41!important;text-shadow:0 0 10px #00ff41!important;margin-bottom:2rem!important;display:block!important;text-transform:uppercase!important;letter-spacing:3px!important}.loading-bar{width:300px!important;height:4px!important;background:rgba(0,255,65,0.2)!important;border-radius:2px!important;margin:1rem auto!important;overflow:hidden!important;position:relative!important}.loading-progress{height:100%!important;background:linear-gradient(135deg,#00ff41 0%,#00d4ff 100%)!important;width:100%!important;box-shadow:0 0 20px #00ff41!important;animation:loadingPulse 2s ease-in-out infinite!important}.system-status{margin-top:2rem!important;text-align:left!important}.status-line{font-size:0.9rem!important;margin:0.5rem 0!important;font-family:'Courier New',monospace!important;color:#00ff41!important}.status-ok{color:#00ff41!important;text-shadow:0 0 10px #00ff41!important}@keyframes loadingPulse{0%,100%{opacity:1}50%{opacity:0.5}}@keyframes fadeOut{0%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+    </style>
 </head>
 <body class="sci-fi-container theme-default">
     <!-- Sci-Fi Loading Screen -->
@@ -318,6 +326,6 @@
            accept=".txt,.md,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.py,.js,.html,.css,.json,.csv,.xlsx">
 
     <!-- ONLY Sci-Fi Interface Script (Cache Busted) -->
-    <script src="scripts/sci-fi-interface.js?v=2.0"></script>
+    <script src="scripts/sci-fi-interface.js?v=3.0"></script>
 </body>
 </html>
