@@ -65,6 +65,12 @@ class UniversalNavigation {
                 path: 'testing-dashboard.html',
                 icon: 'fas fa-vial',
                 description: 'System testing and diagnostics'
+            },
+            'edge-demo': {
+                title: 'Edge Functions Demo',
+                path: 'edge-functions-demo.html',
+                icon: 'fas fa-bolt',
+                description: 'Netlify Edge Functions demonstration'
             }
         };
     }
