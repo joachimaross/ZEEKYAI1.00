@@ -1,25 +1,13 @@
-# Minimal requirements for Vercel deployment
-# Only essential dependencies to stay under 250MB limit
+# Ultra-minimal requirements for Vercel deployment
+# Absolute essentials only to stay well under 250MB limit
 
-# FastAPI core
-fastapi>=0.104.0
-uvicorn>=0.24.0
-python-multipart>=0.0.6
-
-# HTTP and async
-httpx>=0.25.0
-aiofiles>=23.2.1
-
-# Environment and config
-python-dotenv>=1.0.0
-pydantic>=2.5.0
+# FastAPI core (minimal)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
 
 # AI libraries (essential only)
-openai>=1.3.0
+openai==1.3.0
 
-# Security (minimal)
-PyJWT>=2.8.0
-passlib>=1.7.4
-
-# Database (lightweight)
-aiosqlite>=0.19.0
+# Basic utilities
+python-dotenv==1.0.0
+pydantic==2.5.0

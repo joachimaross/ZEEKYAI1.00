@@ -1,20 +1,14 @@
 """
-Vercel deployment entry point for ZEEKY AI
-Lightweight version for serverless deployment
+Ultra-lightweight Vercel deployment for ZEEKY AI
+Minimal imports and dependencies for <250MB limit
 """
 
-import sys
 import os
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-import json
 from datetime import datetime
-
-# Add the parent directory to the Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Create lightweight FastAPI app for Vercel
 app = FastAPI(

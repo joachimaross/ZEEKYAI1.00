@@ -9,7 +9,7 @@
         "maxLambdaSize": "250mb",
         "runtime": "python3.9",
         "maxDuration": 30,
-        "excludeFiles": "**/{__pycache__,*.pyc,*.pyo,*.pyd,tests,docs}/**"
+        "excludeFiles": "**/{__pycache__,*.pyc,*.pyo,*.pyd,tests,docs,nextjs-chatbot,frontend/node_modules,venv,env,.git,.vscode,.idea,*.md,*.log,*.db,*.sqlite}/**"
       }
     },
     {

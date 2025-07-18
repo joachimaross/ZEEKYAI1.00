@@ -7,7 +7,7 @@
     "start": "npm run serve",
     "serve": "python -m http.server 8000 --directory frontend",
     "serve:node": "npx http-server frontend -p 8000 -c-1",
-    "build": "cp requirements-vercel.txt requirements.txt && npm run build:optimize && echo 'Zeeky AI static site ready for deployment'",
+    "build": "./build-vercel.sh && npm run build:optimize && echo 'Zeeky AI ultra-lightweight build ready for Vercel'",
     "vercel-build": "npm run build:optimize && echo 'Vercel build complete - static site ready'",
     "netlify:build": "echo 'Netlify build - static site ready'",
     "build:optimize": "node scripts/build-optimizer.js",
