@@ -376,21 +376,38 @@ class TestingManager {
 
     async testFileUpload() {
         await new Promise(resolve => setTimeout(resolve, 700));
-        
-        const fileInput = document.querySelector('input[type="file"]');
-        
-        if (!fileInput) {
+
+        // Look for file input elements with multiple selectors
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        const specificInputs = document.querySelectorAll('#file-input, #test-file-input');
+
+        if (fileInputs.length === 0) {
             return {
                 success: false,
                 message: 'File upload input not found',
-                details: 'No file input elements detected on the page'
+                details: 'No file input elements detected on the page. Expected at least one input[type="file"] element.'
             };
+        }
+
+        // Check if file inputs have proper attributes
+        const hasMultiple = Array.from(fileInputs).some(input => input.hasAttribute('multiple'));
+        const hasAccept = Array.from(fileInputs).some(input => input.hasAttribute('accept'));
+
+        let details = `Found ${fileInputs.length} file input element(s). `;
+        if (hasMultiple) details += 'Multiple file selection supported. ';
+        if (hasAccept) details += 'File type restrictions configured. ';
+
+        // Test if FileHandler class is available
+        if (typeof window.FileHandler !== 'undefined' || window.fileHandler) {
+            details += 'FileHandler class is available for processing.';
+        } else {
+            details += 'Note: FileHandler class not detected - file processing may be limited.';
         }
 
         return {
             success: true,
             message: 'File upload functionality is available',
-            details: 'File input elements are present and functional'
+            details: details
         };
     }
 
