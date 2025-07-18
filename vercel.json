@@ -6,9 +6,10 @@
       "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
-        "maxLambdaSize": "50mb",
+        "maxLambdaSize": "250mb",
         "runtime": "python3.9",
-        "maxDuration": 30
+        "maxDuration": 30,
+        "excludeFiles": "**/{__pycache__,*.pyc,*.pyo,*.pyd,tests,docs}/**"
       }
     },
     {
